@@ -69,6 +69,7 @@
         .empty-tip { text-align: center; padding: 40px; color: #aaa; font-style: italic; }
         hr { margin: 20px 0; border-color: #ff6600; }
     </style>
+<base target="_blank">
 </head>
 <body>
     <div class="avatar-box" onclick="openAdminModal()"><img src="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" alt="头像" class="avatar"></div>
@@ -156,9 +157,15 @@
         }
 
         function loadLinks(menuId, page) {
-            let list = resourceLinks[menuId]?.[page] || [];
+            // 修复：确保数据存在
+            if (!resourceLinks[menuId]) resourceLinks[menuId] = {};
+            if (!resourceLinks[menuId][page]) resourceLinks[menuId][page] = [];
+
+            let list = resourceLinks[menuId][page];
             let dom = document.getElementById(`list-${menuId}`);
-            if (dom) dom.innerHTML = list.length ? list.map(item => `<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a></div>`).join('') : '<div class="empty-tip">📭 暂无链接，请通过后台管理添加</div>';
+            if (dom) {
+                dom.innerHTML = list.length ? list.map(item => `<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a></div>`).join('') : '<div class="empty-tip">📭 暂无链接，请通过后台管理添加</div>';
+            }
         }
         function renderPagination(menuId) {
             let pageDom = document.getElementById(`page-${menuId}`);
@@ -258,11 +265,21 @@
             let name = document.getElementById('linkName').value.trim();
             let url = document.getElementById('linkUrl').value.trim();
             if (!name || !url) return alert("完整填写");
+
+            // 修复：确保数据结构存在（防御性编程）
+            if (!resourceLinks[mid]) resourceLinks[mid] = {};
+            if (!resourceLinks[mid][page]) resourceLinks[mid][page] = [];
+
             resourceLinks[mid][page].push({ name, url });
             save();
             document.getElementById('linkName').value = ''; document.getElementById('linkUrl').value = '';
             renderAdminList();
-            // 关键修复：如果当前活动页面就是刚刚添加链接的菜单，立即刷新显示
+
+            // 修复：确保页面容器存在
+            let menuName = subMenus[mid]?.name || topMenus[mid]?.name || '未命名';
+            ensureContainer(mid, menuName);
+
+            // 关键修复：如果当前活动页面匹配，立即刷新显示
             let activeId = document.querySelector('.page.active')?.id;
             if (activeId === mid) {
                 loadLinks(mid, page);
