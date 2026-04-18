@@ -193,16 +193,34 @@
         .page.active {
             display: block;
         }
-        /* 首页布局：时间 + 收款码 左右并排 */
+        /* 主页跳转按钮 顶部 */
+        .home-top-btn {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .home-top-btn button {
+            padding: 10px 25px;
+            font-size: 18px;
+            background: #ff6600;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .home-top-btn button:hover {
+            background: #e65c0;
+        }
+        /* 首页布局：时间左 + 收款码右 严格左右并排 */
         .home-row {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 50px;
+            gap: 60px;
             margin-top: 30px;
             flex-wrap: wrap;
+            flex-direction: row;
         }
-        /* 电子时钟 */
+        /* 电子时钟 左侧 */
         .digital-clock {
             background-color: rgba(0,0,0,0.75);
             padding: 25px 35px;
@@ -212,10 +230,12 @@
             color: #fff;
             letter-spacing: 5px;
             text-align: center;
+            order: 1;
         }
-        /* 收款码区域 */
+        /* 收款码区域 右侧 */
         .donate-group {
             text-align: center;
+            order: 2;
         }
         .donate {
             background-color: rgba(0,0,0,0.7);
@@ -232,7 +252,7 @@
             width: 180px;
             border-radius: 8px;
         }
-        /* 底部文字放在收款码下方 */
+        /* 底部文字固定在收款码下方 */
         .footer-text {
             text-align: center;
             margin-top: 15px;
@@ -319,7 +339,7 @@
         .link-list { margin-top: 20px; }
         .link-item {
             padding: 10px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,250.1);
             margin: 5px 0;
             border-radius: 5px;
             display: flex;
@@ -398,8 +418,13 @@
 
     <!-- 内容区域 -->
     <div class="blank-box" id="area">
-        <!-- 首页：时间 + 收款码 左右布局 -->
+        <!-- 首页：顶部主页跳转 + 左时间右收款码 -->
         <div class="page active" id="home">
+            <!-- 主页跳转 放在最上方 -->
+            <div class="home-top-btn">
+                <button onclick="showPage('首页','home')">🏠 返回主页</button>
+            </div>
+
             <h2 style="text-align:center;color:#ff6600">欢迎来到虎天寿资源整理网站</h2>
             <br>
             <p style="font-size:18px;text-align:center">本站整理系统镜像、软件、实用网站、加速器各类资源<br>点击上方导航菜单查看对应分类</p>
