@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" type="image/png">
-    <title>虎天寿资源整理网站</title>
+    <title>虎天寿资源整理网站 - 分支管理</title>
     <style>
         * {
             margin: 0;
@@ -121,29 +121,6 @@
             display: flex;
             opacity: 1;
             transform: translateY(0);
-        }
-        .sub-menu li {
-            position: relative;
-        }
-        .sub-menu .sub-child {
-            display: none;
-            position: absolute;
-            left: 100%;
-            top: 0;
-            background-color: rgba(0,0,0,0.9);
-            border-radius: 8px;
-            padding: 12px;
-            width: 130px;
-            flex-direction: column;
-            gap: 10px;
-            opacity: 0;
-            transform: translateX(10px);
-            transition: all 0.3s ease;
-        }
-        .sub-menu .sub-child.show {
-            display: flex;
-            opacity: 1;
-            transform: translateX(0);
         }
         .search-box {
             width: 60%;
@@ -404,6 +381,38 @@
             color: #ffaa66;
             margin-left: 10px;
         }
+        hr {
+            margin: 20px 0;
+            border-color: #ff6600;
+        }
+        /* 回到顶部按钮样式 */
+        .go-top {
+            position: fixed;
+            bottom: 50px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background-color: #ff6600;
+            color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            font-size: 28px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .go-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .go-top:hover {
+            background-color: #e65c00;
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 <body>
@@ -416,12 +425,9 @@
     </div>
     <div class="current-menu" id="title">当前位置：首页</div>
 
-    <!-- 导航栏容器 -->
     <div class="nav" id="navContainer">
         <img src="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" alt="个人头像" class="nav-avatar">
-        <ul id="navMenuList">
-            <!-- 动态生成导航菜单 -->
-        </ul>
+        <ul id="navMenuList"></ul>
     </div>
 
     <div class="search-box">
@@ -431,7 +437,6 @@
     </div>
 
     <div class="blank-box" id="area">
-        <!-- 首页固定 -->
         <div class="page active" id="home">
             <div class="home-top-btn">
                 <button onclick="showPage('首页','home')">🏠 返回主页</button>
@@ -456,11 +461,11 @@
                 </div>
             </div>
         </div>
-
-        <!-- 其他页面容器会由JS动态创建，但为了确保默认分类存在，初始化时就会创建 -->
     </div>
 
-    <!-- 后台管理弹窗 -->
+    <!-- 回到顶部按钮 -->
+    <div class="go-top" id="goTopBtn" title="回到顶部">↑</div>
+
     <div class="admin-modal" id="adminModal">
         <span class="close-btn" onclick="closeAdminModal()">×</span>
         <div class="admin-box">
@@ -470,15 +475,29 @@
                 <button onclick="adminLogin()">登录</button>
             </div>
             <div id="adminPanel" style="display:none;">
+                <!-- 添加顶级菜单 -->
                 <div class="admin-form">
-                    <input type="text" id="newCate" placeholder="自定义菜单名称(如:软件合集)">
-                    <button onclick="addCate()">添加自定义菜单</button>
+                    <input type="text" id="newCate" placeholder="顶级菜单名称">
+                    <button onclick="addTopCate()">添加顶级菜单</button>
                 </div>
+                <!-- 添加子菜单（分支） -->
                 <div class="admin-form">
-                    <select id="delCateSelect"></select>
-                    <button class="del-menu-btn" onclick="deleteCustomMenu()">🗑️ 删除选中菜单</button>
-                    <span class="warning-tip">⚠️ 仅可删除自定义添加的菜单</span>
+                    <select id="parentCateSelect"></select>
+                    <input type="text" id="subCateName" placeholder="子菜单名称">
+                    <button onclick="addSubCate()">➕ 添加子菜单（分支）</button>
                 </div>
+                <!-- 删除菜单（顶级或子菜单） -->
+                <div class="admin-form">
+                    <select id="delMenuType">
+                        <option value="top">删除顶级菜单</option>
+                        <option value="sub">删除子菜单</option>
+                    </select>
+                    <select id="delMenuSelect"></select>
+                    <button class="del-menu-btn" onclick="deleteMenu()">🗑️ 删除选中菜单</button>
+                    <span class="warning-tip">⚠️ 默认菜单不可删除</span>
+                </div>
+                <hr>
+                <!-- 分页管理 -->
                 <div class="admin-form">
                     <select id="pageCate"></select>
                     <button onclick="addPage()">添加新页数（+1页）</button>
@@ -488,6 +507,7 @@
                     <select id="delPageNum"></select>
                     <button class="del-page-btn" onclick="deletePage()">删除选中页数</button>
                 </div>
+                <!-- 链接添加 -->
                 <div class="admin-form">
                     <select id="cate"></select>
                     <select id="pageNum"></select>
@@ -502,466 +522,510 @@
     </div>
 
     <script>
-        // 管理员密码
         const ADMIN_PASSWORD = "wangyiming87";
         let isLogin = false;
         let currentPage = {};
 
-        // 默认分类 (不可删除)
-        const DEFAULT_CATES = {
-            miniwin: '微系统',
-            winimg: 'Win系统镜像',
-            syssoft: '系统工具',
-            game: '游戏合集',
-            player: '播放软件',
-            zip: '解压软件',
-            safe: '安全软件',
-            chat: '社交软件',
-            web: '优质网站',
-            acc: '网络加速器'
+        // ---------- 数据结构 ----------
+        let topMenus = {};
+        let subMenus = {};
+        let resourceLinks = {};
+
+        const DEFAULT_TOP_IDS = {
+            sysImg: 'top_sysImg',
+            soft: 'top_soft',
+            web: 'top_web',
+            acc: 'top_acc'
+        };
+        const DEFAULT_SUB_MAP = {
+            [DEFAULT_TOP_IDS.sysImg]: [
+                { id: 'miniwin', name: '微系统' },
+                { id: 'winimg', name: 'Win系统镜像' }
+            ],
+            [DEFAULT_TOP_IDS.soft]: [
+                { id: 'syssoft', name: '系统工具' },
+                { id: 'game', name: '游戏合集' },
+                { id: 'player', name: '播放软件' },
+                { id: 'zip', name: '解压软件' },
+                { id: 'safe', name: '安全软件' },
+                { id: 'chat', name: '社交软件' }
+            ]
         };
 
-        function digitalClock() {
-            let now = new Date();
-            let h = now.getHours().toString().padStart(2, '0');
-            let m = now.getMinutes().toString().padStart(2, '0');
-            let s = now.getSeconds().toString().padStart(2, '0');
-            document.getElementById('clock').innerText = `${h}:${m}:${s}`;
-        }
-        setInterval(digitalClock, 1000);
-        digitalClock();
-
-        function getStorage(key) {
-            return JSON.parse(localStorage.getItem(key) || '{}');
-        }
-        function setStorage(key, data) {
-            localStorage.setItem(key, JSON.stringify(data));
-        }
-
-        // 初始化默认数据
         function initData() {
-            let data = getStorage('resourceLinks');
-            for (let cate in DEFAULT_CATES) {
-                if (!data[cate]) data[cate] = { 1: [] };
-            }
-            setStorage('resourceLinks', data);
-            if (!getStorage('customCates')) setStorage('customCates', {});
-        }
-        initData();
-
-        // 获取所有分类（默认+自定义）
-        function getAllCates() {
-            let custom = getStorage('customCates');
-            return { ...DEFAULT_CATES, ...custom };
-        }
-
-        // 创建页面容器（如果不存在）
-        function ensurePageContainer(cateId, cateName) {
-            let container = document.getElementById(cateId);
-            if (!container) {
-                let area = document.getElementById('area');
-                let newDiv = document.createElement('div');
-                newDiv.className = 'page';
-                newDiv.id = cateId;
-                newDiv.innerHTML = `<h2 style="color:#ff6600">【${cateName}】</h2><div id="list-${cateId}" class="link-list"></div><div id="page-${cateId}" class="pagination"></div>`;
-                area.appendChild(newDiv);
+            let storedTop = localStorage.getItem('topMenus');
+            if (storedTop) {
+                topMenus = JSON.parse(storedTop);
             } else {
-                // 更新标题（名称可能变了）
-                let titleH2 = container.querySelector('h2');
-                if (titleH2) titleH2.innerHTML = `【${cateName}】`;
+                topMenus = {
+                    [DEFAULT_TOP_IDS.sysImg]: { name: '系统镜像', isDefault: true },
+                    [DEFAULT_TOP_IDS.soft]: { name: '必装软件', isDefault: true },
+                    [DEFAULT_TOP_IDS.web]: { name: '网站合集', isDefault: true },
+                    [DEFAULT_TOP_IDS.acc]: { name: '网络加速器', isDefault: true }
+                };
             }
-        }
-
-        // 删除页面容器
-        function removePageContainer(cateId) {
-            let container = document.getElementById(cateId);
-            if (container) container.remove();
-        }
-
-        // 预先创建所有默认分类的页面容器（确保导航菜单能正常跳转）
-        function initAllPageContainers() {
-            for (let [id, name] of Object.entries(DEFAULT_CATES)) {
-                ensurePageContainer(id, name);
+            let storedSub = localStorage.getItem('subMenus');
+            if (storedSub) {
+                subMenus = JSON.parse(storedSub);
+            } else {
+                subMenus = {};
+                for (let parentId in DEFAULT_SUB_MAP) {
+                    DEFAULT_SUB_MAP[parentId].forEach(sub => {
+                        subMenus[sub.id] = { parentId: parentId, name: sub.name, isDefault: true };
+                    });
+                }
             }
+            let storedLinks = localStorage.getItem('resourceLinks');
+            if (storedLinks) {
+                resourceLinks = JSON.parse(storedLinks);
+            } else {
+                resourceLinks = {};
+                const allMenuIds = [...Object.keys(topMenus), ...Object.keys(subMenus)];
+                for (let id of allMenuIds) {
+                    if (!resourceLinks[id]) resourceLinks[id] = { 1: [] };
+                }
+            }
+            saveToLocalStorage();
         }
 
-        // 重建整个导航菜单
+        function saveToLocalStorage() {
+            localStorage.setItem('topMenus', JSON.stringify(topMenus));
+            localStorage.setItem('subMenus', JSON.stringify(subMenus));
+            localStorage.setItem('resourceLinks', JSON.stringify(resourceLinks));
+        }
+
+        function getAllMenuItems() {
+            let items = [];
+            for (let id in topMenus) {
+                items.push({ id, name: topMenus[id].name, type: 'top' });
+            }
+            for (let id in subMenus) {
+                let parent = topMenus[subMenus[id].parentId];
+                let parentName = parent ? parent.name : '未知';
+                items.push({ id, name: `${parentName} / ${subMenus[id].name}`, type: 'sub' });
+            }
+            return items;
+        }
+
+        function getTopMenusForSelect() {
+            let arr = [];
+            for (let id in topMenus) {
+                arr.push({ id, name: topMenus[id].name });
+            }
+            return arr;
+        }
+
+        function getDeletableMenus(type) {
+            let list = [];
+            if (type === 'top') {
+                for (let id in topMenus) {
+                    if (!topMenus[id].isDefault) {
+                        list.push({ id, name: topMenus[id].name });
+                    }
+                }
+            } else {
+                for (let id in subMenus) {
+                    if (!subMenus[id].isDefault) {
+                        let parent = topMenus[subMenus[id].parentId];
+                        let parentName = parent ? parent.name : '?';
+                        list.push({ id, name: `${parentName} / ${subMenus[id].name}` });
+                    }
+                }
+            }
+            return list;
+        }
+
+        function ensurePageContainer(menuId, displayName) {
+            if (document.getElementById(menuId)) return;
+            let area = document.getElementById('area');
+            let div = document.createElement('div');
+            div.className = 'page';
+            div.id = menuId;
+            div.innerHTML = `<h2 style="color:#ff6600">【${displayName}】</h2><div id="list-${menuId}" class="link-list"></div><div id="page-${menuId}" class="pagination"></div>`;
+            area.appendChild(div);
+        }
+
+        function removePageContainer(menuId) {
+            let el = document.getElementById(menuId);
+            if (el) el.remove();
+        }
+
         function rebuildNavMenu() {
-            const allCates = getAllCates();
             const navUl = document.getElementById('navMenuList');
             if (!navUl) return;
             navUl.innerHTML = '';
-
-            // 首页
             let homeLi = document.createElement('li');
             homeLi.innerHTML = '<a onclick="showPage(\'首页\',\'home\')">首页</a>';
             navUl.appendChild(homeLi);
 
-            // 系统镜像分组
-            let sysImgLi = document.createElement('li');
-            sysImgLi.innerHTML = `<a onclick="toggleMenu(this)">系统镜像</a>
-                <ul class="sub-menu">
-                    <li><a onclick="showPage('系统镜像 - 微系统','miniwin')">微系统</a></li>
-                    <li><a onclick="showPage('系统镜像 - Win系统镜像','winimg')">Win系统镜像</a></li>
-                </ul>`;
-            navUl.appendChild(sysImgLi);
-
-            // 必装软件分组
-            let softLi = document.createElement('li');
-            softLi.innerHTML = `<a onclick="toggleMenu(this)">必装软件</a>
-                <ul class="sub-menu">
-                    <li><a onclick="showPage('必装软件 - 系统工具','syssoft')">系统</a></li>
-                    <li><a onclick="showPage('必装软件 - 游戏合集','game')">游戏</a></li>
-                    <li>
-                        <a onclick="toggleMenu(this)">日常</a>
-                        <ul class="sub-child">
-                            <li><a onclick="showPage('日常 - 播放软件','player')">播放</a></li>
-                            <li><a onclick="showPage('日常 - 解压缩软件','zip')">解压缩</a></li>
-                            <li><a onclick="showPage('日常 - 安全防护','safe')">安全</a></li>
-                            <li><a onclick="showPage('日常 - 社交软件','chat')">社交</a></li>
-                        </ul>
-                    </li>
-                </ul>`;
-            navUl.appendChild(softLi);
-
-            // 网站和加速器
-            let webLi = document.createElement('li');
-            webLi.innerHTML = '<a onclick="showPage(\'网站合集\',\'web\')">网站</a>';
-            navUl.appendChild(webLi);
-            let accLi = document.createElement('li');
-            accLi.innerHTML = '<a onclick="showPage(\'网络加速器\',\'acc\')">加速器</a>';
-            navUl.appendChild(accLi);
-
-            // 动态添加自定义菜单（直接作为一级菜单）
-            for (let [id, name] of Object.entries(allCates)) {
-                if (DEFAULT_CATES[id]) continue;
-                let customLi = document.createElement('li');
-                customLi.innerHTML = `<a onclick="showPage('${name}','${id}')">${name}</a>`;
-                navUl.appendChild(customLi);
-                // 确保页面容器存在
-                ensurePageContainer(id, name);
+            for (let topId in topMenus) {
+                const top = topMenus[topId];
+                const children = Object.values(subMenus).filter(sub => sub.parentId === topId);
+                const li = document.createElement('li');
+                if (children.length > 0) {
+                    li.innerHTML = `<a onclick="toggleMenu(this)">${top.name}</a><ul class="sub-menu"></ul>`;
+                    const subUl = li.querySelector('.sub-menu');
+                    children.forEach(child => {
+                        const subLi = document.createElement('li');
+                        subLi.innerHTML = `<a onclick="showPage('${child.name}','${child.id}')">${child.name}</a>`;
+                        subUl.appendChild(subLi);
+                    });
+                } else {
+                    li.innerHTML = `<a onclick="showPage('${top.name}','${topId}')">${top.name}</a>`;
+                }
+                navUl.appendChild(li);
+                ensurePageContainer(topId, top.name);
+            }
+            for (let subId in subMenus) {
+                ensurePageContainer(subId, subMenus[subId].name);
             }
         }
 
-        // 加载分类链接和分页
-        function loadLinks(cate, page) {
-            let data = getStorage('resourceLinks');
-            let list = data[cate]?.[page] || [];
-            let dom = document.getElementById(`list-${cate}`);
-            if (!dom) return;
-            dom.innerHTML = '';
-            list.forEach(item => {
-                dom.innerHTML += `<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a></div>`;
-            });
+        function loadLinks(menuId, page) {
+            let list = resourceLinks[menuId]?.[page] || [];
+            let dom = document.getElementById(`list-${menuId}`);
+            if (dom) {
+                dom.innerHTML = '';
+                list.forEach(item => {
+                    dom.innerHTML += `<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a></div>`;
+                });
+            }
         }
 
-        function renderPagination(cate) {
-            let data = getStorage('resourceLinks');
-            let pageDom = document.getElementById(`page-${cate}`);
+        function renderPagination(menuId) {
+            let pageDom = document.getElementById(`page-${menuId}`);
             if (!pageDom) return;
+            let pages = Object.keys(resourceLinks[menuId] || {});
             pageDom.innerHTML = '';
-            let pages = Object.keys(data[cate] || {});
             if (pages.length <= 1) return;
-            pages.forEach(page => {
-                pageDom.innerHTML += `<button class="page-btn ${page == currentPage[cate] ? 'active' : ''}" onclick="switchPage('${cate}',${page})">第${page}页</button>`;
+            pages.forEach(p => {
+                pageDom.innerHTML += `<button class="page-btn ${p == currentPage[menuId] ? 'active' : ''}" onclick="switchPage('${menuId}',${p})">第${p}页</button>`;
             });
         }
 
-        function switchPage(cate, page) {
-            currentPage[cate] = page;
-            loadLinks(cate, page);
-            renderPagination(cate);
+        function switchPage(menuId, page) {
+            currentPage[menuId] = page;
+            loadLinks(menuId, page);
+            renderPagination(menuId);
         }
 
-        // 显示页面（带容错，自动创建缺失的页面容器）
-        function showPage(name, id) {
-            // 确保目标页面容器存在（对于默认分类，应该已存在；自定义菜单也会在添加时创建）
-            if (id !== 'home' && !document.getElementById(id)) {
-                // 尝试从分类映射中获取名称
-                const allCates = getAllCates();
-                let cateName = allCates[id] || name.replace(/^.*?-/, '').trim() || '资源';
-                ensurePageContainer(id, cateName);
-            }
+        function showPage(name, menuId) {
             document.getElementById('title').innerText = '当前位置：' + name;
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            let targetPage = document.getElementById(id);
-            if (targetPage) {
-                targetPage.classList.add('active');
-                if (id !== 'home') {
-                    if (!currentPage[id]) currentPage[id] = 1;
-                    loadLinks(id, currentPage[id]);
-                    renderPagination(id);
+            let target = document.getElementById(menuId);
+            if (!target) {
+                let displayName = name;
+                if (subMenus[menuId]) displayName = subMenus[menuId].name;
+                else if (topMenus[menuId]) displayName = topMenus[menuId].name;
+                ensurePageContainer(menuId, displayName);
+                target = document.getElementById(menuId);
+            }
+            if (target) {
+                target.classList.add('active');
+                if (menuId !== 'home') {
+                    if (!currentPage[menuId]) currentPage[menuId] = 1;
+                    loadLinks(menuId, currentPage[menuId]);
+                    renderPagination(menuId);
                 }
             } else {
-                // 极端情况：回首页
                 document.getElementById('home').classList.add('active');
-                alert('页面加载失败，已返回首页');
             }
-            // 关闭所有展开的子菜单
-            document.querySelectorAll('.sub-menu, .sub-child').forEach(item => item.classList.remove('show'));
+            document.querySelectorAll('.sub-menu').forEach(menu => menu.classList.remove('show'));
             document.getElementById('area').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // 菜单展开/收起
         function toggleMenu(ele) {
             const sub = ele.nextElementSibling;
-            const parent = ele.parentElement.parentElement;
-            parent.querySelectorAll('.sub-menu, .sub-child').forEach(item => {
-                if (item !== sub) item.classList.remove('show');
+            const parentLi = ele.parentElement;
+            const parentUl = parentLi.parentElement;
+            parentUl.querySelectorAll('.sub-menu').forEach(menu => {
+                if (menu !== sub) menu.classList.remove('show');
             });
             sub.classList.toggle('show');
         }
 
-        // 后台相关函数
         function openAdminModal() {
             document.getElementById('adminModal').style.display = 'block';
             document.getElementById('pwd').value = '';
             renderAllSelects();
         }
-        function closeAdminModal() {
-            document.getElementById('adminModal').style.display = 'none';
-        }
+        function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
 
         function adminLogin() {
-            const inputPwd = document.getElementById('pwd').value;
-            if (inputPwd === ADMIN_PASSWORD) {
+            let pwd = document.getElementById('pwd').value;
+            if (pwd === ADMIN_PASSWORD) {
                 isLogin = true;
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
-                renderAdminList();
                 renderAllSelects();
+                renderAdminList();
                 alert("登录成功！");
             } else {
-                alert("密码错误，无权访问！");
+                alert("密码错误！");
             }
         }
 
         function renderAllSelects() {
-            renderCateSelect();
-            renderPageSelect();
-            renderDelPageSelect();
-            renderDelCateSelect();
+            renderParentSelect();
+            renderDelMenuSelect();
+            renderCateSelects();
         }
 
-        function renderCateSelect() {
-            let select = document.getElementById('cate');
-            let pageSelect = document.getElementById('pageCate');
-            let delPageCate = document.getElementById('delPageCate');
+        function renderParentSelect() {
+            let select = document.getElementById('parentCateSelect');
             select.innerHTML = '';
-            pageSelect.innerHTML = '';
-            delPageCate.innerHTML = '';
-            let allCates = getAllCates();
-            for (let id in allCates) {
+            let tops = getTopMenusForSelect();
+            tops.forEach(t => {
                 let opt = document.createElement('option');
-                opt.value = id;
-                opt.innerText = allCates[id];
+                opt.value = t.id;
+                opt.innerText = t.name;
                 select.appendChild(opt);
-                pageSelect.appendChild(opt.cloneNode(true));
-                delPageCate.appendChild(opt.cloneNode(true));
-            }
+            });
         }
 
-        function renderDelCateSelect() {
-            let select = document.getElementById('delCateSelect');
+        function renderDelMenuSelect() {
+            let type = document.getElementById('delMenuType').value;
+            let select = document.getElementById('delMenuSelect');
             select.innerHTML = '';
-            let custom = getStorage('customCates');
-            if (Object.keys(custom).length === 0) {
+            let menus = getDeletableMenus(type);
+            if (menus.length === 0) {
                 let opt = document.createElement('option');
-                opt.text = '暂无自定义菜单';
+                opt.text = '无可删除的菜单';
                 opt.disabled = true;
                 select.appendChild(opt);
-                return;
-            }
-            for (let id in custom) {
-                let opt = document.createElement('option');
-                opt.value = id;
-                opt.innerText = custom[id];
-                select.appendChild(opt);
+            } else {
+                menus.forEach(m => {
+                    let opt = document.createElement('option');
+                    opt.value = m.id;
+                    opt.innerText = m.name;
+                    select.appendChild(opt);
+                });
             }
         }
 
-        function renderPageSelect() {
-            let pageSelect = document.getElementById('pageNum');
-            let cate = document.getElementById('cate').value;
-            let data = getStorage('resourceLinks');
-            let pages = Object.keys(data[cate] || {});
-            pageSelect.innerHTML = '';
-            pages.forEach(page => {
+        function renderCateSelects() {
+            let cateSelect = document.getElementById('cate');
+            let pageCate = document.getElementById('pageCate');
+            let delPageCate = document.getElementById('delPageCate');
+            cateSelect.innerHTML = '';
+            pageCate.innerHTML = '';
+            delPageCate.innerHTML = '';
+            let allMenus = getAllMenuItems();
+            allMenus.forEach(menu => {
                 let opt = document.createElement('option');
-                opt.value = page;
-                opt.innerText = `第${page}页`;
+                opt.value = menu.id;
+                opt.innerText = menu.name;
+                cateSelect.appendChild(opt);
+                pageCate.appendChild(opt.cloneNode(true));
+                delPageCate.appendChild(opt.cloneNode(true));
+            });
+            renderPageNumSelect();
+            renderDelPageNumSelect();
+        }
+
+        function renderPageNumSelect() {
+            let menuId = document.getElementById('cate').value;
+            let pageSelect = document.getElementById('pageNum');
+            pageSelect.innerHTML = '';
+            let pages = Object.keys(resourceLinks[menuId] || {});
+            pages.forEach(p => {
+                let opt = document.createElement('option');
+                opt.value = p;
+                opt.innerText = `第${p}页`;
                 pageSelect.appendChild(opt);
             });
         }
 
-        function renderDelPageSelect() {
-            let delPageNum = document.getElementById('delPageNum');
-            let cate = document.getElementById('delPageCate').value;
-            let data = getStorage('resourceLinks');
-            let pages = Object.keys(data[cate] || {});
-            delPageNum.innerHTML = '';
-            pages.forEach(page => {
+        function renderDelPageNumSelect() {
+            let menuId = document.getElementById('delPageCate').value;
+            let pageSelect = document.getElementById('delPageNum');
+            pageSelect.innerHTML = '';
+            let pages = Object.keys(resourceLinks[menuId] || {});
+            pages.forEach(p => {
                 let opt = document.createElement('option');
-                opt.value = page;
-                opt.innerText = `第${page}页`;
-                delPageNum.appendChild(opt);
+                opt.value = p;
+                opt.innerText = `第${p}页`;
+                pageSelect.appendChild(opt);
             });
         }
 
-        // 添加自定义菜单
-        function addCate() {
+        function addTopCate() {
             if (!isLogin) return;
             let name = document.getElementById('newCate').value.trim();
             if (!name) return alert("请输入菜单名称！");
-            let cates = getStorage('customCates');
-            let data = getStorage('resourceLinks');
-            let id = 'cate_' + Date.now();
-            cates[id] = name;
-            data[id] = { 1: [] };
-            setStorage('customCates', cates);
-            setStorage('resourceLinks', data);
+            let id = 'top_' + Date.now();
+            topMenus[id] = { name: name, isDefault: false };
+            resourceLinks[id] = { 1: [] };
+            saveToLocalStorage();
             document.getElementById('newCate').value = '';
-            // 动态更新界面
-            ensurePageContainer(id, name);
             rebuildNavMenu();
             renderAllSelects();
             renderAdminList();
-            alert(`自定义菜单“${name}”已添加，可在导航栏查看。`);
+            alert(`顶级菜单“${name}”已添加`);
         }
 
-        // 删除自定义菜单
-        function deleteCustomMenu() {
-            if (!isLogin) return alert("请先登录！");
-            let select = document.getElementById('delCateSelect');
-            if (!select.options.length || select.options[0].disabled) {
-                alert("没有可删除的自定义菜单");
-                return;
-            }
-            let cateId = select.value;
-            let cateName = select.options[select.selectedIndex].text;
-            let confirmDel = confirm(`⚠️ 确认删除整个菜单【${cateName}】吗？该菜单下的所有页和链接都会被永久删除！`);
-            if (!confirmDel) return;
-
-            let resourceData = getStorage('resourceLinks');
-            delete resourceData[cateId];
-            setStorage('resourceLinks', resourceData);
-            let customCates = getStorage('customCates');
-            delete customCates[cateId];
-            setStorage('customCates', customCates);
-
-            // 如果当前正在显示被删除的页面，跳回首页
-            let activePage = document.querySelector('.page.active');
-            if (activePage && activePage.id === cateId) {
-                showPage('首页', 'home');
-            }
-            removePageContainer(cateId);
+        function addSubCate() {
+            if (!isLogin) return;
+            let parentId = document.getElementById('parentCateSelect').value;
+            let name = document.getElementById('subCateName').value.trim();
+            if (!name) return alert("请输入子菜单名称！");
+            let id = 'sub_' + Date.now();
+            subMenus[id] = { parentId: parentId, name: name, isDefault: false };
+            resourceLinks[id] = { 1: [] };
+            saveToLocalStorage();
+            document.getElementById('subCateName').value = '';
             rebuildNavMenu();
             renderAllSelects();
             renderAdminList();
-            alert(`菜单“${cateName}”已删除。`);
+            alert(`子菜单“${name}”已添加至“${topMenus[parentId].name}”下`);
+        }
+
+        function deleteMenu() {
+            if (!isLogin) return;
+            let type = document.getElementById('delMenuType').value;
+            let select = document.getElementById('delMenuSelect');
+            if (!select.selectedOptions.length || select.options[0].disabled) {
+                alert("没有可删除的菜单");
+                return;
+            }
+            let menuId = select.value;
+            let confirmMsg = type === 'top' ? '顶级菜单' : '子菜单';
+            if (!confirm(`⚠️ 确认删除该${confirmMsg}及其所有链接吗？`)) return;
+            if (type === 'top') {
+                let children = Object.keys(subMenus).filter(id => subMenus[id].parentId === menuId);
+                children.forEach(childId => {
+                    delete subMenus[childId];
+                    delete resourceLinks[childId];
+                    removePageContainer(childId);
+                });
+                delete topMenus[menuId];
+                delete resourceLinks[menuId];
+                removePageContainer(menuId);
+            } else {
+                delete subMenus[menuId];
+                delete resourceLinks[menuId];
+                removePageContainer(menuId);
+            }
+            saveToLocalStorage();
+            rebuildNavMenu();
+            renderAllSelects();
+            renderAdminList();
+            let activeId = document.querySelector('.page.active')?.id;
+            if (activeId === menuId || (type === 'top' && children && children.includes(activeId))) {
+                showPage('首页', 'home');
+            }
+            alert("删除成功");
         }
 
         function addPage() {
             if (!isLogin) return;
-            let cate = document.getElementById('pageCate').value;
-            let data = getStorage('resourceLinks');
-            let currentPages = Object.keys(data[cate] || {}).map(Number);
-            let newPage = Math.max(...currentPages) + 1;
-            data[cate][newPage] = [];
-            setStorage('resourceLinks', data);
+            let menuId = document.getElementById('pageCate').value;
+            let pages = Object.keys(resourceLinks[menuId] || {}).map(Number);
+            let newPage = Math.max(...pages) + 1;
+            resourceLinks[menuId][newPage] = [];
+            saveToLocalStorage();
             renderAllSelects();
             renderAdminList();
-            let activeId = document.querySelector('.page.active')?.id;
-            if (activeId === cate) {
-                renderPagination(cate);
+            if (document.querySelector('.page.active')?.id === menuId) {
+                renderPagination(menuId);
             }
-            alert(`成功添加【第${newPage}页】！`);
+            alert(`添加第${newPage}页成功`);
         }
 
         function deletePage() {
-            if (!isLogin) return alert("请先登录！");
-            let cate = document.getElementById('delPageCate').value;
+            if (!isLogin) return;
+            let menuId = document.getElementById('delPageCate').value;
             let page = document.getElementById('delPageNum').value;
-            let data = getStorage('resourceLinks');
-            let totalPages = Object.keys(data[cate] || {}).length;
-            if (totalPages <= 1) {
-                alert("⚠️ 无法删除最后1页！每个分类至少保留1页");
-                return;
-            }
-            let confirmDel = confirm(`⚠️ 确认删除第${page}页吗？该页所有链接也会被删除！`);
-            if (!confirmDel) return;
-            delete data[cate][page];
-            setStorage('resourceLinks', data);
+            let pages = Object.keys(resourceLinks[menuId] || {});
+            if (pages.length <= 1) return alert("至少保留一页");
+            if (!confirm(`删除第${page}页，该页所有链接将丢失`)) return;
+            delete resourceLinks[menuId][page];
+            saveToLocalStorage();
             renderAllSelects();
             renderAdminList();
-            if (currentPage[cate] && currentPage[cate] == page) {
-                currentPage[cate] = 1;
-                loadLinks(cate, 1);
+            if (document.querySelector('.page.active')?.id === menuId) {
+                if (currentPage[menuId] == page) currentPage[menuId] = 1;
+                loadLinks(menuId, currentPage[menuId]);
+                renderPagination(menuId);
             }
-            renderPagination(cate);
-            alert(`✅ 成功删除【第${page}页】！`);
+            alert("删除成功");
         }
 
         function addLink() {
-            if (!isLogin) return alert("请先登录！");
-            let cate = document.getElementById('cate').value;
+            if (!isLogin) return;
+            let menuId = document.getElementById('cate').value;
             let page = document.getElementById('pageNum').value;
             let name = document.getElementById('linkName').value.trim();
             let url = document.getElementById('linkUrl').value.trim();
-            if (!name || !url) return alert('请填写完整信息！');
-            let data = getStorage('resourceLinks');
-            data[cate][page].push({ name, url });
-            setStorage('resourceLinks', data);
+            if (!name || !url) return alert("填写完整");
+            resourceLinks[menuId][page].push({ name, url });
+            saveToLocalStorage();
             document.getElementById('linkName').value = '';
             document.getElementById('linkUrl').value = '';
             renderAdminList();
-            if (document.querySelector('.page.active')?.id === cate) {
-                loadLinks(cate, page);
-                renderPagination(cate);
+            if (document.querySelector('.page.active')?.id === menuId) {
+                loadLinks(menuId, page);
+                renderPagination(menuId);
             }
         }
 
-        function delLink(cate, page, index) {
+        function delLink(menuId, page, idx) {
             if (!isLogin) return;
-            let data = getStorage('resourceLinks');
-            data[cate][page].splice(index, 1);
-            setStorage('resourceLinks', data);
+            resourceLinks[menuId][page].splice(idx, 1);
+            saveToLocalStorage();
             renderAdminList();
-            if (document.querySelector('.page.active')?.id === cate) {
-                loadLinks(cate, page);
+            if (document.querySelector('.page.active')?.id === menuId) {
+                loadLinks(menuId, page);
             }
         }
 
         function renderAdminList() {
-            let data = getStorage('resourceLinks');
-            let allCates = getAllCates();
             let dom = document.getElementById('allLinks');
             dom.innerHTML = '';
-            for (let cate in data) {
-                let cateName = allCates[cate] || cate;
-                for (let page in data[cate]) {
-                    let list = data[cate][page];
+            let allMenus = getAllMenuItems();
+            for (let menu of allMenus) {
+                let links = resourceLinks[menu.id];
+                if (!links) continue;
+                for (let page in links) {
+                    let list = links[page];
                     if (list.length === 0) continue;
-                    dom.innerHTML += `<h4 style="color:#fff;margin:15px 0 5px;">${cateName} - 第${page}页</h4>`;
+                    dom.innerHTML += `<h4 style="color:#fff;margin:15px 0 5px;">${menu.name} - 第${page}页</h4>`;
                     list.forEach((item, i) => {
-                        dom.innerHTML += `<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a><button class="del-btn" onclick="delLink('${cate}',${page},${i})">删除</button></div>`;
+                        dom.innerHTML += `<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a><button class="del-btn" onclick="delLink('${menu.id}',${page},${i})">删除</button></div>`;
                     });
                 }
             }
         }
 
-        document.getElementById('cate').addEventListener('change', renderPageSelect);
-        document.getElementById('delPageCate').addEventListener('change', renderDelPageSelect);
+        document.getElementById('cate').addEventListener('change', renderPageNumSelect);
+        document.getElementById('delPageCate').addEventListener('change', renderDelPageNumSelect);
+        document.getElementById('delMenuType').addEventListener('change', renderDelMenuSelect);
 
         function baiduSearch() {
             let kw = document.getElementById('baiduSearchInput').value;
             if (kw.trim()) window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(kw), '_self');
         }
 
-        // 页面启动：创建所有默认分类的页面容器，然后构建导航，最后显示首页
-        initAllPageContainers();
+        // 回到顶部按钮逻辑
+        function initGoTop() {
+            const goTopBtn = document.getElementById('goTopBtn');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    goTopBtn.classList.add('show');
+                } else {
+                    goTopBtn.classList.remove('show');
+                }
+            });
+            goTopBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // 启动
+        initData();
         rebuildNavMenu();
         showPage('首页', 'home');
+        initGoTop();
     </script>
 </body>
 </html>
