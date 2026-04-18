@@ -1,1 +1,361 @@
-
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>虎天寿资源整理网站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "微软雅黑", sans-serif;
+        }
+        body {
+            background: url('https://s41.ax1x.com/2026/04/18/pe6CbuQ.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .avatar {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+        }
+        .title-box {
+            text-align: center;
+            margin: 40px 0;
+        }
+        .website-name {
+            font-size: 38px;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 30px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .nav {
+            width: 85%;
+            margin: 30px auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 45px;
+        }
+        .nav li {
+            position: relative;
+            padding: 8px 0;
+        }
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 19px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .nav a:hover {
+            color: #ff6600;
+            background-color: rgba(0,0,0,0.8);
+        }
+        .nav .sub-menu {
+            display: none;
+            position: absolute;
+            top: 45px;
+            left: 0;
+            background-color: rgba(0,0,0,0.9);
+            border-radius: 8px;
+            padding: 12px;
+            width: 160px;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999;
+        }
+        .nav li:hover .sub-menu {
+            display: flex;
+        }
+        .sub-menu .sub-child {
+            display: none;
+            position: absolute;
+            left: 160px;
+            top: 75px;
+            background-color: rgba(0,0,0,0.9);
+            border-radius: 8px;
+            padding: 12px;
+            width: 130px;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .sub-menu li:hover .sub-child {
+            display: flex;
+        }
+        .search-box {
+            width: 60%;
+            margin: 0 auto 40px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 12px;
+        }
+        .search-input {
+            width: 70%;
+            height: 45px;
+            padding: 0 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px 0 0 6px;
+            outline: none;
+            background: rgba(255,255,255,0.9);
+        }
+        .search-btn {
+            height: 45px;
+            padding: 0 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            background: #ff6600;
+            color: #fff;
+            cursor: pointer;
+        }
+        .search-btn:hover {
+            background: #e65c00;
+        }
+        .clock {
+            width: 280px;
+            height: 280px;
+            margin: 80px 50px;
+            background-color: rgba(0, 0, 0, 0.75);
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.7);
+            border: 8px solid #fff;
+        }
+        .clock .num {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #fff;
+            padding: 10px;
+        }
+        .num1 { transform: rotate(30deg); }
+        .num2 { transform: rotate(60deg); }
+        .num3 { transform: rotate(90deg); }
+        .num4 { transform: rotate(120deg); }
+        .num5 { transform: rotate(150deg); }
+        .num6 { transform: rotate(180deg); }
+        .num7 { transform: rotate(210deg); }
+        .num8 { transform: rotate(240deg); }
+        .num9 { transform: rotate(270deg); }
+        .num10 { transform: rotate(300deg); }
+        .num11 { transform: rotate(330deg); }
+        .clock-center {
+            width: 18px;
+            height: 18px;
+            background: #ff6600;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        .hour {
+            width: 8px;
+            height: 70px;
+            background: #fff;
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            transform: translateX(-50%);
+            border-radius: 4px;
+            z-index: 3;
+        }
+        .minute {
+            width: 6px;
+            height: 100px;
+            background: #fff;
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            transform: translateX(-50%);
+            border-radius: 3px;
+            z-index: 2;
+        }
+        .second {
+            width: 3px;
+            height: 120px;
+            background: #ff6600;
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            transform: translateX(-50%);
+            border-radius: 1px;
+            z-index: 1;
+        }
+        .author-info {
+            text-align: center;
+            margin: 30px 0;
+            font-size: 18px;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px 25px;
+            border-radius: 8px;
+            display: inline-block;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .author-info a {
+            color: #0066ff;
+            text-decoration: none;
+            margin-left: 15px;
+            font-weight: bold;
+        }
+        .author-info a:hover {
+            color: #ff6600;
+        }
+        .donate {
+            text-align: center;
+            margin: 20px 0 60px;
+        }
+        .donate-title {
+            font-size: 26px;
+            color: #ff6600;
+            font-weight: bold;
+            background-color: rgba(0,0,0,0.7);
+            padding: 10px 25px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .donate img {
+            width: 220px;
+            border-radius: 8px;
+            border: 2px solid rgba(0,0,0,0.7);
+        }
+        .footer-text {
+            text-align: center;
+            margin: 40px 0;
+            font-size: 17px;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 12px 25px;
+            border-radius: 8px;
+            display: inline-block;
+            opacity: 0.95;
+        }
+    </style>
+</head>
+<body>
+    <img src="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" alt="头像" class="avatar">
+    <div class="title-box">
+        <h1 class="website-name">虎天寿资源整理网站</h1>
+    </div>
+    <div class="nav">
+        <ul>
+            <li><a href="#" target="_blank">首页</a></li>
+            <li>
+                <a href="#" target="_blank">系统镜像</a>
+                <ul class="sub-menu">
+                    <li><a href="#" target="_blank">微系统</a></li>
+                    <li><a href="#" target="_blank">Win系统</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" target="_blank">必装软件</a>
+                <ul class="sub-menu">
+                    <li><a href="#" target="_blank">系统</a></li>
+                    <li><a href="#" target="_blank">游戏</a></li>
+                    <li>
+                        <a href="#" target="_blank">日常</a>
+                        <ul class="sub-child">
+                            <li><a href="#" target="_blank">播放</a></li>
+                            <li><a href="#" target="_blank">解压缩</a></li>
+                            <li><a href="#" target="_blank">安全</a></li>
+                            <li><a href="#" target="_blank">社交</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="#" target="_blank">网站</a></li>
+            <li><a href="#" target="_blank">加速器</a></li>
+        </ul>
+    </div>
+    <div class="search-box">
+        <input type="text" class="search-input" placeholder="请输入要搜索的资源关键词...">
+        <button class="search-btn" onclick="searchResource()">搜索资源</button>
+    </div>
+    <div class="clock">
+        <div class="num num12">12</div>
+        <div class="num num1">1</div>
+        <div class="num num2">2</div>
+        <div class="num num3">3</div>
+        <div class="num num4">4</div>
+        <div class="num num5">5</div>
+        <div class="num num6">6</div>
+        <div class="num num7">7</div>
+        <div class="num num8">8</div>
+        <div class="num num9">9</div>
+        <div class="num num10">10</div>
+        <div class="num num11">11</div>
+        <div class="clock-center"></div>
+        <div class="hour" id="hour"></div>
+        <div class="minute" id="minute"></div>
+        <div class="second" id="second"></div>
+    </div>
+    <div class="author-info">
+        QQ：3608504926
+        <a href="https://space.bilibili.com/3493111242164758" target="_blank">哔哩哔哩的主页</a>
+    </div>
+    <div class="donate">
+        <div class="donate-title">捐献一点吧</div>
+        <a href="https://i.cetsteam.com/imgs/2026/04/01/6206ae66c0bf00a8.png" target="_blank">
+            <img src="https://i.cetsteam.com/imgs/2026/04/01/6206ae66c0bf00a8.png" alt="捐献码">
+        </a>
+    </div>
+    <div class="footer-text">
+        整理资源耗费大量精力，维护网站也需要持续付出，感谢您的理解与支持
+    </div>
+    <script>
+        const hourHand = document.getElementById('hour');
+        const minuteHand = document.getElementById('minute');
+        const secondHand = document.getElementById('second');
+        function runClock() {
+            let date = new Date();
+            let hours = date.getHours() % 12;
+            let minutes = date.getMinutes();
+            let seconds = date.getSeconds();
+            let hRotation = 30 * hours + 0.5 * minutes;
+            let mRotation = 6 * minutes;
+            let sRotation = 6 * seconds;
+            hourHand.style.transform = `translate(-50%) rotate(${hRotation}deg)`;
+            minuteHand.style.transform = `translate(-50%) rotate(${mRotation}deg)`;
+            secondHand.style.transform = `translate(-50%) rotate(${sRotation}deg)`;
+        }
+        setInterval(runClock, 1000);
+        runClock();
+        function searchResource() {
+            let keyword = document.querySelector('.search-input').value;
+            if(keyword.trim() !== ''){
+                window.open(`https://www.baidu.com/s?wd=${keyword}`, '_blank');
+            }
+        }
+    </script>
+</body>
+</html>
