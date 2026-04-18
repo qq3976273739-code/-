@@ -175,7 +175,7 @@
             cursor: pointer;
         }
         .search-btn:hover {
-            background: #e65c00;
+            background: #e65c0;
         }
         /* 内容区域 */
         .blank-box {
@@ -193,28 +193,34 @@
         .page.active {
             display: block;
         }
-        /* 首页内置 时钟 + 捐献 */
-        .home-center {
+        /* 首页布局：时间 + 收款码 左右并排 */
+        .home-row {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 30px;
-            margin-top: 20px;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 30px;
+            flex-wrap: wrap;
         }
+        /* 电子时钟 */
         .digital-clock {
             background-color: rgba(0,0,0,0.75);
-            padding: 20px 30px;
+            padding: 25px 35px;
             border-radius: 15px;
             font-size: 45px;
             font-weight: bold;
             color: #fff;
             letter-spacing: 5px;
+            text-align: center;
+        }
+        /* 收款码区域 */
+        .donate-group {
+            text-align: center;
         }
         .donate {
             background-color: rgba(0,0,0,0.7);
             padding: 15px;
             border-radius: 8px;
-            text-align: center;
         }
         .donate-title {
             font-size: 22px;
@@ -226,12 +232,20 @@
             width: 180px;
             border-radius: 8px;
         }
+        /* 底部文字放在收款码下方 */
+        .footer-text {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #fff;
+        }
         .author-info {
             background-color: rgba(0, 0, 0, 0.6);
             padding: 15px 25px;
             border-radius: 8px;
             font-size: 18px;
             text-align: center;
+            margin-bottom: 20px;
         }
         .author-info a {
             color: #0066ff;
@@ -302,13 +316,6 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .cate-item {
-            display: inline-block;
-            background: #ff6600;
-            padding: 5px 10px;
-            margin: 5px;
-            border-radius: 4px;
-        }
         .link-list { margin-top: 20px; }
         .link-item {
             padding: 10px;
@@ -336,16 +343,6 @@
             color: #fff;
             font-size: 22px;
             cursor: pointer;
-        }
-        .footer-text {
-            text-align: center;
-            margin: 40px 0;
-            font-size: 17px;
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 12px 25px;
-            border-radius: 8px;
-            display: inline-block;
-            opacity: 0.95;
         }
     </style>
 </head>
@@ -401,27 +398,37 @@
 
     <!-- 内容区域 -->
     <div class="blank-box" id="area">
-        <!-- 首页：内置时钟 + 捐献 + QQ -->
+        <!-- 首页：时间 + 收款码 左右布局 -->
         <div class="page active" id="home">
             <h2 style="text-align:center;color:#ff6600">欢迎来到虎天寿资源整理网站</h2>
             <br>
             <p style="font-size:18px;text-align:center">本站整理系统镜像、软件、实用网站、加速器各类资源<br>点击上方导航菜单查看对应分类</p>
-            <div class="home-center">
+            
+            <div class="author-info">
+                QQ：3608504926<br>
+                <a href="https://space.bilibili.com/3493111242164758">哔哩哔哩的主页</a>
+            </div>
+
+            <!-- 核心：时间 左 / 收款码 右 -->
+            <div class="home-row">
                 <div class="digital-clock" id="clock"></div>
-                <div class="author-info">
-                    QQ：3608504926<br>
-                    <a href="https://space.bilibili.com/3493111242164758">哔哩哔哩的主页</a>
-                </div>
-                <div class="donate">
-                    <div class="donate-title">捐献一点吧</div>
-                    <a href="https://i.cetsteam.com/imgs/2026/04/01/6206ae66c0bf00a8.png">
-                        <img src="https://i.cetsteam.com/imgs/2026/04/01/6206ae66c0bf00a8.png">
-                    </a>
+                
+                <div class="donate-group">
+                    <div class="donate">
+                        <div class="donate-title">捐献一点吧</div>
+                        <a href="https://i.cetsteam.com/imgs/2026/04/01/6026ae66c0bf00a8.png">
+                            <img src="https://i.cetsteam.com/imgs/2026/04/01/6026ae66c0bf00a8.png">
+                        </a>
+                    </div>
+                    <!-- 文字固定在收款码下方 -->
+                    <div class="footer-text">
+                        整理资源耗费大量精力，维护网站也需要持续付出，感谢您的理解与支持
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- 资源页面 -->
+        <!-- 资源页面（保留所有原有链接） -->
         <div class="page" id="miniwin"><h2 style="color:#ff6600">【微系统】</h2><div id="list-miniwin" class="link-list"></div></div>
         <div class="page" id="winimg"><h2 style="color:#ff6600">【Win系统镜像】</h2><div id="list-winimg" class="link-list"></div></div>
         <div class="page" id="syssoft"><h2 style="color:#ff6600">【系统工具】</h2><div id="list-syssoft" class="link-list"></div></div>
@@ -463,10 +470,6 @@
         </div>
     </div>
 
-    <div class="footer-text">
-        整理资源耗费大量精力，维护网站也需要持续付出，感谢您的理解与支持
-    </div>
-
     <script>
         // 管理员密码
         const ADMIN_PASSWORD = "wangyiming87";
@@ -483,17 +486,15 @@
         setInterval(digitalClock, 1000);
         digitalClock();
 
-        // 菜单互斥展开+动画 (除三级菜单外)
+        // 菜单互斥展开+动画
         function toggleMenu(ele){
             const sub = ele.nextElementSibling;
             const parent = ele.parentElement.parentElement;
             
-            // 关闭其他同级菜单
             parent.querySelectorAll('.sub-menu, .sub-child').forEach(item => {
                 if(item !== sub) item.classList.remove('show');
             });
             
-            // 切换当前菜单
             sub.classList.toggle('show');
         }
 
@@ -503,7 +504,6 @@
             document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             loadLinks(id);
-            // 自动关闭所有菜单
             document.querySelectorAll('.sub-menu, .sub-child').forEach(item => item.classList.remove('show'));
             document.getElementById('area').scrollIntoView({behavior:'smooth'});
         }
@@ -559,7 +559,6 @@
         function renderCateSelect(){
             let select = document.getElementById('cate');
             select.innerHTML = '';
-            // 默认分类
             let defaultCates = {miniwin:'微系统',winimg:'Win系统镜像',syssoft:'系统工具',game:'游戏合集',player:'播放软件',zip:'解压软件',safe:'安全软件',chat:'社交软件',web:'优质网站',acc:'网络加速器'};
             let customCates = getStorage('customCates');
             
