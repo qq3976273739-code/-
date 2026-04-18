@@ -456,10 +456,10 @@
         </ul>
     </div>
 
-    <!-- 搜索框 -->
+    <!-- 搜索框：搜索引擎占位文字已按要求改为“输入搜索内容” -->
     <div class="search-box">
         <img src="https://www.baidu.com/favicon.ico" class="baidu-icon" alt="百度">
-        <input type="text" class="search-input" placeholder="请输入关键词搜索">
+        <input type="text" class="search-input" placeholder="输入搜索内容">
         <button class="search-btn" onclick="search()">搜索资源</button>
     </div>
 
@@ -781,7 +781,11 @@
             renderPageSelect();
             renderAdminList();
             
-            // 同步刷新前端分页按钮
+            // 同步刷新前端分页按钮（若当前用户正在查看该分类，需重新加载到第1页避免空白）
+            if(currentPage[cate] && currentPage[cate] == page) {
+                currentPage[cate] = 1;
+                loadLinks(cate, 1);
+            }
             renderPagination(cate);
             
             alert(`✅ 成功删除【第${page}页】！`);
@@ -841,7 +845,7 @@
         document.getElementById('cate').addEventListener('change', renderPageSelect);
         document.getElementById('delPageCate').addEventListener('change', renderDelPageSelect);
 
-        // 百度搜索
+        // 百度搜索：搜索引擎文字已改为“输入搜索内容”，搜索功能不变
         function search(){
             let kw = document.querySelector('.search-input').value;
             if(kw.trim()) window.open('https://www.baidu.com/s?wd='+kw,'_self');
