@@ -40,7 +40,7 @@
             border-radius: 10px;
             display: inline-block;
         }
-        /* 当前分类显示栏 */
+        /* 当前分类标题 */
         .current-menu {
             text-align: center;
             margin: 0 auto 30px;
@@ -145,6 +145,24 @@
         .search-btn:hover {
             background: #e65c00;
         }
+
+        /* ========== 新增：内容展示区域（你放网站、资源、链接的面板） ========== */
+        .content-box {
+            width: 80%;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.75);
+            border-radius: 15px;
+            min-height: 300px;
+        }
+        .content-item {
+            display: none;
+        }
+        .content-item.active {
+            display: block;
+        }
+
+        /* 圆形时钟 */
         .clock {
             width: 280px;
             height: 280px;
@@ -223,6 +241,7 @@
             border-radius: 1px;
             z-index: 1;
         }
+
         .author-info {
             text-align: center;
             margin: 30px 0;
@@ -276,50 +295,130 @@
     </style>
 </head>
 <body>
+    <!-- 右上角圆形头像 -->
     <img src="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" alt="头像" class="avatar">
+
+    <!-- 网站标题 -->
     <div class="title-box">
         <h1 class="website-name">虎天寿资源整理网站</h1>
     </div>
 
-    <!-- 实时显示当前点击的分类名称 -->
+    <!-- 当前分类显示 -->
     <div class="current-menu" id="currentMenu">当前位置：首页</div>
 
+    <!-- 导航菜单 -->
     <div class="nav">
         <ul>
-            <li><a onclick="showMenu('首页')">首页</a></li>
+            <li><a onclick="switchPage('首页','home')">首页</a></li>
             <li>
-                <a onclick="showMenu('系统镜像')">系统镜像</a>
+                <a onclick="switchPage('系统镜像','sysimg')">系统镜像</a>
                 <ul class="sub-menu">
-                    <li><a onclick="showMenu('系统镜像 - 微系统')">微系统</a></li>
-                    <li><a onclick="showMenu('系统镜像 - Win系统')">Win系统</a></li>
+                    <li><a onclick="switchPage('系统镜像 - 微系统','miniwin')">微系统</a></li>
+                    <li><a onclick="switchPage('系统镜像 - Win系统镜像','winimg')">Win系统镜像</a></li>
                 </ul>
             </li>
             <li>
-                <a onclick="showMenu('必装软件')">必装软件</a>
+                <a onclick="switchPage('必装软件','soft')">必装软件</a>
                 <ul class="sub-menu">
-                    <li><a onclick="showMenu('必装软件 - 系统')">系统</a></li>
-                    <li><a onclick="showMenu('必装软件 - 游戏')">游戏</a></li>
+                    <li><a onclick="switchPage('必装软件 - 系统工具','syssoft')">系统</a></li>
+                    <li><a onclick="switchPage('必装软件 - 游戏合集','game')">游戏</a></li>
                     <li>
-                        <a onclick="showMenu('必装软件 - 日常')">日常</a>
+                        <a onclick="switchPage('必装软件 - 日常软件','daily')">日常</a>
                         <ul class="sub-child">
-                            <li><a onclick="showMenu('必装软件 - 日常 - 播放')">播放</a></li>
-                            <li><a onclick="showMenu('必装软件 - 日常 - 解压缩')">解压缩</a></li>
-                            <li><a onclick="showMenu('必装软件 - 日常 - 安全')">安全</a></li>
-                            <li><a onclick="showMenu('必装软件 - 日常 - 社交')">社交</a></li>
+                            <li><a onclick="switchPage('日常 - 播放软件','player')">播放</a></li>
+                            <li><a onclick="switchPage('日常 - 解压缩软件','zip')">解压缩</a></li>
+                            <li><a onclick="switchPage('日常 - 安全防护','safe')">安全</a></li>
+                            <li><a onclick="switchPage('日常 - 社交软件','chat')">社交</a></li>
                         </ul>
                     </li>
                 </ul>
             </li>
-            <li><a onclick="showMenu('网站')">网站</a></li>
-            <li><a onclick="showMenu('加速器')">加速器</a></li>
+            <li><a onclick="switchPage('网站合集','websites')">网站</a></li>
+            <li><a onclick="switchPage('网络加速器','accelerator')">加速器</a></li>
         </ul>
     </div>
 
+    <!-- 搜索引擎 -->
     <div class="search-box">
         <input type="text" class="search-input" placeholder="请输入要搜索的资源关键词...">
         <button class="search-btn" onclick="searchResource()">搜索资源</button>
     </div>
 
+    <!-- ====================== 所有分类内容存放区域 ====================== -->
+    <div class="content-box">
+        <!-- 首页 -->
+        <div class="content-item active" id="home">
+            <h2 style="text-align:center;color:#ff6600;">欢迎来到虎天寿资源整理网站</h2>
+            <br>
+            <p style="font-size:18px;line-height:1.8;">
+                本站整理各类系统镜像、必备软件、实用网站、网络加速器等资源<br>
+                点击上方导航菜单，查看对应分类资源
+            </p>
+        </div>
+
+        <!-- 系统镜像总页 -->
+        <div class="content-item" id="sysimg">
+            <h2 style="color:#ff6600;">系统镜像资源</h2>
+            <br>
+            <p>请在子菜单选择：微系统 / Win原版系统镜像</p>
+        </div>
+        <!-- 微系统（你后续放网盘、下载链接就在这里改） -->
+        <div class="content-item" id="miniwin">
+            <h2 style="color:#ff6600;">【微系统资源专区】</h2>
+            <br>
+            <p>此处存放微系统PE、精简小系统相关下载链接</p>
+            <!-- 你以后直接在这里加链接、文字、图片即可 -->
+        </div>
+        <!-- Win系统镜像 -->
+        <div class="content-item" id="winimg">
+            <h2 style="color:#ff6600;">【Win系统镜像专区】</h2>
+            <br>
+            <p>此处存放Windows原版系统镜像下载地址</p>
+        </div>
+
+        <!-- 必装软件总页 -->
+        <div class="content-item" id="soft">
+            <h2 style="color:#ff6600;">必备软件合集</h2>
+            <br>
+            <p>请在子菜单选择：系统工具 / 游戏合集 / 日常软件</p>
+        </div>
+        <div class="content-item" id="syssoft">
+            <h2 style="color:#ff6600;">【系统工具专区】</h2>
+        </div>
+        <div class="content-item" id="game">
+            <h2 style="color:#ff6600;">【游戏合集专区】</h2>
+        </div>
+        <div class="content-item" id="daily">
+            <h2 style="color:#ff6600;">【日常软件专区】</h2>
+        </div>
+
+        <!-- 日常子分类 -->
+        <div class="content-item" id="player">
+            <h2 style="color:#ff6600;">【播放软件专区】</h2>
+        </div>
+        <div class="content-item" id="zip">
+            <h2 style="color:#ff6600;">【解压缩软件专区】</h2>
+        </div>
+        <div class="content-item" id="safe">
+            <h2 style="color:#ff6600;">【安全防护软件专区】</h2>
+        </div>
+        <div class="content-item" id="chat">
+            <h2 style="color:#ff6600;">【社交软件专区】</h2>
+        </div>
+
+        <!-- 网站合集 -->
+        <div class="content-item" id="websites">
+            <h2 style="color:#ff6600;">【优质网站合集】</h2>
+        </div>
+
+        <!-- 加速器专区 -->
+        <div class="content-item" id="accelerator">
+            <h2 style="color:#ff6600;">【网络加速器专区】</h2>
+        </div>
+    </div>
+    <!-- ================================================================== -->
+
+    <!-- 左侧圆形表盘时钟 -->
     <div class="clock">
         <div class="num num12">12</div>
         <div class="num num1">1</div>
@@ -330,20 +429,22 @@
         <div class="num num6">6</div>
         <div class="num num7">7</div>
         <div class="num num8">8</div>
-        <div class="num num9">9</div>
-        <div class="num num10">10</div>
-        <div class="num num11">11</div>
+        <div class="num9">9</div>
+        <div class="num10">10</div>
+        <div class="num11">11</div>
         <div class="clock-center"></div>
         <div class="hour" id="hour"></div>
         <div class="minute" id="minute"></div>
         <div class="second" id="second"></div>
     </div>
 
+    <!-- QQ + B站主页 -->
     <div class="author-info">
         QQ：3608504926
         <a href="https://space.bilibili.com/3493111242164758">哔哩哔哩的主页</a>
     </div>
 
+    <!-- 捐献区域 -->
     <div class="donate">
         <div class="donate-title">捐献一点吧</div>
         <a href="https://i.cetsteam.com/imgs/2026/04/01/6206ae66c0bf00a8.png">
@@ -351,17 +452,25 @@
         </a>
     </div>
 
+    <!-- 底部文案 -->
     <div class="footer-text">
         整理资源耗费大量精力，维护网站也需要持续付出，感谢您的理解与支持
     </div>
 
     <script>
-        // 显示当前菜单名称
-        function showMenu(name) {
-            document.getElementById('currentMenu').innerText = '当前位置：' + name;
+        // 菜单切换 + 显示当前名称 + 加载对应内容
+        function switchPage(title, id) {
+            // 修改顶部位置文字
+            document.getElementById('currentMenu').innerText = '当前位置：' + title;
+            // 隐藏所有内容
+            document.querySelectorAll('.content-item').forEach(div=>{
+                div.classList.remove('active');
+            });
+            // 显示当前点击的内容板块
+            document.getElementById(id).classList.add('active');
         }
 
-        // 圆形时钟
+        // 圆形时钟运行
         const hourHand = document.getElementById('hour');
         const minuteHand = document.getElementById('minute');
         const secondHand = document.getElementById('second');
@@ -380,11 +489,11 @@
         setInterval(runClock, 1000);
         runClock();
 
-        // 搜索功能
+        // 百度搜索（本页跳转）
         function searchResource() {
             let keyword = document.querySelector('.search-input').value;
             if(keyword.trim() !== ''){
-                window.open(`https://www.baidu.com/s?wd=${keyword}`, '_self');
+                window.location.href = `https://www.baidu.com/s?wd=${keyword}`;
             }
         }
     </script>
