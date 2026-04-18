@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 自定义标签栏图标（替换成你的图标链接，不想改可以删掉这行） -->
+    <link rel="icon" href="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" type="image/png">
     <title>虎天寿资源整理网站</title>
     <style>
         * {
@@ -59,12 +61,25 @@
             font-weight: bold;
             width: 60%;
         }
+        /* 导航栏 + 复用右上角头像 */
         .nav {
             width: 85%;
             margin: 30px auto;
             background-color: rgba(0, 0, 0, 0.7);
             border-radius: 12px;
             padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+        }
+        /* 导航栏上的头像（复用右上角的图片链接） */
+        .nav-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #ff6600;
+            object-fit: cover;
         }
         .nav ul {
             list-style: none;
@@ -158,6 +173,7 @@
             height: 45px;
             padding: 0 15px;
             font-size: 16px;
+            font-weight: 500;
             border: none;
             border-radius: 6px 0 0 6px;
             outline: none;
@@ -175,7 +191,7 @@
             cursor: pointer;
         }
         .search-btn:hover {
-            background: #e65c0;
+            background: #e65c00;
         }
         /* 内容区域 */
         .blank-box {
@@ -208,7 +224,7 @@
             cursor: pointer;
         }
         .home-top-btn button:hover {
-            background: #e65c0;
+            background: #e65c00;
         }
         /* 首页布局：左时间 右收款码 */
         .home-row {
@@ -292,11 +308,11 @@
             font-size: 16px;
         }
         .page-btn.active {
-            background: #e65c0;
+            background: #e65c00;
             font-weight: bold;
         }
         .page-btn:hover {
-            background: #e65c0;
+            background: #e65c00;
         }
         /* 管理后台弹窗 */
         .admin-modal {
@@ -389,7 +405,7 @@
     </style>
 </head>
 <body>
-    <!-- 头像后台入口 -->
+    <!-- 右上角头像（后台入口） -->
     <div class="avatar-box" onclick="openAdminModal()">
         <img src="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" alt="头像" class="avatar">
     </div>
@@ -399,8 +415,10 @@
     </div>
     <div class="current-menu" id="title">当前位置：首页</div>
 
-    <!-- 导航栏 -->
+    <!-- 导航栏（集成头像） -->
     <div class="nav">
+        <!-- 导航栏左侧头像（复用右上角的图片链接） -->
+        <img src="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" alt="个人头像" class="nav-avatar">
         <ul>
             <li><a onclick="showPage('首页','home')">首页</a></li>
             <li>
@@ -496,7 +514,7 @@
                     <input type="text" id="newCate" placeholder="自定义菜单名称(如:软件合集)">
                     <button onclick="addCate()">添加自定义菜单</button>
                 </div>
-                <!-- 2. 分页管理（核心新增） -->
+                <!-- 2. 分页管理 -->
                 <div class="admin-form">
                     <select id="pageCate"></select>
                     <button onclick="addPage()">添加新页数（+1页）</button>
@@ -677,7 +695,7 @@
             alert("自定义菜单添加成功！");
         }
 
-        // 添加新页数（核心功能）
+        // 添加新页数
         function addPage(){
             if(!isLogin) return;
             let cate = document.getElementById('pageCate').value;
