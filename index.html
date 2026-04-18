@@ -337,16 +337,10 @@
             cursor: pointer;
         }
         .del-page-btn {
-            background: #ff3333;
+            background: #ff3333 !important;
         }
         .del-page-btn:hover {
-            background: #cc0000;
-        }
-        .del-menu-btn {
-            background: #aa2e2e;
-        }
-        .del-menu-btn:hover {
-            background: #7a1f1f;
+            background: #cc0000 !important;
         }
         .link-list { margin-top: 20px; }
         .link-item {
@@ -375,11 +369,6 @@
             color: #fff;
             font-size: 22px;
             cursor: pointer;
-        }
-        .warning-tip {
-            font-size: 12px;
-            color: #ffaa66;
-            margin-left: 10px;
         }
         hr {
             margin: 20px 0;
@@ -485,24 +474,26 @@
                 <button onclick="adminLogin()">登录</button>
             </div>
             <div id="adminPanel" style="display:none;">
+                
                 <div class="admin-form">
                     <input type="text" id="newCate" placeholder="顶级菜单名称">
                     <button onclick="addTopCate()">添加顶级菜单</button>
                 </div>
+
                 <div class="admin-form">
                     <select id="parentCateSelect"></select>
                     <input type="text" id="subCateName" placeholder="子菜单名称">
-                    <button onclick="addSubCate()">➕ 添加子菜单（分支）</button>
+                    <button onclick="addSubCate()">➕ 添加分支（子菜单）</button>
                 </div>
+
+                <!-- ========== 【删除分支】功能 已添加 ========== -->
                 <div class="admin-form">
-                    <select id="delMenuType">
-                        <option value="top">删除顶级菜单</option>
-                        <option value="sub">删除子菜单</option>
-                    </select>
-                    <select id="delMenuSelect"></select>
-                    <button class="del-menu-btn" onclick="deleteMenu()">🗑️ 删除选中菜单</button>
+                    <select id="delBranchSelect"></select>
+                    <button class="del-page-btn" onclick="deleteBranch()">🗑️ 删除选中分支</button>
                 </div>
+
                 <hr>
+
                 <div class="admin-form">
                     <select id="pageCate"></select>
                     <button onclick="addPage()">添加新页数（+1页）</button>
@@ -512,7 +503,9 @@
                     <select id="delPageNum"></select>
                     <button class="del-page-btn" onclick="deletePage()">删除选中页数</button>
                 </div>
+
                 <hr>
+
                 <div class="admin-form">
                     <select id="cate"></select>
                     <select id="pageNum"></select>
@@ -637,16 +630,13 @@
             return arr;
         }
 
-        function getDeletableMenus(type) {
+        // 获取所有分支（子菜单）用于删除
+        function getAllBranches() {
             let list = [];
-            if (type === 'top') {
-                for (let id in topMenus) list.push({ id, name: topMenus[id].name });
-            } else {
-                for (let id in subMenus) {
-                    let parent = topMenus[subMenus[id].parentId];
-                    let parentName = parent ? parent.name : '?';
-                    list.push({ id, name: `${parentName} / ${subMenus[id].name}` });
-                }
+            for (let id in subMenus) {
+                let parent = topMenus[subMenus[id].parentId];
+                let parentName = parent ? parent.name : "未知";
+                list.push({ id, name: `${parentName} → ${subMenus[id].name}` });
             }
             return list;
         }
@@ -783,7 +773,7 @@
 
         function renderAllSelects() {
             renderParentSelect();
-            renderDelMenuSelect();
+            renderBranchSelect();
             renderCateSelects();
         }
 
@@ -799,22 +789,22 @@
             });
         }
 
-        function renderDelMenuSelect() {
-            let type = document.getElementById('delMenuType').value;
-            let select = document.getElementById('delMenuSelect');
-            select.innerHTML = '';
-            let menus = getDeletableMenus(type);
-            if (menus.length === 0) {
+        // 渲染分支下拉框
+        function renderBranchSelect() {
+            let sel = document.getElementById('delBranchSelect');
+            sel.innerHTML = '';
+            let list = getAllBranches();
+            if (list.length === 0) {
                 let opt = document.createElement('option');
-                opt.text = '无可删除的菜单';
+                opt.text = '暂无分支';
                 opt.disabled = true;
-                select.appendChild(opt);
+                sel.appendChild(opt);
             } else {
-                menus.forEach(m => {
+                list.forEach(item => {
                     let opt = document.createElement('option');
-                    opt.value = m.id;
-                    opt.innerText = m.name;
-                    select.appendChild(opt);
+                    opt.value = item.id;
+                    opt.innerText = item.name;
+                    sel.appendChild(opt);
                 });
             }
         }
@@ -893,41 +883,29 @@
             rebuildNavMenu();
             renderAllSelects();
             renderAdminList();
-            alert(`子菜单“${name}”已添加`);
+            alert(`分支“${name}”已添加`);
         }
 
-        function deleteMenu() {
+        // ========== 删除分支功能 ==========
+        function deleteBranch() {
             if (!isLogin) return;
-            let type = document.getElementById('delMenuType').value;
-            let select = document.getElementById('delMenuSelect');
-            if (!select.selectedOptions.length || select.options[0].disabled) {
-                alert("没有可删除的菜单");
-                return;
-            }
-            let menuId = select.value;
-            if (!confirm(`⚠️ 确认删除？`)) return;
-            if (type === 'top') {
-                let children = Object.keys(subMenus).filter(id => subMenus[id].parentId === menuId);
-                children.forEach(childId => {
-                    delete subMenus[childId];
-                    delete resourceLinks[childId];
-                    removePageContainer(childId);
-                });
-                delete topMenus[menuId];
-                delete resourceLinks[menuId];
-                removePageContainer(menuId);
-            } else {
-                delete subMenus[menuId];
-                delete resourceLinks[menuId];
-                removePageContainer(menuId);
-            }
+            let sel = document.getElementById('delBranchSelect');
+            if (sel.options[0].disabled) return alert("暂无分支可删");
+            
+            let branchId = sel.value;
+            if (!confirm("⚠️ 确定删除该分支？所有链接会一起删除！")) return;
+
+            delete subMenus[branchId];
+            delete resourceLinks[branchId];
+            removePageContainer(branchId);
             saveToLocalStorage();
             rebuildNavMenu();
             renderAllSelects();
             renderAdminList();
-            let activeId = document.querySelector('.page.active')?.id;
-            if (activeId === menuId) showPage('首页', 'home');
-            alert("删除成功");
+            
+            let active = document.querySelector('.page.active')?.id;
+            if (active === branchId) showPage('首页', 'home');
+            alert("✅ 分支已删除");
         }
 
         function addPage() {
@@ -1015,7 +993,6 @@
 
         document.getElementById('cate').addEventListener('change', renderPageNumSelect);
         document.getElementById('delPageCate').addEventListener('change', renderDelPageNumSelect);
-        document.getElementById('delMenuType').addEventListener('change', renderDelMenuSelect);
 
         function baiduSearch() {
             let kw = document.getElementById('baiduSearchInput').value;
