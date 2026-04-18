@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" type="image/png">
-    <title>虎天寿资源整理网站 - 实时刷新版</title>
+    <title>虎天寿资源整理网站 - 稳定版</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "微软雅黑", sans-serif; }
         body { background: url('https://s41.ax1x.com/2026/04/18/pe6CbuQ.jpg') no-repeat center center fixed; background-size: cover; color: #ffffff; min-height: 100vh; padding: 20px; }
@@ -61,7 +61,7 @@
         .del-menu-btn:hover { background: #7a1f1f; }
         .backup-btn { background: #2c7da0; }
         .backup-btn:hover { background: #1f5e7a; }
-        .link-list { margin-top: 20px; }
+        .link-list { margin-top: 20px; min-height: 100px; }
         .link-item { padding: 10px; background: rgba(255,255,255,0.1); margin: 5px 0; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; }
         .link-item a { color: #fff; text-decoration: none; }
         .link-item a:hover { color: #ff6600; }
@@ -74,6 +74,7 @@
         .go-top:hover { background-color: #e65c00; transform: translateY(-3px); }
         .backup-section { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
         .backup-section h4 { color: #ffaa66; margin-bottom: 12px; }
+        .empty-tip { text-align: center; padding: 40px; color: #aaa; font-style: italic; }
     </style>
 </head>
 <body>
@@ -179,7 +180,13 @@
             return list;
         }
         function ensurePageContainer(menuId, displayName) {
-            if (document.getElementById(menuId)) return;
+            let container = document.getElementById(menuId);
+            if (container) {
+                // 更新标题（名称可能变更）
+                let titleH2 = container.querySelector('h2');
+                if (titleH2) titleH2.innerHTML = `【${displayName}】`;
+                return;
+            }
             let area = document.getElementById('area');
             let div = document.createElement('div'); div.className = 'page'; div.id = menuId;
             div.innerHTML = `<h2 style="color:#ff6600">【${displayName}】</h2><div id="list-${menuId}" class="link-list"></div><div id="page-${menuId}" class="pagination"></div>`;
@@ -208,7 +215,12 @@
         function loadLinks(menuId, page) {
             let list = resourceLinks[menuId]?.[page] || [];
             let dom = document.getElementById(`list-${menuId}`);
-            if (dom) dom.innerHTML = list.map(item => `<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a></div>`).join('');
+            if (!dom) return;
+            if (list.length === 0) {
+                dom.innerHTML = '<div class="empty-tip">📭 暂无链接，请通过后台管理添加</div>';
+                return;
+            }
+            dom.innerHTML = list.map(item => `<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a></div>`).join('');
         }
         function renderPagination(menuId) {
             let pageDom = document.getElementById(`page-${menuId}`);
@@ -223,9 +235,21 @@
             document.getElementById('title').innerText = '当前位置：' + name;
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             let target = document.getElementById(menuId);
-            if (!target) { let displayName = subMenus[menuId]?.name || topMenus[menuId]?.name || name; ensurePageContainer(menuId, displayName); target = document.getElementById(menuId); }
-            if (target) { target.classList.add('active'); if (menuId !== 'home') { if (!currentPage[menuId]) currentPage[menuId] = 1; loadLinks(menuId, currentPage[menuId]); renderPagination(menuId); } }
-            else document.getElementById('home').classList.add('active');
+            if (!target) {
+                let displayName = subMenus[menuId]?.name || topMenus[menuId]?.name || name;
+                ensurePageContainer(menuId, displayName);
+                target = document.getElementById(menuId);
+            }
+            if (target) {
+                target.classList.add('active');
+                if (menuId !== 'home') {
+                    if (!currentPage[menuId]) currentPage[menuId] = 1;
+                    loadLinks(menuId, currentPage[menuId]);
+                    renderPagination(menuId);
+                }
+            } else {
+                document.getElementById('home').classList.add('active');
+            }
             document.querySelectorAll('.sub-menu').forEach(m => m.classList.remove('show'));
             document.getElementById('area').scrollIntoView({ behavior: 'smooth' });
         }
@@ -254,9 +278,14 @@
             resourceLinks[id] = { 1: [] };
             saveToLocalStorage();
             document.getElementById('newCate').value = '';
-            rebuildNavMenu();          // 导航栏立即更新
-            renderAllSelects();        // 后台下拉框更新
-            renderAdminList();         // 链接列表更新
+            rebuildNavMenu();
+            renderAllSelects();
+            renderAdminList();
+            // 如果当前显示的是刚添加的菜单，刷新内容
+            if (document.querySelector('.page.active')?.id === id) {
+                loadLinks(id, 1);
+                renderPagination(id);
+            }
             alert(`顶级菜单“${name}”已添加`);
         }
         function addSubCate() {
@@ -272,6 +301,10 @@
             rebuildNavMenu();
             renderAllSelects();
             renderAdminList();
+            if (document.querySelector('.page.active')?.id === id) {
+                loadLinks(id, 1);
+                renderPagination(id);
+            }
             alert(`子菜单“${name}”已添加至“${topMenus[parentId].name}”下`);
         }
         function deleteMenu() {
