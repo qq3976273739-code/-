@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" type="image/png">
-    <title>虎天寿资源整理网站 - 全能版</title>
+    <title>虎天寿资源整理网站</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "微软雅黑", sans-serif; }
-        body { background: url('https://s41.ax1x.com/2026/04/18/pe6CbuQ.jpg') no-repeat center center fixed; background-size: cover; color: #ffffff; min-height: 100vh; padding: 20px; }
+        body { background: url('https://s41.ax1x.com/2026/04/18/pe6CbuQ.jpg') no-repeat center center fixed; background-size: cover; color: #fff; min-height: 100vh; padding: 20px; }
         .avatar-box { position: absolute; top: 20px; right: 30px; cursor: pointer; }
         .avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; transition: 0.2s; }
         .avatar:hover { box-shadow: 0 0 15px #ff6600; }
         .title-box { text-align: center; margin: 40px 0; }
-        .website-name { font-size: 38px; font-weight: bold; background-color: rgba(0, 0, 0, 0.7); padding: 10px 30px; border-radius: 10px; display: inline-block; }
+        .website-name { font-size: 38px; font-weight: bold; background-color: rgba(0,0,0,0.7); padding: 10px 30px; border-radius: 10px; display: inline-block; }
         .current-menu { text-align: center; margin: 0 auto 30px; background-color: rgba(0,0,0,0.7); padding: 15px 30px; border-radius: 10px; font-size: 22px; color: #ff6600; font-weight: bold; width: 60%; }
-        .nav { width: 85%; margin: 30px auto; background-color: rgba(0, 0, 0, 0.7); border-radius: 12px; padding: 20px; display: flex; align-items: center; justify-content: center; gap: 30px; }
+        .nav { width: 85%; margin: 30px auto; background-color: rgba(0,0,0,0.7); border-radius: 12px; padding: 20px; display: flex; align-items: center; justify-content: center; gap: 30px; }
         .nav-avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #ff6600; object-fit: cover; }
         .nav ul { list-style: none; display: flex; justify-content: center; gap: 45px; flex-wrap: wrap; }
         .nav li { position: relative; padding: 8px 0; }
@@ -22,23 +22,12 @@
         .nav a:hover { color: #ff6600; background-color: rgba(0,0,0,0.8); }
         .nav .sub-menu { display: none; position: absolute; top: 100%; left: 0; background-color: rgba(0,0,0,0.9); border-radius: 8px; padding: 12px; width: 160px; flex-direction: column; gap: 10px; z-index: 999; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
         .nav .sub-menu.show { display: flex; opacity: 1; transform: translateY(0); }
-        .search-ai-container { width: 60%; margin: 0 auto 30px; display: flex; flex-direction: column; gap: 20px; }
-        .search-box, .ai-assistant { background-color: rgba(0, 0, 0, 0.7); border-radius: 12px; padding: 20px; }
-        .search-box { display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .search-box { width: 60%; margin: 0 auto 40px; background-color: rgba(0,0,0,0.7); padding: 20px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .baidu-icon { width: 28px; height: 28px; border-radius: 4px; }
         .search-input { width: 70%; height: 45px; padding: 0 15px; font-size: 16px; border-radius: 6px 0 0 6px; outline: none; background: rgba(255,255,255,0.9); color: #000; }
         .search-btn { height: 45px; padding: 0 25px; font-size: 16px; font-weight: bold; border: none; border-radius: 0 6px 6px 0; background: #ff6600; color: #fff; cursor: pointer; }
         .search-btn:hover { background: #e65c00; }
-        .ai-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; border-bottom: 1px solid #ff6600; padding-bottom: 8px; }
-        .ai-header span { font-size: 20px; font-weight: bold; color: #ff6600; }
-        .ai-header small { font-size: 12px; color: #ccc; margin-left: auto; cursor: pointer; }
-        .ai-input-group { display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; }
-        .ai-input-group input { flex: 1; height: 45px; padding: 0 15px; font-size: 16px; border-radius: 8px; border: none; outline: none; background: rgba(255,255,255,0.9); color: #000; }
-        .ai-input-group button { background: #ff6600; border: none; padding: 0 24px; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
-        .ai-input-group button:disabled { background: #666; cursor: not-allowed; }
-        .ai-response { background: rgba(0,0,0,0.6); border-radius: 10px; padding: 15px; min-height: 100px; max-height: 250px; overflow-y: auto; font-size: 15px; line-height: 1.5; color: #f0f0f0; white-space: pre-wrap; }
-        .ai-tip { font-size: 12px; color: #ffaa66; margin-top: 8px; text-align: right; }
-        .blank-box { width: 80%; margin: 40px auto; padding: 40px; background-color: rgba(0,0,0,0.75); border-radius: 15px; min-height: 400px; }
+        .blank-box { width: 80%; margin: 80px auto; padding: 40px; background-color: rgba(0,0,0,0.75); border-radius: 15px; min-height: 400px; }
         .page { display: none; }
         .page.active { display: block; }
         .home-top-btn { text-align: center; margin-bottom: 30px; }
@@ -50,7 +39,7 @@
         .donate-title { font-size: 22px; color: #ff6600; font-weight: bold; margin-bottom: 12px; }
         .donate img { width: 180px; border-radius: 8px; }
         .footer-text { text-align: center; margin-top: 15px; font-size: 16px; }
-        .author-info { background-color: rgba(0, 0, 0, 0.6); padding: 15px 25px; border-radius: 8px; font-size: 18px; text-align: center; margin-bottom: 20px; }
+        .author-info { background-color: rgba(0,0,0,0.6); padding: 15px 25px; border-radius: 8px; font-size: 18px; text-align: center; margin-bottom: 20px; }
         .author-info a { color: #0066ff; text-decoration: none; margin-left: 15px; font-weight: bold; }
         .author-info a:hover { color: #ff6600; }
         .pagination { text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
@@ -87,15 +76,21 @@
     <div class="current-menu" id="title">当前位置：首页</div>
     <div class="nav"><img src="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" alt="头像" class="nav-avatar"><ul id="navMenuList"></ul></div>
 
-    <div class="search-ai-container">
-        <div class="search-box"><img src="https://www.baidu.com/favicon.ico" class="baidu-icon"><input type="text" class="search-input" id="baiduSearchInput" placeholder="输入搜索内容"><button class="search-btn" onclick="baiduSearch()">百度搜索</button></div>
-        <div class="ai-assistant" id="aiAssistant"><div class="ai-header"><span>🤖 DeepSeek AI 智能助手</span><small id="aiConfigBtn" onclick="showAiConfig()">⚙️ 配置</small></div><div class="ai-input-group"><input type="text" id="aiQuestion" placeholder="输入你的问题，例如：如何优化Windows系统？"><button id="askAiBtn" onclick="askDeepSeek()">💬 提问 AI</button></div><div class="ai-response" id="aiResponse">✨ 你好！我是 AI 助手，可以回答技术问题、提供资源建议。请先点击右上角“配置”设置 API Key 和代理地址。</div><div class="ai-tip">⚡ 需自备 DeepSeek API Key 或使用代理，详见配置说明。</div></div>
+    <div class="search-box"><img src="https://www.baidu.com/favicon.ico" class="baidu-icon"><input type="text" class="search-input" id="baiduSearchInput" placeholder="输入搜索内容"><button class="search-btn" onclick="baiduSearch()">百度搜索</button></div>
+
+    <div class="blank-box" id="area">
+        <div class="page active" id="home">
+            <div class="home-top-btn"><button onclick="showPage('首页','home')">🏠 返回主页</button></div>
+            <h2 style="text-align:center;color:#ff6600">欢迎来到虎天寿资源整理网站</h2><br>
+            <p style="font-size:18px;text-align:center">本站整理系统镜像、软件、实用网站、加速器各类资源<br>点击上方导航菜单查看对应分类</p>
+            <div class="author-info">QQ：3608504926<br><a href="https://space.bilibili.com/3493111242164758">哔哩哔哩的主页</a></div>
+            <div class="home-row"><div class="digital-clock" id="clock"></div><div class="donate-group"><div class="donate"><div class="donate-title">捐献一点吧</div><a href="https://i.cetsteam.com/imgs/2026/04/01/6206ae66c0bf00a8.png"><img src="https://i.cetsteam.com/imgs/2026/04/01/6206ae66c0bf00a8.png"></a></div><div class="footer-text">整理资源耗费大量精力，维护网站也需要持续付出，感谢您的理解与支持</div></div></div>
+        </div>
     </div>
 
-    <div class="blank-box" id="area"><div class="page active" id="home"><div class="home-top-btn"><button onclick="showPage('首页','home')">🏠 返回主页</button></div><h2 style="text-align:center;color:#ff6600">欢迎来到虎天寿资源整理网站</h2><br><p style="font-size:18px;text-align:center">本站整理系统镜像、软件、实用网站、加速器各类资源<br>点击上方导航菜单查看对应分类</p><div class="author-info">QQ：3608504926<br><a href="https://space.bilibili.com/3493111242164758">哔哩哔哩的主页</a></div><div class="home-row"><div class="digital-clock" id="clock"></div><div class="donate-group"><div class="donate"><div class="donate-title">捐献一点吧</div><a href="https://i.cetsteam.com/imgs/2026/04/01/6206ae66c0bf00a8.png"><img src="https://i.cetsteam.com/imgs/2026/04/01/6206ae66c0bf00a8.png"></a></div><div class="footer-text">整理资源耗费大量精力，维护网站也需要持续付出，感谢您的理解与支持</div></div></div></div></div>
-
     <div class="go-top" id="goTopBtn">↑</div>
-    <div class="admin-modal" id="adminModal"><span class="close-btn" onclick="closeAdminModal()">×</span><div class="admin-box"><h2 class="admin-title">管理面板</h2><div class="login-box" id="loginBox"><input type="password" id="pwd" placeholder="管理员密码"><button onclick="adminLogin()">登录</button></div><div id="adminPanel" style="display:none;"><div class="backup-section"><h4>💾 备份与恢复</h4><div class="admin-form"><button class="backup-btn" onclick="exportBackup()">📥 导出备份</button><label for="importFileInput" class="backup-btn" style="background:#2c7da0;padding:10px 20px;border-radius:5px;cursor:pointer;">📂 导入备份</label><input type="file" id="importFileInput" accept=".json" style="display:none;" onchange="importBackup(this)"><button class="del-page-btn" onclick="resetToDefault()">⚠️ 重置默认</button></div></div><hr><div class="admin-form"><input type="text" id="newCate" placeholder="顶级菜单名称"><button onclick="addTopCate()">添加顶级菜单</button></div><div class="admin-form"><select id="parentCateSelect"></select><input type="text" id="subCateName" placeholder="子菜单名称"><button onclick="addSubCate()">➕ 添加子菜单</button></div><div class="admin-form"><select id="delMenuType"><option value="top">删除顶级菜单</option><option value="sub">删除子菜单</option></select><select id="delMenuSelect"></select><button class="del-menu-btn" onclick="deleteMenu()">🗑️ 删除</button><span class="warning-tip">仅可删除自定义菜单</span></div><hr><div class="admin-form"><select id="pageCate"></select><button onclick="addPage()">添加新页数</button></div><div class="admin-form"><select id="delPageCate"></select><select id="delPageNum"></select><button class="del-page-btn" onclick="deletePage()">删除页数</button></div><div class="admin-form"><select id="cate"></select><select id="pageNum"></select><input type="text" id="linkName" placeholder="链接名称"><input type="url" id="linkUrl" placeholder="链接地址"><button onclick="addLink()">添加链接</button></div><h3>全部链接</h3><div id="allLinks"></div></div></div></div>
+
+    <div class="admin-modal" id="adminModal"><span class="close-btn" onclick="closeAdminModal()">×</span><div class="admin-box"><h2 class="admin-title">管理面板</h2><div class="login-box" id="loginBox"><input type="password" id="pwd" placeholder="管理员密码"><button onclick="adminLogin()">登录</button></div><div id="adminPanel" style="display:none;"><div class="admin-form"><button class="backup-btn" onclick="exportBackup()">📥 导出备份</button><label for="importFileInput" class="backup-btn" style="background:#2c7da0;padding:10px 20px;border-radius:5px;cursor:pointer;">📂 导入备份</label><input type="file" id="importFileInput" accept=".json" style="display:none;" onchange="importBackup(this)"><button class="del-page-btn" onclick="resetToDefault()">⚠️ 重置默认</button></div><hr><div class="admin-form"><input type="text" id="newCate" placeholder="顶级菜单名称"><button onclick="addTopCate()">添加顶级菜单</button></div><div class="admin-form"><select id="parentCateSelect"></select><input type="text" id="subCateName" placeholder="子菜单名称"><button onclick="addSubCate()">➕ 添加子菜单</button></div><div class="admin-form"><select id="delMenuType"><option value="top">删除顶级菜单</option><option value="sub">删除子菜单</option></select><select id="delMenuSelect"></select><button class="del-menu-btn" onclick="deleteMenu()">🗑️ 删除</button><span class="warning-tip">仅可删除自定义菜单</span></div><hr><div class="admin-form"><select id="pageCate"></select><button onclick="addPage()">添加新页数</button></div><div class="admin-form"><select id="delPageCate"></select><select id="delPageNum"></select><button class="del-page-btn" onclick="deletePage()">删除页数</button></div><div class="admin-form"><select id="cate"></select><select id="pageNum"></select><input type="text" id="linkName" placeholder="链接名称"><input type="url" id="linkUrl" placeholder="链接地址"><button onclick="addLink()">添加链接</button></div><h3>全部链接</h3><div id="allLinks"></div></div></div></div>
 
     <script>
         // ---------- 核心数据 ----------
@@ -141,7 +136,7 @@
         }
         function removeContainer(id) { let el = document.getElementById(id); if (el) el.remove(); }
 
-        // 导航重建（关键：确保新菜单立即出现并可点击）
+        // 重建导航（关键：立即显示新菜单）
         function rebuildNav() {
             let navUl = document.getElementById('navMenuList'); if (!navUl) return;
             navUl.innerHTML = '<li><a onclick="showPage(\'首页\',\'home\')">首页</a></li>';
@@ -196,7 +191,7 @@
             resourceLinks[id] = { 1: [] };
             save();
             document.getElementById('newCate').value = '';
-            rebuildNav();  // 立即重建导航
+            rebuildNav();
             renderAllSelects();
             renderAdminList();
             alert(`顶级菜单“${name}”已添加`);
@@ -216,69 +211,111 @@
             renderAdminList();
             alert(`子菜单“${name}”已添加`);
         }
-        function deleteMenu() { /* 省略实现同前，保留功能 */ if (!isLogin) return; let type=document.getElementById('delMenuType').value; let select=document.getElementById('delMenuSelect'); if(!select.selectedOptions.length||select.options[0].disabled) return alert("无菜单可删"); let id=select.value; if(!confirm("确认删除？")) return; if(type==='top'){ let children=Object.keys(subMenus).filter(k=>subMenus[k].parentId===id); children.forEach(c=>{delete subMenus[c]; delete resourceLinks[c]; removeContainer(c);}); delete topMenus[id]; delete resourceLinks[id]; removeContainer(id);} else { delete subMenus[id]; delete resourceLinks[id]; removeContainer(id);} save(); rebuildNav(); renderAllSelects(); renderAdminList(); if(document.querySelector('.page.active')?.id===id) showPage('首页','home'); alert("已删除"); }
-        function addPage() { if(!isLogin) return; let mid=document.getElementById('pageCate').value; let pages=Object.keys(resourceLinks[mid]||{}).map(Number); let np=Math.max(...pages)+1; resourceLinks[mid][np]=[]; save(); renderAllSelects(); renderAdminList(); if(document.querySelector('.page.active')?.id===mid) renderPagination(mid); alert(`添加第${np}页`); }
-        function deletePage() { if(!isLogin) return; let mid=document.getElementById('delPageCate').value; let page=document.getElementById('delPageNum').value; if(Object.keys(resourceLinks[mid]||{}).length<=1) return alert("至少保留一页"); if(!confirm("删除页？")) return; delete resourceLinks[mid][page]; save(); renderAllSelects(); renderAdminList(); if(document.querySelector('.page.active')?.id===mid){ if(currentPage[mid]==page) currentPage[mid]=1; loadLinks(mid,currentPage[mid]); renderPagination(mid);} alert("已删除"); }
-        function addLink() { if(!isLogin) return; let mid=document.getElementById('cate').value; let page=document.getElementById('pageNum').value; let name=document.getElementById('linkName').value.trim(); let url=document.getElementById('linkUrl').value.trim(); if(!name||!url) return alert("完整填写"); resourceLinks[mid][page].push({name,url}); save(); document.getElementById('linkName').value=''; document.getElementById('linkUrl').value=''; renderAdminList(); if(document.querySelector('.page.active')?.id===mid){ loadLinks(mid,page); renderPagination(mid);} alert("添加成功"); }
-        function delLink(mid,page,idx){ if(!isLogin) return; resourceLinks[mid][page].splice(idx,1); save(); renderAdminList(); if(document.querySelector('.page.active')?.id===mid) loadLinks(mid,page); }
-        function exportBackup() { let data={version:"1.0",exportTime:new Date().toISOString(),topMenus,subMenus,resourceLinks}; let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"})); a.download=`backup_${Date.now()}.json`; a.click(); URL.revokeObjectURL(a.href); alert("已导出"); }
-        function importBackup(input) { if(!isLogin) return alert("请登录"); let file=input.files[0]; if(!file) return; let reader=new FileReader(); reader.onload=e=>{ try{ let d=JSON.parse(e.target.result); if(d.topMenus&&d.subMenus&&d.resourceLinks){ topMenus=d.topMenus; subMenus=d.subMenus; resourceLinks=d.resourceLinks; save(); rebuildNav(); renderAllSelects(); renderAdminList(); showPage('首页','home'); alert("导入成功"); } else alert("格式错误"); }catch(err){ alert("解析失败"); } input.value=''; }; reader.readAsText(file); }
-        function resetToDefault() { if(!isLogin) return; if(confirm("重置会丢失所有自定义数据！")){ initDefault(); save(); rebuildNav(); renderAllSelects(); renderAdminList(); showPage('首页','home'); alert("已重置"); } }
-        function renderAllSelects() { /* 简化：重新填充下拉框 */ let pSel=document.getElementById('parentCateSelect'); pSel.innerHTML=''; for(let id in topMenus) pSel.appendChild(new Option(topMenus[id].name,id)); let delType=document.getElementById('delMenuType').value; let delSel=document.getElementById('delMenuSelect'); delSel.innerHTML=''; let delList=delType==='top'?Object.keys(topMenus).filter(k=>!topMenus[k].isDefault).map(k=>({id:k,name:topMenus[k].name})):Object.keys(subMenus).filter(k=>!subMenus[k].isDefault).map(k=>({id:k,name:subMenus[k].name})); if(delList.length) delList.forEach(item=>delSel.appendChild(new Option(item.name,item.id))); else delSel.appendChild(new Option("无可删除菜单","",true,true)); let cateSel=document.getElementById('cate'); let pageCate=document.getElementById('pageCate'); let delPageCate=document.getElementById('delPageCate'); cateSel.innerHTML=''; pageCate.innerHTML=''; delPageCate.innerHTML=''; let allItems=[...Object.keys(topMenus).map(id=>({id,name:topMenus[id].name})),...Object.keys(subMenus).map(id=>({id,name:subMenus[id].name}))]; allItems.forEach(item=>{ let opt=new Option(item.name,item.id); cateSel.appendChild(opt.cloneNode(true)); pageCate.appendChild(opt.cloneNode(true)); delPageCate.appendChild(opt.cloneNode(true)); }); let mid=cateSel.value; let pageNumSel=document.getElementById('pageNum'); pageNumSel.innerHTML=''; let pages=Object.keys(resourceLinks[mid]||{}); pages.forEach(p=>pageNumSel.appendChild(new Option(`第${p}页`,p))); let delMid=delPageCate.value; let delPageNum=document.getElementById('delPageNum'); delPageNum.innerHTML=''; let dpages=Object.keys(resourceLinks[delMid]||{}); dpages.forEach(p=>delPageNum.appendChild(new Option(`第${p}页`,p))); }
-        function renderAdminList() { let dom=document.getElementById('allLinks'); dom.innerHTML=''; let all=[...Object.keys(topMenus).map(id=>({id,name:topMenus[id].name})),...Object.keys(subMenus).map(id=>({id,name:subMenus[id].name}))]; for(let m of all){ let links=resourceLinks[m.id]; if(!links) continue; for(let page in links){ if(links[page].length){ dom.innerHTML+=`<h4>${m.name} - 第${page}页</h4>`; links[page].forEach((item,i)=>{ dom.innerHTML+=`<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a><button class="del-btn" onclick="delLink('${m.id}',${page},${i})">删除</button></div>`; }); } } } }
-        function openAdminModal() { document.getElementById('adminModal').style.display='block'; document.getElementById('pwd').value=''; renderAllSelects(); }
-        function closeAdminModal() { document.getElementById('adminModal').style.display='none'; }
-        function adminLogin() { let pwd=document.getElementById('pwd').value; if(pwd===ADMIN_PASSWORD){ isLogin=true; document.getElementById('loginBox').style.display='none'; document.getElementById('adminPanel').style.display='block'; renderAllSelects(); renderAdminList(); alert("登录成功"); } else alert("密码错误"); }
-        document.getElementById('cate').addEventListener('change',()=>{ let mid=document.getElementById('cate').value; let pageNum=document.getElementById('pageNum'); pageNum.innerHTML=''; let pages=Object.keys(resourceLinks[mid]||{}); pages.forEach(p=>pageNum.appendChild(new Option(`第${p}页`,p))); });
-        document.getElementById('delPageCate').addEventListener('change',()=>{ let mid=document.getElementById('delPageCate').value; let pageNum=document.getElementById('delPageNum'); pageNum.innerHTML=''; let pages=Object.keys(resourceLinks[mid]||{}); pages.forEach(p=>pageNum.appendChild(new Option(`第${p}页`,p))); });
-        document.getElementById('delMenuType').addEventListener('change',renderAllSelects);
-        function baiduSearch() { let kw=document.getElementById('baiduSearchInput').value; if(kw.trim()) window.open('https://www.baidu.com/s?wd='+encodeURIComponent(kw),'_self'); }
-        function initGoTop() { let btn=document.getElementById('goTopBtn'); window.addEventListener('scroll',()=>{ if(window.scrollY>300) btn.classList.add('show'); else btn.classList.remove('show'); }); btn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'})); }
-
-        // AI 配置与请求（使用用户提供的 API Key，支持代理）
-        let aiApiKey = localStorage.getItem('deepseek_api_key') || '';
-        let aiProxyUrl = localStorage.getItem('deepseek_proxy') || '';
-        function showAiConfig() {
-            let key = prompt("请输入 DeepSeek API Key（从 platform.deepseek.com 获取）:", aiApiKey);
-            if (key !== null) { aiApiKey = key; localStorage.setItem('deepseek_api_key', key); }
-            let proxy = prompt("可选：设置代理地址（如 https://your-proxy.com/v1/chat/completions，直接调用 API 会跨域，建议使用代理）", aiProxyUrl);
-            if (proxy !== null) { aiProxyUrl = proxy; localStorage.setItem('deepseek_proxy', proxy); }
-            alert("配置已保存，可以开始提问");
+        function deleteMenu() {
+            if (!isLogin) return;
+            let type = document.getElementById('delMenuType').value;
+            let select = document.getElementById('delMenuSelect');
+            if (!select.selectedOptions.length || select.options[0].disabled) return alert("无菜单可删");
+            let id = select.value;
+            if (!confirm("确认删除？")) return;
+            if (type === 'top') {
+                let children = Object.keys(subMenus).filter(k => subMenus[k].parentId === id);
+                children.forEach(c => { delete subMenus[c]; delete resourceLinks[c]; removeContainer(c); });
+                delete topMenus[id]; delete resourceLinks[id]; removeContainer(id);
+            } else { delete subMenus[id]; delete resourceLinks[id]; removeContainer(id); }
+            save(); rebuildNav(); renderAllSelects(); renderAdminList();
+            if (document.querySelector('.page.active')?.id === id) showPage('首页', 'home');
+            alert("已删除");
         }
-        async function askDeepSeek() {
-            let question = document.getElementById('aiQuestion').value.trim();
-            if (!question) return alert("请输入问题");
-            if (!aiApiKey) { alert("请先点击⚙️配置 API Key"); return; }
-            let apiUrl = aiProxyUrl || "https://api.deepseek.com/v1/chat/completions";
-            let btn = document.getElementById('askAiBtn');
-            let respDiv = document.getElementById('aiResponse');
-            respDiv.innerHTML = '<span class="loading-dots">🤔 AI 思考中...</span>';
-            btn.disabled = true;
-            try {
-                let res = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${aiApiKey}` },
-                    body: JSON.stringify({ model: "deepseek-chat", messages: [{ role: "user", content: question }], stream: false })
-                });
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                let data = await res.json();
-                let answer = data.choices?.[0]?.message?.content || "无有效回复";
-                respDiv.innerHTML = answer.replace(/\n/g, '<br>');
-            } catch (err) {
-                respDiv.innerHTML = `❌ 请求失败：${err.message}<br>可能是跨域问题，请配置代理地址或使用支持CORS的服务。`;
-            } finally {
-                btn.disabled = false;
-                document.getElementById('aiQuestion').value = '';
+        function addPage() {
+            if (!isLogin) return;
+            let mid = document.getElementById('pageCate').value;
+            let pages = Object.keys(resourceLinks[mid] || {}).map(Number);
+            let np = Math.max(...pages) + 1;
+            resourceLinks[mid][np] = [];
+            save(); renderAllSelects(); renderAdminList();
+            if (document.querySelector('.page.active')?.id === mid) renderPagination(mid);
+            alert(`添加第${np}页`);
+        }
+        function deletePage() {
+            if (!isLogin) return;
+            let mid = document.getElementById('delPageCate').value;
+            let page = document.getElementById('delPageNum').value;
+            if (Object.keys(resourceLinks[mid] || {}).length <= 1) return alert("至少保留一页");
+            if (!confirm("删除页？")) return;
+            delete resourceLinks[mid][page];
+            save(); renderAllSelects(); renderAdminList();
+            if (document.querySelector('.page.active')?.id === mid) {
+                if (currentPage[mid] == page) currentPage[mid] = 1;
+                loadLinks(mid, currentPage[mid]); renderPagination(mid);
+            }
+            alert("已删除");
+        }
+        function addLink() {
+            if (!isLogin) return;
+            let mid = document.getElementById('cate').value;
+            let page = document.getElementById('pageNum').value;
+            let name = document.getElementById('linkName').value.trim();
+            let url = document.getElementById('linkUrl').value.trim();
+            if (!name || !url) return alert("完整填写");
+            resourceLinks[mid][page].push({ name, url });
+            save();
+            document.getElementById('linkName').value = ''; document.getElementById('linkUrl').value = '';
+            renderAdminList();
+            // 关键修复：如果当前活动页面就是刚刚添加链接的菜单，立即刷新显示
+            let activeId = document.querySelector('.page.active')?.id;
+            if (activeId === mid) {
+                loadLinks(mid, page);
+                renderPagination(mid);
+            }
+            alert("添加成功");
+        }
+        function delLink(mid, page, idx) {
+            if (!isLogin) return;
+            resourceLinks[mid][page].splice(idx, 1);
+            save(); renderAdminList();
+            if (document.querySelector('.page.active')?.id === mid) loadLinks(mid, page);
+        }
+        function exportBackup() { let data = { version: "1.0", exportTime: new Date().toISOString(), topMenus, subMenus, resourceLinks }; let a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" })); a.download = `backup_${Date.now()}.json`; a.click(); URL.revokeObjectURL(a.href); alert("已导出"); }
+        function importBackup(input) {
+            if (!isLogin) return alert("请登录");
+            let file = input.files[0]; if (!file) return;
+            let reader = new FileReader();
+            reader.onload = e => { try { let d = JSON.parse(e.target.result); if (d.topMenus && d.subMenus && d.resourceLinks) { topMenus = d.topMenus; subMenus = d.subMenus; resourceLinks = d.resourceLinks; save(); rebuildNav(); renderAllSelects(); renderAdminList(); showPage('首页', 'home'); alert("导入成功"); } else alert("格式错误"); } catch (err) { alert("解析失败"); } input.value = ''; };
+            reader.readAsText(file);
+        }
+        function resetToDefault() { if (!isLogin) return; if (confirm("重置会丢失所有自定义数据！")) { initDefault(); save(); rebuildNav(); renderAllSelects(); renderAdminList(); showPage('首页', 'home'); alert("已重置"); } }
+        function renderAllSelects() {
+            let pSel = document.getElementById('parentCateSelect'); pSel.innerHTML = ''; for (let id in topMenus) pSel.appendChild(new Option(topMenus[id].name, id));
+            let delType = document.getElementById('delMenuType').value;
+            let delSel = document.getElementById('delMenuSelect'); delSel.innerHTML = '';
+            let delList = delType === 'top' ? Object.keys(topMenus).filter(k => !topMenus[k].isDefault).map(k => ({ id: k, name: topMenus[k].name })) : Object.keys(subMenus).filter(k => !subMenus[k].isDefault).map(k => ({ id: k, name: subMenus[k].name }));
+            if (delList.length) delList.forEach(item => delSel.appendChild(new Option(item.name, item.id))); else delSel.appendChild(new Option("无可删除菜单", "", true, true));
+            let cateSel = document.getElementById('cate'); let pageCate = document.getElementById('pageCate'); let delPageCate = document.getElementById('delPageCate');
+            cateSel.innerHTML = ''; pageCate.innerHTML = ''; delPageCate.innerHTML = '';
+            let allItems = [...Object.keys(topMenus).map(id => ({ id, name: topMenus[id].name })), ...Object.keys(subMenus).map(id => ({ id, name: subMenus[id].name }))];
+            allItems.forEach(item => { let opt = new Option(item.name, item.id); cateSel.appendChild(opt.cloneNode(true)); pageCate.appendChild(opt.cloneNode(true)); delPageCate.appendChild(opt.cloneNode(true)); });
+            let mid = cateSel.value; let pageNumSel = document.getElementById('pageNum'); pageNumSel.innerHTML = ''; let pages = Object.keys(resourceLinks[mid] || {}); pages.forEach(p => pageNumSel.appendChild(new Option(`第${p}页`, p)));
+            let delMid = delPageCate.value; let delPageNum = document.getElementById('delPageNum'); delPageNum.innerHTML = ''; let dpages = Object.keys(resourceLinks[delMid] || {}); dpages.forEach(p => delPageNum.appendChild(new Option(`第${p}页`, p)));
+        }
+        function renderAdminList() {
+            let dom = document.getElementById('allLinks'); dom.innerHTML = '';
+            let all = [...Object.keys(topMenus).map(id => ({ id, name: topMenus[id].name })), ...Object.keys(subMenus).map(id => ({ id, name: subMenus[id].name }))];
+            for (let m of all) {
+                let links = resourceLinks[m.id]; if (!links) continue;
+                for (let page in links) { if (links[page].length) { dom.innerHTML += `<h4>${m.name} - 第${page}页</h4>`; links[page].forEach((item, i) => { dom.innerHTML += `<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a><button class="del-btn" onclick="delLink('${m.id}',${page},${i})">删除</button></div>`; }); } }
             }
         }
-
-        // 初始化
-        loadData();
-        rebuildNav();
-        showPage('首页', 'home');
-        initGoTop();
-        digitalClock();
-        function digitalClock() { let now=new Date(); document.getElementById('clock').innerText=`${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`; setTimeout(digitalClock,1000); }
+        function openAdminModal() { document.getElementById('adminModal').style.display = 'block'; document.getElementById('pwd').value = ''; renderAllSelects(); }
+        function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
+        function adminLogin() { let pwd = document.getElementById('pwd').value; if (pwd === ADMIN_PASSWORD) { isLogin = true; document.getElementById('loginBox').style.display = 'none'; document.getElementById('adminPanel').style.display = 'block'; renderAllSelects(); renderAdminList(); alert("登录成功"); } else alert("密码错误"); }
+        document.getElementById('cate').addEventListener('change', () => { let mid = document.getElementById('cate').value; let pageNum = document.getElementById('pageNum'); pageNum.innerHTML = ''; let pages = Object.keys(resourceLinks[mid] || {}); pages.forEach(p => pageNum.appendChild(new Option(`第${p}页`, p))); });
+        document.getElementById('delPageCate').addEventListener('change', () => { let mid = document.getElementById('delPageCate').value; let pageNum = document.getElementById('delPageNum'); pageNum.innerHTML = ''; let pages = Object.keys(resourceLinks[mid] || {}); pages.forEach(p => pageNum.appendChild(new Option(`第${p}页`, p))); });
+        document.getElementById('delMenuType').addEventListener('change', renderAllSelects);
+        function baiduSearch() { let kw = document.getElementById('baiduSearchInput').value; if (kw.trim()) window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(kw), '_self'); }
+        function initGoTop() { let btn = document.getElementById('goTopBtn'); window.addEventListener('scroll', () => { if (window.scrollY > 300) btn.classList.add('show'); else btn.classList.remove('show'); }); btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' })); }
+        function digitalClock() { let now = new Date(); document.getElementById('clock').innerText = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}:${now.getSeconds().toString().padStart(2,'0')}`; setTimeout(digitalClock, 1000); }
+        loadData(); rebuildNav(); showPage('首页', 'home'); initGoTop(); digitalClock();
     </script>
 </body>
 </html>
