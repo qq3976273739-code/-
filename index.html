@@ -739,8 +739,10 @@
             homeLi.innerHTML = '<a onclick="showPage(\'首页\',\'home\')">首页</a>';
             navUl.appendChild(homeLi);
 
+            // 关键修复：提前创建所有默认顶级菜单的页面容器
             for (let topId in topMenus) {
                 const top = topMenus[topId];
+                ensurePageContainer(topId, top.name); // 强制创建页面容器
                 const children = Object.values(subMenus).filter(sub => sub.parentId === topId);
                 const li = document.createElement('li');
                 if (children.length > 0) {
@@ -755,8 +757,8 @@
                     li.innerHTML = `<a onclick="showPage('${top.name}','${topId}')">${top.name}</a>`;
                 }
                 navUl.appendChild(li);
-                ensurePageContainer(topId, top.name);
             }
+            // 创建所有子菜单页面容器
             for (let subId in subMenus) {
                 ensurePageContainer(subId, subMenus[subId].name);
             }
