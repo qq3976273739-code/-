@@ -130,8 +130,7 @@
             padding: 20px;
             border-radius: 12px;
             display: flex;
-            align-items: center;
-            justify-content: center;
+            align-items: center,justify-content:center;
             gap: 8px;
         }
         .baidu-icon {
@@ -545,11 +544,9 @@
             topMenus = storedTop ? JSON.parse(storedTop) : {};
             subMenus = storedSub ? JSON.parse(storedSub) : {};
             resourceLinks = storedLinks ? JSON.parse(storedLinks) : {};
-
-            saveToLocalStorage();
+            saveData();
         }
-
-        function saveToLocalStorage() {
+        function saveData() {
             localStorage.setItem('topMenus', JSON.stringify(topMenus));
             localStorage.setItem('subMenus', JSON.stringify(subMenus));
             localStorage.setItem('resourceLinks', JSON.stringify(resourceLinks));
@@ -557,500 +554,354 @@
 
         function exportBackup() {
             if (!isLogin) return;
-            const backupData = { topMenus, subMenus, resourceLinks };
-            const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+            const backup = {topMenus,subMenus,resourceLinks};
+            const blob = new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `虎天寿网站备份_${new Date().toLocaleDateString()}.json`;
+            a.download = `网站备份_${new Date().toLocaleDateString()}.json`;
             a.click();
             URL.revokeObjectURL(url);
-            alert("✅ 备份文件导出成功！");
+            alert("备份成功");
         }
-
-        document.getElementById('backupFileInput').addEventListener('change', function(e) {
-            if (!isLogin) return;
-            const file = e.target.files[0];
-            if (!file) return;
-            if (!confirm("⚠️ 恢复会覆盖当前所有数据，确定继续吗？")) return;
-
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                try {
-                    const data = JSON.parse(event.target.result);
-                    if (data.topMenus) topMenus = data.topMenus;
-                    if (data.subMenus) subMenus = data.subMenus;
-                    if (data.resourceLinks) resourceLinks = data.resourceLinks;
-                    saveToLocalStorage();
-                    rebuildNavMenu();
-                    renderAllSelects();
-                    renderAdminList();
-                    showPage('首页', 'home');
-                    alert("✅ 数据恢复成功！");
-                } catch (err) {
-                    alert("❌ 备份文件格式错误！");
-                }
-            };
+        document.getElementById('backupFileInput').addEventListener('change',e=>{
+            if(!isLogin)return;
+            const file=e.target.files[0];
+            if(!file)return;
+            if(!confirm("恢复会覆盖全部数据！继续？"))return;
+            const reader=new FileReader();
+            reader.onload=ev=>{
+                try{
+                    const d=JSON.parse(ev.target.result);
+                    topMenus=d.topMenus||{};
+                    subMenus=d.subMenus||{};
+                    resourceLinks=d.resourceLinks||{};
+                    saveData();
+                    rebuildNav();
+                    renderAllSelect();
+                    renderList();
+                    showPage('首页','home');
+                    alert("恢复成功");
+                }catch{alert("文件错误")}
+            }
             reader.readAsText(file);
         });
-
-        function clearAllData() {
-            if (!isLogin) return;
-            if (!confirm("⚠️ 确定清空所有数据？")) return;
-            
-            localStorage.removeItem('topMenus');
-            localStorage.removeItem('subMenus');
-            localStorage.removeItem('resourceLinks');
-            topMenus = {};
-            subMenus = {};
-            resourceLinks = {};
-            saveToLocalStorage();
-            rebuildNavMenu();
-            renderAllSelects();
-            renderAdminList();
-            showPage('首页', 'home');
-            alert("✅ 已清空所有数据！");
+        function clearAllData(){
+            if(!isLogin)return;
+            if(!confirm("清空全部数据？"))return;
+            localStorage.clear();
+            topMenus={};subMenus={};resourceLinks={};
+            rebuildNav();renderAllSelect();renderList();showPage('首页','home');
+            alert("已清空");
         }
 
-        function getAllMenuItems() {
-            let items = [];
-            for (let id in topMenus) items.push({ id, name: topMenus[id].name, type: 'top' });
-            for (let id in subMenus) {
-                let parent = topMenus[subMenus[id].parentId];
-                let parentName = parent ? parent.name : '未知';
-                items.push({ id, name: `${parentName} / ${subMenus[id].name}`, type: 'sub' });
+        function getAllMenu(){
+            let arr=[];
+            for(let id in topMenus) arr.push({id,name:topMenus[id].name,type:'top'});
+            for(let id in subMenus){
+                let p=topMenus[subMenus[id].parentId];
+                arr.push({id,name:(p?p.name:'未知')+'→'+subMenus[id].name,type:'sub'});
             }
-            return items;
-        }
-
-        function getTopMenusForSelect() {
-            let arr = [];
-            for (let id in topMenus) arr.push({ id, name: topMenus[id].name });
             return arr;
         }
-
-        function getAllBranches() {
-            let list = [];
-            for (let id in subMenus) {
-                let parent = topMenus[subMenus[id].parentId];
-                let parentName = parent ? parent.name : "未知";
-                list.push({ id, name: `${parentName} → ${subMenus[id].name}` });
-            }
-            return list;
+        function getTopList(){
+            let arr=[];for(let id in topMenus) arr.push({id,name:topMenus[id].name});return arr;
+        }
+        function getSubList(){
+            let arr=[];for(let id in subMenus){
+                let p=topMenus[subMenus[id].parentId];
+                arr.push({id,name:(p?p.name:'?')+'→'+subMenus[id].name});
+            }return arr;
         }
 
-        // 页面容器ID统一绑定：菜单ID = div的ID，1:1严格对应
-        function ensurePageContainer(menuId, displayName) {
-            if (document.getElementById(menuId)) return;
-            let area = document.getElementById('area');
-            let div = document.createElement('div');
-            div.className = 'page';
-            div.id = menuId;
-            // 修复DOM结构ID匹配bug
-            div.innerHTML = `
-                <h2 style="color:#ff6600">【${displayName}】</h2>
-                <div id="list-${menuId}" class="link-list"></div>
-                <div id="page-${menuId}" class="pagination"></div>
+        function createPage(id,name){
+            if(document.getElementById(id))return;
+            let div=document.createElement('div');
+            div.className='page';
+            div.id=id;
+            div.innerHTML=`
+                <h2 style="color:#ff6600">【${name}】</h2>
+                <div class="link-list" id="box_${id}"></div>
+                <div class="pagination" id="pagebtn_${id}"></div>
             `;
-            area.appendChild(div);
+            document.getElementById('area').appendChild(div);
+        }
+        function removePage(id){
+            let el=document.getElementById(id);if(el)el.remove();
         }
 
-        function removePageContainer(menuId) {
-            let el = document.getElementById(menuId);
-            if (el) el.remove();
-        }
+        function rebuildNav(){
+            let ul=document.getElementById('navMenuList');
+            ul.innerHTML='';
+            let home=document.createElement('li');
+            home.innerHTML='<a onclick="showPage(\'首页\',\'home\')">首页</a>';
+            ul.appendChild(home);
 
-        function rebuildNavMenu() {
-            const navUl = document.getElementById('navMenuList');
-            navUl.innerHTML = '';
-            
-            let homeLi = document.createElement('li');
-            homeLi.innerHTML = '<a onclick="showPage(\'首页\',\'home\')">首页</a>';
-            navUl.appendChild(homeLi);
+            for(let topId in topMenus){
+                let top=topMenus[topId];
+                let subs=Object.values(subMenus).filter(s=>s.parentId===topId);
+                let li=document.createElement('li');
 
-            for (let topId in topMenus) {
-                const top = topMenus[topId];
-                const children = Object.values(subMenus).filter(sub => sub.parentId === topId);
-                const li = document.createElement('li');
-                
-                if (children.length > 0) {
-                    li.innerHTML = `<a onclick="toggleMenu(this)">${top.name}</a><ul class="sub-menu"></ul>`;
-                    const subUl = li.querySelector('.sub-menu');
-                    children.forEach(child => {
-                        const subLi = document.createElement('li');
-                        // 关键：子菜单点击传自身id，不是父级id
-                        subLi.innerHTML = `<a onclick="showPage('${child.name}','${child.id}')">${child.name}</a>`;
-                        subUl.appendChild(subLi);
+                if(subs.length>0){
+                    li.innerHTML=`<a onclick="toggleMenu(this)">${top.name}</a><ul class="sub-menu"></ul>`;
+                    let subUl=li.querySelector('.sub-menu');
+                    subs.forEach(s=>{
+                        let sli=document.createElement('li');
+                        sli.innerHTML=`<a onclick="showPage('${s.name}','${s.id}')">${s.name}</a>`;
+                        subUl.appendChild(sli);
                     });
-                } else {
-                    li.innerHTML = `<a onclick="showPage('${top.name}','${topId}')">${top.name}</a>`;
+                }else{
+                    li.innerHTML=`<a onclick="showPage('${top.name}','${topId}')">${top.name}</a>`;
                 }
-                
-                navUl.appendChild(li);
-                ensurePageContainer(topId, top.name);
+                ul.appendChild(li);
+                createPage(topId,top.name);
             }
-
-            // 所有子菜单强制生成专属页面容器
-            for (let subId in subMenus) {
-                ensurePageContainer(subId, subMenus[subId].name);
-            }
+            for(let sid in subMenus) createPage(sid,subMenus[sid].name);
         }
 
-        // 终极修复：严格通过menuId加载对应数据，顶级/子菜单通用
-        function loadLinks(menuId, page) {
-            // 兜底初始化，防止数据不存在报错空白
-            if(!resourceLinks[menuId]) resourceLinks[menuId] = {1:[]};
-            if(!resourceLinks[menuId][page]) resourceLinks[menuId][page] = [];
-            
-            let list = resourceLinks[menuId][page];
-            let dom = document.getElementById(`list-${menuId}`);
-            if (dom) {
-                dom.innerHTML = '';
-                list.forEach(item => {
-                    dom.innerHTML += `<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a></div>`;
-                });
-            }
-        }
+        function loadData(menuId){
+            if(!resourceLinks[menuId]) resourceLinks[menuId]={1:[]};
+            if(!currentPage[menuId]) currentPage[menuId]=1;
+            let page=currentPage[menuId];
+            let list=resourceLinks[menuId][page]||[];
 
-        function renderPagination(menuId) {
-            if(!resourceLinks[menuId]) resourceLinks[menuId] = {1:[]};
-            let pageDom = document.getElementById(`page-${menuId}`);
-            if (!pageDom) return;
-            let pages = Object.keys(resourceLinks[menuId]);
-            pageDom.innerHTML = '';
-            if (pages.length <= 1) return;
-            pages.forEach(p => {
-                pageDom.innerHTML += `<button class="page-btn ${p == currentPage[menuId] ? 'active' : ''}" onclick="switchPage('${menuId}',${p})">第${p}页</button>`;
+            let box=document.getElementById('box_'+menuId);
+            let pageBox=document.getElementById('pagebtn_'+menuId);
+            if(!box||!pageBox)return;
+
+            box.innerHTML='';
+            list.forEach(item=>{
+                box.innerHTML+=`<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a></div>`;
+            });
+
+            let pages=Object.keys(resourceLinks[menuId]);
+            pageBox.innerHTML='';
+            if(pages.length<=1)return;
+            pages.forEach(p=>{
+                pageBox.innerHTML+=`<button class="page-btn ${p==page?'active':''}" onclick="switchPage('${menuId}',${p})">第${p}页</button>`;
             });
         }
 
-        function switchPage(menuId, page) {
-            currentPage[menuId] = page;
-            loadLinks(menuId, page);
-            renderPagination(menuId);
+        function switchPage(id,p){
+            currentPage[id]=p;
+            loadData(id);
         }
 
-        // 终极修复showPage：子菜单ID精准匹配页面+数据加载
-        function showPage(name, menuId) {
-            document.getElementById('title').innerText = '当前位置：' + name;
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            
-            // 强制创建对应菜单页面（顶级/分支通用）
-            let displayName = name;
-            if(subMenus[menuId]) displayName = subMenus[menuId].name;
-            else if(topMenus[menuId]) displayName = topMenus[menuId].name;
-            ensurePageContainer(menuId, displayName);
-
-            let target = document.getElementById(menuId);
-            target.classList.add('active');
-
-            if (menuId !== 'home') {
-                // 初始化页码兜底
-                if (!currentPage[menuId]) currentPage[menuId] = 1;
-                // 【核心】加载当前menuId专属的链接数据
-                loadLinks(menuId, currentPage[menuId]);
-                renderPagination(menuId);
-            }
-
-            document.querySelectorAll('.sub-menu').forEach(menu => menu.classList.remove('show'));
-            document.getElementById('area').scrollIntoView({ behavior: 'smooth' });
+        function showPage(title,id){
+            document.getElementById('title').innerText='当前位置：'+title;
+            document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+            createPage(id,title);
+            let dom=document.getElementById(id);
+            dom.classList.add('active');
+            if(id!=='home') loadData(id);
+            document.querySelectorAll('.sub-menu').forEach(m=>m.classList.remove('show'));
+            document.getElementById('area').scrollIntoView({behavior:'smooth'});
         }
 
-        function toggleMenu(ele) {
-            const sub = ele.nextElementSibling;
-            const parentLi = ele.parentElement;
-            const parentUl = parentLi.parentElement;
-            parentUl.querySelectorAll('.sub-menu').forEach(menu => {
-                if (menu !== sub) menu.classList.remove('show');
-            });
+        function toggleMenu(ele){
+            let sub=ele.nextElementSibling;
+            document.querySelectorAll('.sub-menu').forEach(s=>{if(s!==sub)s.classList.remove('show')});
             sub.classList.toggle('show');
         }
 
-        function openAdminModal() {
-            document.getElementById('adminModal').style.display = 'block';
-            document.getElementById('pwd').value = '';
-            renderAllSelects();
-        }
-        function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
+        // ===================== 后台开关核心 =====================
+        // on = 开启后台   off = 关闭后台
+        // 只需要改这里！只改单词！！
+        const adminSwitch = "on";
 
-        function adminLogin() {
-            let pwd = document.getElementById('pwd').value;
-            if (pwd === ADMIN_PASSWORD) {
-                isLogin = true;
-                document.getElementById('loginBox').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-                renderAllSelects();
-                renderAdminList();
-                alert("登录成功！");
-            } else {
-                alert("密码错误！");
+        function openAdminModal(){
+            // 开关判断
+            if(adminSwitch === "off"){
+                alert("后台管理已关闭");
+                return;
             }
+            document.getElementById('adminModal').style.display='block';
+            renderAllSelect();
+        }
+        function closeAdminModal(){document.getElementById('adminModal').style.display='none';}
+
+        function adminLogin(){
+            if(document.getElementById('pwd').value===ADMIN_PASSWORD){
+                isLogin=true;
+                document.getElementById('loginBox').style.display='none';
+                document.getElementById('adminPanel').style.display='block';
+                renderAllSelect();renderList();
+                alert("登录成功");
+            }else alert("密码错误");
         }
 
-        function renderAllSelects() {
-            renderParentSelect();
-            renderBranchSelect();
-            renderCateSelects();
+        function renderAllSelect(){
+            let ps=document.getElementById('parentCateSelect');
+            ps.innerHTML='';getTopList().forEach(t=>{
+                let opt=document.createElement('option');opt.value=t.id;opt.innerText=t.name;ps.appendChild(opt);
+            });
+            let ds=document.getElementById('delBranchSelect');
+            ds.innerHTML='';let slist=getSubList();
+            if(slist.length==0){ds.innerHTML='<option disabled>暂无分支</option>';}
+            else slist.forEach(s=>{
+                let opt=document.createElement('option');opt.value=s.id;opt.innerText=s.name;ds.appendChild(opt);
+            });
+            let cate=document.getElementById('cate');
+            let pcate=document.getElementById('pageCate');
+            let dpcate=document.getElementById('delPageCate');
+            cate.innerHTML='';pcate.innerHTML='';dpcate.innerHTML='';
+            getAllMenu().forEach(m=>{
+                let o1=document.createElement('option');o1.value=m.id;o1.innerText=m.name;cate.appendChild(o1);
+                let o2=o1.cloneNode(true);pcate.appendChild(o2);
+                let o3=o1.cloneNode(true);dpcate.appendChild(o3);
+            });
+            renderPageSelect();renderDelPageSelect();
         }
-
-        function renderParentSelect() {
-            let select = document.getElementById('parentCateSelect');
-            select.innerHTML = '';
-            let tops = getTopMenusForSelect();
-            tops.forEach(t => {
-                let opt = document.createElement('option');
-                opt.value = t.id;
-                opt.innerText = t.name;
-                select.appendChild(opt);
+        function renderPageSelect(){
+            let id=document.getElementById('cate').value;
+            let sel=document.getElementById('pageNum');
+            sel.innerHTML='';
+            let pages=Object.keys(resourceLinks[id]||{1:[]});
+            pages.forEach(p=>{
+                let opt=document.createElement('option');opt.value=p;opt.innerText='第'+p+'页';sel.appendChild(opt);
+            });
+        }
+        function renderDelPageSelect(){
+            let id=document.getElementById('delPageCate').value;
+            let sel=document.getElementById('delPageNum');
+            sel.innerHTML='';
+            let pages=Object.keys(resourceLinks[id]||{1:[]});
+            pages.forEach(p=>{
+                let opt=document.createElement('option');opt.value=p;opt.innerText='第'+p+'页';sel.appendChild(opt);
             });
         }
 
-        function renderBranchSelect() {
-            let sel = document.getElementById('delBranchSelect');
-            sel.innerHTML = '';
-            let list = getAllBranches();
-            if (list.length === 0) {
-                let opt = document.createElement('option');
-                opt.text = '暂无分支';
-                opt.disabled = true;
-                sel.appendChild(opt);
-            } else {
-                list.forEach(item => {
-                    let opt = document.createElement('option');
-                    opt.value = item.id;
-                    opt.innerText = item.name;
-                    sel.appendChild(opt);
-                });
-            }
+        function addTopCate(){
+            if(!isLogin)return;
+            let name=document.getElementById('newCate').value.trim();
+            if(!name)return alert("请输入名称");
+            let id='top_'+Date.now();
+            topMenus[id]={name:name};
+            resourceLinks[id]={1:[]};
+            saveData();rebuildNav();renderAllSelect();renderList();
+            document.getElementById('newCate').value='';alert("添加成功");
+        }
+        function addSubCate(){
+            if(!isLogin)return;
+            let pid=document.getElementById('parentCateSelect').value;
+            let name=document.getElementById('subCateName').value.trim();
+            if(!pid||!name)return alert("选顶级菜单+填名称");
+            let id='sub_'+Date.now();
+            subMenus[id]={parentId:pid,name:name};
+            resourceLinks[id]={1:[]};
+            saveData();rebuildNav();renderAllSelect();renderList();
+            document.getElementById('subCateName').value='';alert("分支添加成功");
+        }
+        function deleteBranch(){
+            if(!isLogin)return;
+            let sel=document.getElementById('delBranchSelect');
+            if(sel.options[0].disabled)return alert("无分支可删");
+            let id=sel.value;
+            if(!confirm("删除分支+所有链接一起消失！确定？"))return;
+            delete subMenus[id];delete resourceLinks[id];
+            removePage(id);saveData();rebuildNav();renderAllSelect();renderList();
+            if(document.querySelector('.page.active').id===id)showPage('首页','home');
+            alert("删除成功");
         }
 
-        function renderCateSelects() {
-            let cateSelect = document.getElementById('cate');
-            let pageCate = document.getElementById('pageCate');
-            let delPageCate = document.getElementById('delPageCate');
-            cateSelect.innerHTML = '';
-            pageCate.innerHTML = '';
-            delPageCate.innerHTML = '';
-            let allMenus = getAllMenuItems();
-            allMenus.forEach(menu => {
-                let opt = document.createElement('option');
-                opt.value = menu.id;
-                opt.innerText = menu.name;
-                cateSelect.appendChild(opt);
-                pageCate.appendChild(opt.cloneNode(true));
-                delPageCate.appendChild(opt.cloneNode(true));
-            });
-            renderPageNumSelect();
-            renderDelPageNumSelect();
+        function addPage(){
+            if(!isLogin)return;
+            let id=document.getElementById('pageCate').value;
+            let ps=Object.keys(resourceLinks[id]||{1:[]}).map(Number);
+            let np=Math.max(...ps)+1;
+            resourceLinks[id][np]=[];
+            saveData();renderAllSelect();renderList();alert("新增第"+np+"页");
         }
-
-        function renderPageNumSelect() {
-            let menuId = document.getElementById('cate').value;
-            let pageSelect = document.getElementById('pageNum');
-            pageSelect.innerHTML = '';
-            let pages = Object.keys(resourceLinks[menuId] || {});
-            pages.forEach(p => {
-                let opt = document.createElement('option');
-                opt.value = p;
-                opt.innerText = `第${p}页`;
-                pageSelect.appendChild(opt);
-            });
-        }
-
-        function renderDelPageNumSelect() {
-            let menuId = document.getElementById('delPageCate').value;
-            let pageSelect = document.getElementById('delPageNum');
-            pageSelect.innerHTML = '';
-            let pages = Object.keys(resourceLinks[menuId] || {});
-            pages.forEach(p => {
-                let opt = document.createElement('option');
-                opt.value = p;
-                opt.innerText = `第${p}页`;
-                pageSelect.appendChild(opt);
-            });
-        }
-
-        function addTopCate() {
-            if (!isLogin) return;
-            let name = document.getElementById('newCate').value.trim();
-            if (!name) return alert("请输入菜单名称！");
-            let id = 'top_' + Date.now();
-            topMenus[id] = { name: name };
-            resourceLinks[id] = { 1: [] };
-            saveToLocalStorage();
-            document.getElementById('newCate').value = '';
-            rebuildNavMenu();
-            renderAllSelects();
-            renderAdminList();
-            alert(`顶级菜单“${name}”已添加`);
-        }
-
-        function addSubCate() {
-            if (!isLogin) return;
-            let parentId = document.getElementById('parentCateSelect').value;
-            let name = document.getElementById('subCateName').value.trim();
-            if (!parentId) return alert("请先选择顶级菜单！");
-            if (!name) return alert("请输入子菜单名称！");
-            
-            let id = 'sub_' + Date.now();
-            subMenus[id] = { parentId: parentId, name: name };
-            resourceLinks[id] = { 1: [] };
-            
-            saveToLocalStorage();
-            document.getElementById('subCateName').value = '';
-            rebuildNavMenu();
-            renderAllSelects();
-            renderAdminList();
-            alert(`分支“${name}”已添加！`);
-        }
-
-        function deleteBranch() {
-            if (!isLogin) return;
-            let sel = document.getElementById('delBranchSelect');
-            if (sel.options[0].disabled) return alert("暂无分支可删");
-            
-            let branchId = sel.value;
-            if (!confirm("⚠️ 确定删除该分支？所有链接会一起删除！")) return;
-
-            delete subMenus[branchId];
-            delete resourceLinks[branchId];
-            removePageContainer(branchId);
-            saveToLocalStorage();
-            rebuildNavMenu();
-            renderAllSelects();
-            renderAdminList();
-            
-            let active = document.querySelector('.page.active')?.id;
-            if (active === branchId) showPage('首页', 'home');
-            alert("✅ 分支已删除");
-        }
-
-        function addPage() {
-            if (!isLogin) return;
-            let menuId = document.getElementById('pageCate').value;
-            let pages = Object.keys(resourceLinks[menuId] || {}).map(Number);
-            let newPage = Math.max(...pages) + 1;
-            resourceLinks[menuId][newPage] = [];
-            saveToLocalStorage();
-            renderAllSelects();
-            renderAdminList();
-            if (document.querySelector('.page.active')?.id === menuId) renderPagination(menuId);
-            alert(`添加第${newPage}页成功`);
-        }
-
-        function deletePage() {
-            if (!isLogin) return;
-            let menuId = document.getElementById('delPageCate').value;
-            let page = document.getElementById('delPageNum').value;
-            let pages = Object.keys(resourceLinks[menuId] || {});
-            if (pages.length <= 1) return alert("至少保留一页");
-            if (!confirm(`删除第${page}页？`)) return;
-            delete resourceLinks[menuId][page];
-            saveToLocalStorage();
-            renderAllSelects();
-            renderAdminList();
-            if (document.querySelector('.page.active')?.id === menuId) {
-                if (currentPage[menuId] == page) currentPage[menuId] = 1;
-                loadLinks(menuId, currentPage[menuId]);
-                renderPagination(menuId);
+        function deletePage(){
+            if(!isLogin)return;
+            let id=document.getElementById('delPageCate').value;
+            let p=document.getElementById('delPageNum').value;
+            let ps=Object.keys(resourceLinks[id]);
+            if(ps.length<=1)return alert("至少留1页");
+            if(!confirm("删除该页所有链接？"))return;
+            delete resourceLinks[id][p];
+            saveData();renderAllSelect();renderList();
+            if(document.querySelector('.page.active').id===id){
+                if(currentPage[id]==p)currentPage[id]=1;
+                loadData(id);
             }
             alert("删除成功");
         }
 
-        // 终极修复addLink：添加后实时刷新当前页面（顶级+子菜单全部生效）
-        function addLink() {
-            if (!isLogin) return;
-            let menuId = document.getElementById('cate').value;
-            let page = document.getElementById('pageNum').value;
-            let name = document.getElementById('linkName').value.trim();
-            let url = document.getElementById('linkUrl').value.trim();
-            if (!name || !url) return alert("请填写完整名称和网址！");
-            
-            // 数据写入
-            if(!resourceLinks[menuId]) resourceLinks[menuId] = {};
-            if(!resourceLinks[menuId][page]) resourceLinks[menuId][page] = [];
-            resourceLinks[menuId][page].push({ name, url });
-            
-            saveToLocalStorage();
-            document.getElementById('linkName').value = '';
-            document.getElementById('linkUrl').value = '';
-            renderAdminList();
+        function addLink(){
+            if(!isLogin)return;
+            let mid=document.getElementById('cate').value;
+            let p=document.getElementById('pageNum').value;
+            let name=document.getElementById('linkName').value.trim();
+            let url=document.getElementById('linkUrl').value.trim();
+            if(!name||!url)return alert("名称网址都要填");
 
-            // 【核心修复】无论顶级/子菜单，只要当前打开的页面就是这个menuId，立刻重载显示
-            const activePage = document.querySelector('.page.active');
-            if(activePage && activePage.id === menuId){
-                loadLinks(menuId, page);
-                renderPagination(menuId);
-            }
-            
-            alert("✅ 链接添加成功，页面已实时显示！");
+            if(!resourceLinks[mid])resourceLinks[mid]={};
+            if(!resourceLinks[mid][p])resourceLinks[mid][p]=[];
+            resourceLinks[mid][p].push({name,url});
+
+            saveData();
+            document.getElementById('linkName').value='';
+            document.getElementById('linkUrl').value='';
+            renderList();
+            if(document.querySelector('.page.active').id===mid)loadData(mid);
+            alert("链接添加成功！");
         }
 
-        function delLink(menuId, page, idx) {
-            if (!isLogin) return;
-            resourceLinks[menuId][page].splice(idx, 1);
-            saveToLocalStorage();
-            renderAdminList();
-            if (document.querySelector('.page.active')?.id === menuId) {
-                loadLinks(menuId, page);
-            }
+        function delLink(mid,p,i){
+            if(!isLogin)return;
+            resourceLinks[mid][p].splice(i,1);
+            saveData();renderList();
+            if(document.querySelector('.page.active').id===mid)loadData(mid);
         }
 
-        function renderAdminList() {
-            let dom = document.getElementById('allLinks');
-            dom.innerHTML = '';
-            let allMenus = getAllMenuItems();
-            for (let menu of allMenus) {
-                let links = resourceLinks[menu.id];
-                if (!links) continue;
-                for (let page in links) {
-                    let list = links[page];
-                    if (list.length === 0) continue;
-                    dom.innerHTML += `<h4 style="color:#fff;margin:15px 0 5px;">${menu.name} - 第${page}页</h4>`;
-                    list.forEach((item, i) => {
-                        dom.innerHTML += `<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a><button class="del-btn" onclick="delLink('${menu.id}',${page},${i})">删除</button></div>`;
+        function renderList(){
+            let dom=document.getElementById('allLinks');dom.innerHTML='';
+            getAllMenu().forEach(m=>{
+                let data=resourceLinks[m.id];
+                if(!data)return;
+                for(let p in data){
+                    let arr=data[p];
+                    if(arr.length==0)continue;
+                    dom.innerHTML+=`<h4 style="color:#fff;margin:15px 0 5px;">${m.name} - 第${p}页</h4>`;
+                    arr.forEach((item,i)=>{
+                        dom.innerHTML+=`<div class="link-item"><a href="${item.url}" target="_blank">${item.name}</a><button class="del-btn" onclick="delLink('${m.id}',${p},${i})">删除</button></div>`;
                     });
                 }
-            }
-        }
-
-        document.getElementById('cate').addEventListener('change', renderPageNumSelect);
-        document.getElementById('delPageCate').addEventListener('change', renderDelPageNumSelect);
-
-        function baiduSearch() {
-            let kw = document.getElementById('baiduSearchInput').value;
-            if (kw.trim()) window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(kw), '_self');
-        }
-
-        function initGoTop() {
-            const goTopBtn = document.getElementById('goTopBtn');
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 300) {
-                    goTopBtn.classList.add('show');
-                } else {
-                    goTopBtn.classList.remove('show');
-                }
-            });
-            goTopBtn.addEventListener('click', function() {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         }
 
-        function updateClock() {
-            const now = new Date();
-            const h = String(now.getHours()).padStart(2, '0');
-            const m = String(now.getMinutes()).padStart(2, '0');
-            const s = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock').innerText = `${h}:${m}:${s}`;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
+        document.getElementById('cate').addEventListener('change',renderPageSelect);
+        document.getElementById('delPageCate').addEventListener('change',renderDelPageSelect);
 
-        // 初始化
+        function baiduSearch(){
+            let k=document.getElementById('baiduSearchInput').value.trim();
+            if(k)window.open('https://www.baidu.com/s?wd='+encodeURIComponent(k),'_self');
+        }
+
+        function initTop(){
+            let btn=document.getElementById('goTopBtn');
+            window.addEventListener('scroll',()=>{
+                if(window.scrollY>300)btn.classList.add('show');
+                else btn.classList.remove('show');
+            });
+            btn.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+        }
+
+        function clock(){
+            let d=new Date();
+            let h=(d.getHours()+'').padStart(2,'0');
+            let m=(d.getMinutes()+'').padStart(2,'0');
+            let s=(d.getSeconds()+'').padStart(2,'0');
+            document.getElementById('clock').innerText=h+':'+m+':'+s;
+        }
+        setInterval(clock,1000);clock();
+
         initData();
-        rebuildNavMenu();
-        showPage('首页', 'home');
-        initGoTop();
+        rebuildNav();
+        showPage('首页','home');
+        initTop();
     </script>
+
 </body>
 </html>
