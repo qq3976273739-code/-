@@ -441,6 +441,82 @@
         #backupFileInput {
             display: none;
         }
+
+        /* ==================== 【新增：用户意见栏样式】 ==================== */
+        .feedback-box {
+            width: 70%;
+            margin: 40px auto;
+            background: rgba(0,0,0,0.7);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .feedback-title {
+            font-size: 24px;
+            color: #ff6600;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .feedback-input {
+            width: 80%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+        .feedback-textarea {
+            width: 80%;
+            height: 120px;
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            resize: none;
+        }
+        .feedback-btn {
+            padding: 12px 35px;
+            background: #ff6600;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .feedback-btn:hover {
+            background: #e65c00;
+        }
+        .feedback-list {
+            width: 80%;
+            margin: 20px auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .feedback-item {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .feedback-name {
+            color: #ff6600;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .feedback-time {
+            font-size: 12px;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+        .feedback-content {
+            font-size: 16px;
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
@@ -492,6 +568,16 @@
                     <div class="footer-text">整理资源耗费大量精力，维护网站也需要持续付出，感谢您的理解与支持</div>
                 </div>
             </div>
+
+            <!-- ==================== 用户意见栏 ==================== -->
+            <div class="feedback-box">
+                <div class="feedback-title">💬 用户意见 / 建议留言</div>
+                <input type="text" class="feedback-input" id="feedbackName" placeholder="请输入你的昵称">
+                <textarea class="feedback-textarea" id="feedbackContent" placeholder="请写下你的意见、建议、想要的资源..."></textarea>
+                <button class="feedback-btn" onclick="submitFeedback()">提交意见</button>
+            </div>
+
+            <div class="feedback-list" id="feedbackList"></div>
         </div>
     </div>
 
@@ -502,7 +588,6 @@
         <div class="admin-box">
             <h2 class="admin-title">下载链接 / 网站管理面板</h2>
             <div class="login-box" id="loginBox">
-                <!-- 密码隐藏+禁止浏览器自动填充+点开清空 -->
                 <input type="password" id="pwd" placeholder="请输入管理员密码" autocomplete="off">
                 <button onclick="adminLogin()">登录</button>
             </div>
@@ -560,6 +645,11 @@
                 </div>
 
                 <hr>
+                <!-- ==================== 【新增：后台意见管理】 ==================== -->
+                <h3 style="color:#0099ff;margin:10px 0;">📩 用户意见统计 & 管理</h3>
+                <div class="feedback-list" id="adminFeedbackList" style="width:100%;max-height:300px;"></div>
+
+                <hr>
                 <h3 style="color:#0099ff;margin:10px 0;">📦 数据备份与恢复</h3>
                 <div class="admin-form">
                     <button class="backup-btn" onclick="exportBackup()">💾 导出备份文件</button>
@@ -582,42 +672,106 @@
         let topMenus = {};
         let subMenus = {};
         let resourceLinks = {};
-        // ========== 【新增：副导航数据存储】 ==========
         let subNavList = [];
+
+        // ========== 【新增：意见数据】 ==========
+        let feedbackList = [];
 
         function initData() {
             let storedTop = localStorage.getItem('topMenus');
             let storedSub = localStorage.getItem('subMenus');
             let storedLinks = localStorage.getItem('resourceLinks');
-            // 读取副导航本地存储
             let storedSubNav = localStorage.getItem('subNavList');
+            let storedFeedback = localStorage.getItem('feedbackList');
 
             topMenus = storedTop ? JSON.parse(storedTop) : {};
             subMenus = storedSub ? JSON.parse(storedSub) : {};
             resourceLinks = storedLinks ? JSON.parse(storedLinks) : {};
             subNavList = storedSubNav ? JSON.parse(storedSubNav) : [];
+            feedbackList = storedFeedback ? JSON.parse(storedFeedback) : [];
             
             saveData();
-            renderSubNav(); // 页面加载渲染副导航
+            renderSubNav();
+            renderFeedback(); // 渲染意见
+            renderAdminFeedback(); // 后台渲染意见
         }
         function saveData() {
             localStorage.setItem('topMenus', JSON.stringify(topMenus));
             localStorage.setItem('subMenus', JSON.stringify(subMenus));
             localStorage.setItem('resourceLinks', JSON.stringify(resourceLinks));
-            // 同步保存副导航数据
             localStorage.setItem('subNavList', JSON.stringify(subNavList));
+            localStorage.setItem('feedbackList', JSON.stringify(feedbackList));
         }
 
-        // ========== 【新增：副导航页面渲染函数】 ==========
+        // ========== 【新增：提交意见】 ==========
+        function submitFeedback(){
+            let name = document.getElementById('feedbackName').value.trim();
+            let content = document.getElementById('feedbackContent').value.trim();
+            if(!name || !content){
+                alert("昵称和内容都要填写！");
+                return;
+            }
+            let time = new Date().toLocaleString();
+            feedbackList.unshift({
+                id:Date.now(),
+                name:name,
+                content:content,
+                time:time
+            });
+            saveData();
+            renderFeedback();
+            renderAdminFeedback();
+            document.getElementById('feedbackName').value = '';
+            document.getElementById('feedbackContent').value = '';
+            alert("✅ 意见提交成功！感谢你的反馈！");
+        }
+
+        // ========== 【新增：前台渲染意见】 ==========
+        function renderFeedback(){
+            let box = document.getElementById('feedbackList');
+            box.innerHTML = '';
+            feedbackList.forEach(item=>{
+                box.innerHTML += `
+                <div class="feedback-item">
+                    <div class="feedback-name">${item.name}</div>
+                    <div class="feedback-time">${item.time}</div>
+                    <div class="feedback-content">${item.content}</div>
+                </div>`;
+            });
+        }
+
+        // ========== 【新增：后台渲染意见 + 删除】 ==========
+        function renderAdminFeedback(){
+            let box = document.getElementById('adminFeedbackList');
+            box.innerHTML = '';
+            feedbackList.forEach((item,index)=>{
+                box.innerHTML += `
+                <div class="feedback-item">
+                    <div class="feedback-name">${item.name}</div>
+                    <div class="feedback-time">${item.time}</div>
+                    <div class="feedback-content">${item.content}</div>
+                    <button class="del-btn" onclick="deleteFeedback(${index})">删除这条意见</button>
+                </div>`;
+            });
+        }
+        function deleteFeedback(index){
+            if(!isLogin)return;
+            if(!confirm("确定删除这条意见？"))return;
+            feedbackList.splice(index,1);
+            saveData();
+            renderFeedback();
+            renderAdminFeedback();
+            alert("✅ 删除成功");
+        }
+
+        // ========== 副导航 ==========
         function renderSubNav(){
             let box = document.getElementById('subNavBox');
             box.innerHTML = '';
-            // 循环渲染所有后台添加的导航按钮
             subNavList.forEach(item => {
                 box.innerHTML += `<a href="${item.url}" target="_blank">${item.name}</a>`;
             });
         }
-        // ========== 【新增：后台添加副导航按钮】 ==========
         function addSubNavItem(){
             if(!isLogin)return;
             let name = document.getElementById('subNavName').value.trim();
@@ -627,26 +781,25 @@
             subNavList.push({name:name, url:url});
             saveData();
             renderSubNav();
-            // 清空输入框
             document.getElementById('subNavName').value = '';
             document.getElementById('subNavUrl').value = '';
-            alert("✅ 副导航按钮添加成功！页面下方已实时显示");
+            alert("✅ 副导航按钮添加成功！");
         }
-        // ========== 【新增：后台删除最后一个副导航按钮】 ==========
         function deleteLastSubNavItem(){
             if(!isLogin)return;
             if(subNavList.length === 0) return alert("当前没有副导航按钮可删除！");
             if(!confirm("确定删除最后添加的这个副导航按钮吗？")) return;
             
-            subNavList.pop(); // 删除数组最后一项
+            subNavList.pop();
             saveData();
             renderSubNav();
-            alert("✅ 副导航按钮删除成功！页面已同步更新");
+            alert("✅ 副导航按钮删除成功！");
         }
 
+        // 备份
         function exportBackup() {
             if (!isLogin) return;
-            const backup = {topMenus,subMenus,resourceLinks,subNavList};
+            const backup = {topMenus,subMenus,resourceLinks,subNavList,feedbackList};
             const blob = new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -668,12 +821,15 @@
                     topMenus=d.topMenus||{};
                     subMenus=d.subMenus||{};
                     resourceLinks=d.resourceLinks||{};
-                    subNavList=d.subNavList||[]; // 备份兼容副导航数据
+                    subNavList=d.subNavList||[];
+                    feedbackList=d.feedbackList||[];
                     saveData();
                     rebuildNav();
-                    renderSubNav(); // 恢复后重绘副导航
+                    renderSubNav();
                     renderAllSelect();
                     renderList();
+                    renderFeedback();
+                    renderAdminFeedback();
                     showPage('首页','home');
                     alert("恢复成功");
                 }catch{alert("文件错误")}
@@ -684,8 +840,8 @@
             if(!isLogin)return;
             if(!confirm("清空全部数据？"))return;
             localStorage.clear();
-            topMenus={};subMenus={};resourceLinks={};subNavList=[];
-            rebuildNav();renderSubNav();renderAllSelect();renderList();showPage('首页','home');
+            topMenus={};subMenus={};resourceLinks={};subNavList=[];feedbackList=[];
+            rebuildNav();renderSubNav();renderAllSelect();renderList();renderFeedback();renderAdminFeedback();showPage('首页','home');
             alert("已清空");
         }
 
@@ -775,7 +931,6 @@
                 pageBox.innerHTML+=`<button class="page-btn ${p==page?'active':''}" onclick="switchPage('${menuId}',${p})">第${p}页</button>`;
             });
         }
-
         function switchPage(id,p){
             currentPage[id]=p;
             loadData(id);
@@ -798,18 +953,16 @@
             sub.classList.toggle('show');
         }
 
-        // ===================== 后台总开关 on/off =====================
         const adminSwitch = "on";
-
         function openAdminModal(){
             if(adminSwitch === "off"){
                 alert("后台管理已关闭");
                 return;
             }
-            // 每次打开后台自动清空密码框
             document.getElementById('pwd').value = "";
             document.getElementById('adminModal').style.display='block';
             renderAllSelect();
+            renderAdminFeedback();
         }
         function closeAdminModal(){document.getElementById('adminModal').style.display='none';}
 
@@ -818,12 +971,11 @@
                 isLogin=true;
                 document.getElementById('loginBox').style.display='none';
                 document.getElementById('adminPanel').style.display='block';
-                renderAllSelect();renderList();
+                renderAllSelect();renderList();renderAdminFeedback();
                 alert("登录成功");
             }else alert("密码错误");
         }
 
-        // 删除最后一个顶级菜单
         function deleteLastTopCate(){
             if(!isLogin)return;
             let topArr = Object.keys(topMenus);
@@ -1019,7 +1171,7 @@
         }
         setInterval(clock,1000);clock();
 
-        // 网站初始化
+        // 初始化
         initData();
         rebuildNav();
         showPage('首页','home');
