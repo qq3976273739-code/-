@@ -259,17 +259,19 @@
                 </div>
 
                 <hr>
-                <h3 style="color:#ff6600;">📌 下方副导航栏管理（跳转方式与主菜单一致）</h3>
+                <h3 style="color:#ff6600;">📌 下方副导航栏管理（支持创建新页面）</h3>
                 <div class="admin-form">
                     <input type="text" id="subNavName" placeholder="按钮名称" style="width:180px;">
-                    <select id="subNavType" style="width:120px;">
-                        <option value="internal">内部跳转（菜单）</option>
+                    <select id="subNavType" style="width:150px;">
                         <option value="external">外部链接</option>
+                        <option value="internal">跳转到已有菜单</option>
+                        <option value="new">创建新页面（顶级菜单）</option>
                     </select>
                     <select id="subNavInternalTarget" style="width:200px; display:none;">
                         <option value="">-- 选择内部菜单 --</option>
                     </select>
-                    <input type="text" id="subNavUrl" placeholder="外部网址（可选）" style="width:200px; display:none;">
+                    <input type="text" id="subNavUrl" placeholder="外部网址" style="width:200px; display:none;">
+                    <input type="text" id="subNavNewPageName" placeholder="新页面名称" style="width:180px; display:none;">
                     <button onclick="addSubNavItem()">➕ 添加副导航按钮</button>
                 </div>
                 <div class="admin-form">
@@ -412,7 +414,7 @@
             renderFeedback();
             renderAdminFeedback();
             renderDelSubNavSelect();
-            updateInternalTargetSelect(); // 填充内部菜单下拉
+            updateInternalTargetSelect();
         }
 
         function saveData() {
@@ -446,23 +448,33 @@
             }
         }
 
-        // 监听跳转类型切换
+        // 监听跳转类型切换，动态显示不同输入框
         function toggleSubNavType() {
             let type = document.getElementById('subNavType').value;
             let internalSel = document.getElementById('subNavInternalTarget');
             let urlInput = document.getElementById('subNavUrl');
+            let newPageInput = document.getElementById('subNavNewPageName');
             if (type === 'internal') {
                 internalSel.style.display = 'inline-block';
                 urlInput.style.display = 'none';
+                newPageInput.style.display = 'none';
                 urlInput.value = '';
+                newPageInput.value = '';
+            } else if (type === 'new') {
+                internalSel.style.display = 'none';
+                urlInput.style.display = 'none';
+                newPageInput.style.display = 'inline-block';
+                urlInput.value = '';
+                internalSel.value = '';
             } else {
                 internalSel.style.display = 'none';
                 urlInput.style.display = 'inline-block';
+                newPageInput.style.display = 'none';
                 internalSel.value = '';
+                newPageInput.value = '';
             }
         }
         document.getElementById('subNavType')?.addEventListener('change', toggleSubNavType);
-        // 初始调用
         setTimeout(() => {
             if (document.getElementById('subNavType')) toggleSubNavType();
         }, 100);
@@ -484,6 +496,8 @@
                     if (topMenus[item.targetId]) targetName = topMenus[item.targetId].name;
                     else if (subMenus[item.targetId]) targetName = subMenus[item.targetId].name;
                     displayText += ` (内部: ${targetName || item.targetId})`;
+                } else if (item.type === 'new') {
+                    displayText += ` (新建页面: ${item.newPageName})`;
                 } else {
                     displayText += ` (外部: ${item.url || '#'})`;
                 }
@@ -512,13 +526,13 @@
             subNavList.forEach(item => {
                 let a = document.createElement('a');
                 a.innerText = item.name;
-                if (item.type === 'internal') {
-                    // 内部跳转，调用 showPage
+                if (item.type === 'internal' || item.type === 'new') {
+                    // 内部跳转（包括新建的页面）
                     let targetId = item.targetId;
                     let targetName = '';
                     if (topMenus[targetId]) targetName = topMenus[targetId].name;
                     else if (subMenus[targetId]) targetName = subMenus[targetId].name;
-                    else targetName = '未知页面';
+                    else targetName = item.newPageName || '页面';
                     a.onclick = (e) => {
                         e.preventDefault();
                         showPage(targetName, targetId);
@@ -526,7 +540,7 @@
                     a.href = 'javascript:void(0)';
                     a.style.cursor = 'pointer';
                 } else {
-                    // 外部链接，新标签页打开
+                    // 外部链接
                     a.href = item.url && item.url.trim() !== '' ? item.url : '#';
                     a.target = '_blank';
                     a.rel = 'noopener noreferrer';
@@ -535,28 +549,54 @@
             });
         }
 
+        // 创建新顶级菜单的内部函数
+        function createNewTopMenu(name) {
+            let id = 'top_' + Date.now();
+            topMenus[id] = { name: name };
+            resourceLinks[id] = { 1: [] };
+            saveData();
+            rebuildNav();
+            renderAllSelect();
+            renderList();
+            updateInternalTargetSelect();
+            return id;
+        }
+
         function addSubNavItem() {
             if (!isLogin) return;
             let name = document.getElementById('subNavName').value.trim();
             if (!name) return alert("请填写按钮名称！");
             let type = document.getElementById('subNavType').value;
             let newItem = { name: name, type: type };
+            
             if (type === 'internal') {
                 let targetId = document.getElementById('subNavInternalTarget').value;
                 if (!targetId) return alert("请选择内部菜单！");
                 newItem.targetId = targetId;
-            } else {
+            } 
+            else if (type === 'new') {
+                let newPageName = document.getElementById('subNavNewPageName').value.trim();
+                if (!newPageName) return alert("请输入新页面名称！");
+                // 创建新的顶级菜单
+                let newId = createNewTopMenu(newPageName);
+                newItem.targetId = newId;
+                newItem.newPageName = newPageName;
+            }
+            else { // external
                 let url = document.getElementById('subNavUrl').value.trim();
                 if (url === '') url = '#';
                 newItem.url = url;
             }
+            
             subNavList.push(newItem);
             saveData();
             renderSubNav();
             renderDelSubNavSelect();
+            // 清空表单
             document.getElementById('subNavName').value = '';
             document.getElementById('subNavUrl').value = '';
             document.getElementById('subNavInternalTarget').value = '';
+            document.getElementById('subNavNewPageName').value = '';
             alert("✅ 副导航按钮添加成功！");
         }
 
