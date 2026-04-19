@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" type="image/png">
-    <title>虎天寿资源整理网站 - 副导航独立页面版</title>
+    <title>虎天寿资源整理网站 - 独立页面版（快速CDN）</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "微软雅黑", sans-serif; }
         body { background: url('https://s41.ax1x.com/2026/04/18/pe6CbuQ.jpg') no-repeat center center fixed; background-size: cover; color: #ffffff; min-height: 100vh; padding: 20px; }
@@ -176,29 +176,23 @@
     </style>
 </head>
 <body>
-
     <div class="avatar-box" onclick="openAdminModal()">
         <img src="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" alt="头像" class="avatar">
     </div>
-
     <div class="title-box">
         <h1 class="website-name">虎天寿资源整理网站</h1>
     </div>
     <div class="current-menu" id="title">当前位置：首页</div>
-
     <div class="nav" id="navContainer">
         <img src="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" alt="个人头像" class="nav-avatar">
         <ul id="navMenuList"></ul>
     </div>
-
     <div class="sub-nav" id="subNavBox"></div>
-
     <div class="search-box">
         <img src="https://www.baidu.com/favicon.ico" class="baidu-icon" alt="百度">
         <input type="text" class="search-input" id="baiduSearchInput" placeholder="输入搜索内容">
         <button class="search-btn" onclick="baiduSearch()">百度搜索</button>
     </div>
-
     <div class="blank-box" id="area">
         <div class="page active" id="home">
             <div class="home-top-btn">
@@ -223,7 +217,7 @@
                     <div class="footer-text">整理资源耗费大量精力，维护网站也需要持续付出，感谢您的理解与支持</div>
                 </div>
             </div>
-
+            <!-- 意见反馈栏（带开关） -->
             <div class="feedback-container" id="feedbackContainer">
                 <div class="feedback-box" id="feedbackBox">
                     <div class="feedback-header">
@@ -238,9 +232,7 @@
             <div class="feedback-list" id="feedbackList"></div>
         </div>
     </div>
-
     <div class="go-top" id="goTopBtn" title="回到顶部">↑</div>
-
     <div class="admin-modal" id="adminModal">
         <span class="close-btn" onclick="closeAdminModal()">×</span>
         <div class="admin-box">
@@ -250,13 +242,11 @@
                 <button onclick="adminLogin()">登录</button>
             </div>
             <div id="adminPanel" style="display:none;">
-                
                 <div class="admin-form">
                     <input type="text" id="newCate" placeholder="顶级菜单名称">
                     <button onclick="addTopCate()">➕ 添加顶级菜单</button>
                     <button class="del-page-btn" onclick="deleteLastTopCate()">➖ 删除最后一个顶级菜单</button>
                 </div>
-
                 <hr>
                 <h3 style="color:#ff6600;">📌 下方副导航栏管理（支持独立页面，不显示在主菜单）</h3>
                 <div class="admin-form">
@@ -285,20 +275,16 @@
                     <button class="del-page-btn" onclick="deleteLastSubNavItem()">➖ 删除最后一个</button>
                 </div>
                 <hr>
-
                 <div class="admin-form">
                     <select id="parentCateSelect"></select>
                     <input type="text" id="subCateName" placeholder="子菜单名称">
                     <button onclick="addSubCate()">➕ 添加分支（子菜单）</button>
                 </div>
-
                 <div class="admin-form">
                     <select id="delBranchSelect"></select>
                     <button class="del-page-btn" onclick="deleteBranch()">🗑️ 删除选中分支</button>
                 </div>
-
                 <hr>
-
                 <div class="admin-form">
                     <select id="pageCate"></select>
                     <button onclick="addPage()">添加新页数（+1页）</button>
@@ -308,9 +294,7 @@
                     <select id="delPageNum"></select>
                     <button class="del-page-btn" onclick="deletePage()">删除选中页数</button>
                 </div>
-
                 <hr>
-
                 <div class="admin-form">
                     <select id="cate"></select>
                     <select id="pageNum"></select>
@@ -318,11 +302,9 @@
                     <input type="url" id="linkUrl" placeholder="网址 http/https" style="width:220px;">
                     <button onclick="addLink()">添加 网站/链接</button>
                 </div>
-
                 <hr>
                 <h3 style="color:#0099ff;margin:10px 0;">📩 用户意见统计 & 管理</h3>
                 <div class="feedback-list" id="adminFeedbackList" style="width:100%;max-height:300px;display:block;"></div>
-
                 <hr>
                 <h3 style="color:#0099ff;margin:10px 0;">📦 数据备份与恢复</h3>
                 <div class="admin-form">
@@ -331,13 +313,11 @@
                     <button class="clear-btn" onclick="clearAllData()">🗑️ 清空所有数据</button>
                     <input type="file" id="backupFileInput" accept=".json">
                 </div>
-
                 <h3 style="color:#ff6600;margin:10px 0;">已添加全部内容</h3>
                 <div id="allLinks"></div>
             </div>
         </div>
     </div>
-
     <script>
         const ADMIN_PASSWORD = "wangyiming87";
         let isLogin = false;
@@ -350,17 +330,10 @@
         let subNavList = [];
         let feedbackList = [];
 
+        // ★★★ 使用更快的 jsDelivr CDN ★★★
         const CLOUD_DATA_URL = "https://cdn.jsdelivr.net/gh/qq3976273739-code/my-site-data/data.json";
 
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
+        function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
 
         async function fetchCloudData() {
             try {
@@ -402,16 +375,13 @@
             } else {
                 await fetchCloudData();
             }
-            
             await fetchCloudData();
-            
             if (!topMenus) topMenus = {};
             if (!subMenus) subMenus = {};
             if (!resourceLinks) resourceLinks = {};
             if (!extraPages) extraPages = {};
             if (!subNavList) subNavList = [];
             if (!feedbackList) feedbackList = [];
-            
             saveData();
             renderSubNav();
             renderFeedback();
@@ -566,25 +536,21 @@
             if (!name) return alert("请填写按钮名称！");
             let type = document.getElementById('subNavType').value;
             let newItem = { name: name, type: type };
-            
             if (type === 'internal') {
                 let targetId = document.getElementById('subNavInternalTarget').value;
                 if (!targetId) return alert("请选择内部菜单！");
                 newItem.targetId = targetId;
-            } 
-            else if (type === 'new') {
+            } else if (type === 'new') {
                 let newPageName = document.getElementById('subNavNewPageName').value.trim();
                 if (!newPageName) return alert("请输入页面名称！");
                 let newId = createExtraPage(newPageName);
                 newItem.targetId = newId;
                 newItem.newPageName = newPageName;
-            }
-            else {
+            } else {
                 let url = document.getElementById('subNavUrl').value.trim();
                 if (url === '') url = '#';
                 newItem.url = url;
             }
-            
             subNavList.push(newItem);
             saveData();
             renderSubNav();
@@ -602,23 +568,17 @@
             if (idx === "" || idx === null) return alert("请先选择要编辑的按钮");
             let item = subNavList[parseInt(idx)];
             if (!item) return alert("按钮不存在");
-            
             let newName = prompt("修改按钮名称:", item.name);
             if (newName === null) return;
             if (newName.trim() === "") return alert("名称不能为空");
-            
             let newType = prompt("修改类型 (external/internal/new):", item.type);
             if (newType === null) return;
             if (!["external", "internal", "new"].includes(newType)) return alert("类型必须为 external / internal / new");
-            
             if (newType === 'internal') {
                 let targetId = prompt("请输入内部菜单ID (可从下拉框中查看):", item.targetId || "");
                 if (targetId === null) return;
                 if (!targetId) return alert("目标ID不能为空");
-                // 验证目标是否存在
-                if (!topMenus[targetId] && !subMenus[targetId] && !extraPages[targetId]) {
-                    return alert("目标ID不存在");
-                }
+                if (!topMenus[targetId] && !subMenus[targetId] && !extraPages[targetId]) return alert("目标ID不存在");
                 item.targetId = targetId;
                 delete item.url;
                 delete item.newPageName;
@@ -626,7 +586,6 @@
                 let newPageName = prompt("请输入独立页面名称:", item.newPageName || "");
                 if (newPageName === null) return;
                 if (!newPageName.trim()) return alert("页面名称不能为空");
-                // 如果已有 targetId 且是 extra 类型，直接改名；否则创建新页面
                 if (item.type === 'new' && item.targetId && extraPages[item.targetId]) {
                     extraPages[item.targetId].name = newPageName;
                     item.newPageName = newPageName;
@@ -697,46 +656,31 @@
             alert("✅ 删除成功");
         }
 
-        // 获取所有可用的分类（用于添加链接的下拉框）
         function getAllMenuForSelect() {
             let arr = [];
-            for (let id in topMenus) arr.push({ id, name: '【顶级】' + topMenus[id].name, type: 'top' });
+            for (let id in topMenus) arr.push({ id, name: '【顶级】' + topMenus[id].name });
             for (let id in subMenus) {
                 let p = topMenus[subMenus[id].parentId];
                 let prefix = p ? p.name : '未知';
-                arr.push({ id, name: '【子级】' + prefix + ' → ' + subMenus[id].name, type: 'sub' });
+                arr.push({ id, name: '【子级】' + prefix + ' → ' + subMenus[id].name });
             }
-            for (let id in extraPages) {
-                arr.push({ id, name: '【副导航页】' + extraPages[id].name, type: 'extra' });
-            }
+            for (let id in extraPages) arr.push({ id, name: '【副导航页】' + extraPages[id].name });
             return arr;
         }
 
-        function getAllMenu() {
-            return getAllMenuForSelect();
-        }
-
-        function getTopList(){
-            let arr=[];for(let id in topMenus) arr.push({id,name:topMenus[id].name});return arr;
-        }
-        function getSubList(){
-            let arr=[];for(let id in subMenus){
-                let p=topMenus[subMenus[id].parentId];
-                arr.push({id,name:(p?p.name:'?')+'→'+subMenus[id].name});
-            }return arr;
-        }
+        function getAllMenu() { return getAllMenuForSelect(); }
+        function getTopList(){ let arr=[]; for(let id in topMenus) arr.push({id,name:topMenus[id].name}); return arr; }
+        function getSubList(){ let arr=[]; for(let id in subMenus){ let p=topMenus[subMenus[id].parentId]; arr.push({id,name:(p?p.name:'?')+'→'+subMenus[id].name}); } return arr; }
 
         function createPage(id,name){
-            if(document.getElementById(id))return;
+            if(document.getElementById(id)) return;
             let div=document.createElement('div');
             div.className='page';
             div.id=id;
             div.innerHTML=`<h2 style="color:#ff6600">【${escapeHtml(name)}】</h2><div class="link-list" id="box_${id}"></div><div class="pagination" id="pagebtn_${id}"></div>`;
             document.getElementById('area').appendChild(div);
         }
-        function removePage(id){
-            let el=document.getElementById(id);if(el)el.remove();
-        }
+        function removePage(id){ let el=document.getElementById(id); if(el) el.remove(); }
 
         function rebuildNav(){
             let ul=document.getElementById('navMenuList');
@@ -744,7 +688,6 @@
             let home=document.createElement('li');
             home.innerHTML='<a onclick="showPage(\'首页\',\'home\')">首页</a>';
             ul.appendChild(home);
-
             for(let topId in topMenus){
                 let top=topMenus[topId];
                 let subs=Object.values(subMenus).filter(s=>s.parentId===topId);
@@ -776,20 +719,13 @@
             let pageBox=document.getElementById('pagebtn_'+menuId);
             if(!box||!pageBox)return;
             box.innerHTML='';
-            list.forEach(item=>{
-                box.innerHTML+=`<div class="link-item"><a href="${escapeHtml(item.url)}" target="_blank">${escapeHtml(item.name)}</a></div>`;
-            });
+            list.forEach(item=>{ box.innerHTML+=`<div class="link-item"><a href="${escapeHtml(item.url)}" target="_blank">${escapeHtml(item.name)}</a></div>`; });
             let pages=Object.keys(resourceLinks[menuId]);
             pageBox.innerHTML='';
             if(pages.length<=1)return;
-            pages.forEach(p=>{
-                pageBox.innerHTML+=`<button class="page-btn ${p==page?'active':''}" onclick="switchPage('${menuId}',${p})">第${p}页</button>`;
-            });
+            pages.forEach(p=>{ pageBox.innerHTML+=`<button class="page-btn ${p==page?'active':''}" onclick="switchPage('${menuId}',${p})">第${p}页</button>`; });
         }
-        function switchPage(id,p){
-            currentPage[id]=p;
-            loadData(id);
-        }
+        function switchPage(id,p){ currentPage[id]=p; loadData(id); }
 
         function showPage(title,id){
             document.getElementById('title').innerText='当前位置：'+escapeHtml(title);
@@ -802,33 +738,12 @@
             document.getElementById('area').scrollIntoView({behavior:'smooth'});
         }
 
-        function toggleMenu(ele){
-            let sub=ele.nextElementSibling;
-            document.querySelectorAll('.sub-menu').forEach(s=>{if(s!==sub)s.classList.remove('show')});
-            sub.classList.toggle('show');
-        }
+        function toggleMenu(ele){ let sub=ele.nextElementSibling; document.querySelectorAll('.sub-menu').forEach(s=>{if(s!==sub)s.classList.remove('show')}); sub.classList.toggle('show'); }
 
         const adminSwitch = "on";
-        function openAdminModal(){
-            if(adminSwitch === "off"){ alert("后台管理已关闭"); return; }
-            document.getElementById('pwd').value = "";
-            document.getElementById('adminModal').style.display='block';
-            renderAllSelect();
-            renderAdminFeedback();
-            updateSubNavSelects();
-            updateInternalTargetSelect();
-        }
-        function closeAdminModal(){document.getElementById('adminModal').style.display='none';}
-
-        function adminLogin(){
-            if(document.getElementById('pwd').value===ADMIN_PASSWORD){
-                isLogin=true;
-                document.getElementById('loginBox').style.display='none';
-                document.getElementById('adminPanel').style.display='block';
-                renderAllSelect();renderList();renderAdminFeedback();updateSubNavSelects();updateInternalTargetSelect();
-                alert("登录成功");
-            }else alert("密码错误");
-        }
+        function openAdminModal(){ if(adminSwitch==="off"){ alert("后台管理已关闭"); return; } document.getElementById('pwd').value=""; document.getElementById('adminModal').style.display='block'; renderAllSelect(); renderAdminFeedback(); updateSubNavSelects(); updateInternalTargetSelect(); }
+        function closeAdminModal(){ document.getElementById('adminModal').style.display='none'; }
+        function adminLogin(){ if(document.getElementById('pwd').value===ADMIN_PASSWORD){ isLogin=true; document.getElementById('loginBox').style.display='none'; document.getElementById('adminPanel').style.display='block'; renderAllSelect(); renderList(); renderAdminFeedback(); updateSubNavSelects(); updateInternalTargetSelect(); alert("登录成功"); }else alert("密码错误"); }
 
         function deleteLastTopCate(){
             if(!isLogin)return;
@@ -837,13 +752,7 @@
             if(!confirm("确定删除最后添加的顶级菜单？该菜单下所有分支、链接全部一起删除！")) return;
             let lastId = topArr[topArr.length - 1];
             delete topMenus[lastId];
-            for(let sid in subMenus){
-                if(subMenus[sid].parentId === lastId){
-                    delete subMenus[sid];
-                    delete resourceLinks[sid];
-                    removePage(sid);
-                }
-            }
+            for(let sid in subMenus){ if(subMenus[sid].parentId === lastId){ delete subMenus[sid]; delete resourceLinks[sid]; removePage(sid); } }
             delete resourceLinks[lastId];
             removePage(lastId);
             saveData();
@@ -871,143 +780,25 @@
             });
             renderPageSelect();renderDelPageSelect();
         }
-        function renderPageSelect(){
-            let id=document.getElementById('cate').value;
-            let sel=document.getElementById('pageNum');
-            sel.innerHTML='';
-            let pages=Object.keys(resourceLinks[id]||{1:[]});
-            pages.forEach(p=>{ let opt=document.createElement('option');opt.value=p;opt.innerText='第'+p+'页';sel.appendChild(opt); });
-        }
-        function renderDelPageSelect(){
-            let id=document.getElementById('delPageCate').value;
-            let sel=document.getElementById('delPageNum');
-            sel.innerHTML='';
-            let pages=Object.keys(resourceLinks[id]||{1:[]});
-            pages.forEach(p=>{ let opt=document.createElement('option');opt.value=p;opt.innerText='第'+p+'页';sel.appendChild(opt); });
-        }
+        function renderPageSelect(){ let id=document.getElementById('cate').value; let sel=document.getElementById('pageNum'); sel.innerHTML=''; let pages=Object.keys(resourceLinks[id]||{1:[]}); pages.forEach(p=>{ let opt=document.createElement('option');opt.value=p;opt.innerText='第'+p+'页';sel.appendChild(opt); }); }
+        function renderDelPageSelect(){ let id=document.getElementById('delPageCate').value; let sel=document.getElementById('delPageNum'); sel.innerHTML=''; let pages=Object.keys(resourceLinks[id]||{1:[]}); pages.forEach(p=>{ let opt=document.createElement('option');opt.value=p;opt.innerText='第'+p+'页';sel.appendChild(opt); }); }
 
-        function addTopCate(){
-            if(!isLogin)return;
-            let name = document.getElementById('newCate').value.trim();
-            if(!name) return alert("请输入菜单名称");
-            let id = 'top_' + Date.now();
-            topMenus[id] = { name: name };
-            resourceLinks[id] = { 1: [] };
-            saveData(); rebuildNav(); renderAllSelect(); renderList(); updateInternalTargetSelect();
-            document.getElementById('newCate').value = '';
-            alert("顶级菜单添加成功！");
-        }
+        function addTopCate(){ if(!isLogin)return; let name=document.getElementById('newCate').value.trim(); if(!name) return alert("请输入菜单名称"); let id='top_'+Date.now(); topMenus[id]={name:name}; resourceLinks[id]={1:[]}; saveData(); rebuildNav(); renderAllSelect(); renderList(); updateInternalTargetSelect(); document.getElementById('newCate').value=''; alert("顶级菜单添加成功！"); }
+        function addSubCate(){ if(!isLogin)return; let pid=document.getElementById('parentCateSelect').value; let name=document.getElementById('subCateName').value.trim(); if(!pid||!name)return alert("选顶级菜单+填名称"); let id='sub_'+Date.now(); subMenus[id]={parentId:pid,name:name}; resourceLinks[id]={1:[]}; saveData(); rebuildNav(); renderAllSelect(); renderList(); updateInternalTargetSelect(); document.getElementById('subCateName').value=''; alert("分支添加成功"); }
+        function deleteBranch(){ if(!isLogin)return; let sel=document.getElementById('delBranchSelect'); if(sel.options[0].disabled)return alert("无分支可删"); let id=sel.value; if(!confirm("删除分支+所有链接一起消失！确定？"))return; delete subMenus[id]; delete resourceLinks[id]; removePage(id); saveData(); rebuildNav(); renderAllSelect(); renderList(); updateInternalTargetSelect(); if(document.querySelector('.page.active').id===id)showPage('首页','home'); alert("删除成功"); }
+        function addPage(){ if(!isLogin)return; let id=document.getElementById('pageCate').value; let ps=Object.keys(resourceLinks[id]||{1:[]}).map(Number); let np=Math.max(...ps)+1; resourceLinks[id][np]=[]; saveData(); renderAllSelect(); renderList(); alert("新增第"+np+"页"); }
+        function deletePage(){ if(!isLogin)return; let id=document.getElementById('delPageCate').value; let p=document.getElementById('delPageNum').value; let ps=Object.keys(resourceLinks[id]); if(ps.length<=1)return alert("至少留1页"); if(!confirm("删除该页所有链接？"))return; delete resourceLinks[id][p]; saveData(); renderAllSelect(); renderList(); if(document.querySelector('.page.active').id===id){ if(currentPage[id]==p)currentPage[id]=1; loadData(id); } alert("删除成功"); }
+        function addLink(){ if(!isLogin)return; let mid=document.getElementById('cate').value; let p=document.getElementById('pageNum').value; let name=document.getElementById('linkName').value.trim(); let url=document.getElementById('linkUrl').value.trim(); if(!name||!url)return alert("名称网址都要填"); if(!resourceLinks[mid])resourceLinks[mid]={}; if(!resourceLinks[mid][p])resourceLinks[mid][p]=[]; resourceLinks[mid][p].push({name,url}); saveData(); document.getElementById('linkName').value=''; document.getElementById('linkUrl').value=''; renderList(); if(document.querySelector('.page.active').id===mid)loadData(mid); alert("链接添加成功！"); }
+        function delLink(mid,p,i){ if(!isLogin)return; resourceLinks[mid][p].splice(i,1); saveData(); renderList(); if(document.querySelector('.page.active').id===mid)loadData(mid); }
+        function renderList(){ let dom=document.getElementById('allLinks'); dom.innerHTML=''; getAllMenu().forEach(m=>{ let data=resourceLinks[m.id]; if(!data)return; for(let p in data){ let arr=data[p]; if(arr.length==0)continue; dom.innerHTML+=`<h4 style="color:#fff;margin:15px 0 5px;">${escapeHtml(m.name)} - 第${p}页</h4>`; arr.forEach((item,i)=>{ dom.innerHTML+=`<div class="link-item"><a href="${escapeHtml(item.url)}" target="_blank">${escapeHtml(item.name)}</a><button class="del-btn" onclick="delLink('${m.id}',${p},${i})">删除</button></div>`; }); } }); }
 
-        function addSubCate(){
-            if(!isLogin)return;
-            let pid=document.getElementById('parentCateSelect').value;
-            let name=document.getElementById('subCateName').value.trim();
-            if(!pid||!name)return alert("选顶级菜单+填名称");
-            let id='sub_'+Date.now();
-            subMenus[id]={parentId:pid,name:name};
-            resourceLinks[id]={1:[]};
-            saveData();rebuildNav();renderAllSelect();renderList();updateInternalTargetSelect();
-            document.getElementById('subCateName').value='';alert("分支添加成功");
-        }
-        function deleteBranch(){
-            if(!isLogin)return;
-            let sel=document.getElementById('delBranchSelect');
-            if(sel.options[0].disabled)return alert("无分支可删");
-            let id=sel.value;
-            if(!confirm("删除分支+所有链接一起消失！确定？"))return;
-            delete subMenus[id];delete resourceLinks[id];
-            removePage(id);saveData();rebuildNav();renderAllSelect();renderList();updateInternalTargetSelect();
-            if(document.querySelector('.page.active').id===id)showPage('首页','home');
-            alert("删除成功");
-        }
+        document.getElementById('cate')?.addEventListener('change',renderPageSelect);
+        document.getElementById('delPageCate')?.addEventListener('change',renderDelPageSelect);
 
-        function addPage(){
-            if(!isLogin)return;
-            let id=document.getElementById('pageCate').value;
-            let ps=Object.keys(resourceLinks[id]||{1:[]}).map(Number);
-            let np=Math.max(...ps)+1;
-            resourceLinks[id][np]=[];
-            saveData();renderAllSelect();renderList();alert("新增第"+np+"页");
-        }
-        function deletePage(){
-            if(!isLogin)return;
-            let id=document.getElementById('delPageCate').value;
-            let p=document.getElementById('delPageNum').value;
-            let ps=Object.keys(resourceLinks[id]);
-            if(ps.length<=1)return alert("至少留1页");
-            if(!confirm("删除该页所有链接？"))return;
-            delete resourceLinks[id][p];
-            saveData();renderAllSelect();renderList();
-            if(document.querySelector('.page.active').id===id){
-                if(currentPage[id]==p)currentPage[id]=1;
-                loadData(id);
-            }
-            alert("删除成功");
-        }
-
-        function addLink(){
-            if(!isLogin)return;
-            let mid=document.getElementById('cate').value;
-            let p=document.getElementById('pageNum').value;
-            let name=document.getElementById('linkName').value.trim();
-            let url=document.getElementById('linkUrl').value.trim();
-            if(!name||!url)return alert("名称网址都要填");
-            if(!resourceLinks[mid])resourceLinks[mid]={};
-            if(!resourceLinks[mid][p])resourceLinks[mid][p]=[];
-            resourceLinks[mid][p].push({name,url});
-            saveData();
-            document.getElementById('linkName').value='';
-            document.getElementById('linkUrl').value='';
-            renderList();
-            if(document.querySelector('.page.active').id===mid)loadData(mid);
-            alert("链接添加成功！");
-        }
-
-        function delLink(mid,p,i){
-            if(!isLogin)return;
-            resourceLinks[mid][p].splice(i,1);
-            saveData();renderList();
-            if(document.querySelector('.page.active').id===mid)loadData(mid);
-        }
-
-        function renderList(){
-            let dom=document.getElementById('allLinks');dom.innerHTML='';
-            getAllMenu().forEach(m=>{
-                let data=resourceLinks[m.id];
-                if(!data)return;
-                for(let p in data){
-                    let arr=data[p];
-                    if(arr.length==0)continue;
-                    dom.innerHTML+=`<h4 style="color:#fff;margin:15px 0 5px;">${escapeHtml(m.name)} - 第${p}页</h4>`;
-                    arr.forEach((item,i)=>{
-                        dom.innerHTML+=`<div class="link-item"><a href="${escapeHtml(item.url)}" target="_blank">${escapeHtml(item.name)}</a><button class="del-btn" onclick="delLink('${m.id}',${p},${i})">删除</button></div>`;
-                    });
-                }
-            });
-        }
-
-        document.getElementById('cate').addEventListener('change',renderPageSelect);
-        document.getElementById('delPageCate').addEventListener('change',renderDelPageSelect);
-
-        function baiduSearch(){
-            let k=document.getElementById('baiduSearchInput').value.trim();
-            if(k)window.open('https://www.baidu.com/s?wd='+encodeURIComponent(k),'_self');
-        }
-
-        function initTop(){
-            let btn=document.getElementById('goTopBtn');
-            window.addEventListener('scroll',()=>{ if(window.scrollY>300)btn.classList.add('show'); else btn.classList.remove('show'); });
-            btn.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
-        }
-
-        function clock(){
-            let d=new Date();
-            let h=(d.getHours()+'').padStart(2,'0');
-            let m=(d.getMinutes()+'').padStart(2,'0');
-            let s=(d.getSeconds()+'').padStart(2,'0');
-            document.getElementById('clock').innerText=h+':'+m+':'+s;
-        }
-        setInterval(clock,1000);clock();
+        function baiduSearch(){ let k=document.getElementById('baiduSearchInput').value.trim(); if(k) window.open('https://www.baidu.com/s?wd='+encodeURIComponent(k),'_self'); }
+        function initTop(){ let btn=document.getElementById('goTopBtn'); window.addEventListener('scroll',()=>{ if(window.scrollY>300) btn.classList.add('show'); else btn.classList.remove('show'); }); btn.onclick=()=>window.scrollTo({top:0,behavior:'smooth'}); }
+        function clock(){ let d=new Date(); let h=(d.getHours()+'').padStart(2,'0'); let m=(d.getMinutes()+'').padStart(2,'0'); let s=(d.getSeconds()+'').padStart(2,'0'); document.getElementById('clock').innerText=h+':'+m+':'+s; }
+        setInterval(clock,1000); clock();
 
         function closeFeedback() {
             document.getElementById('feedbackBox').style.display = 'none';
@@ -1031,12 +822,9 @@
         function submitFeedback(){
             let name = document.getElementById('feedbackName').value.trim();
             let content = document.getElementById('feedbackContent').value.trim();
-            if(!name || !content){
-                alert("昵称和内容都要填写！");
-                return;
-            }
+            if(!name || !content){ alert("昵称和内容都要填写！"); return; }
             let time = new Date().toLocaleString();
-            feedbackList.unshift({id:Date.now(),name:name,content:content,time:time});
+            feedbackList.unshift({id:Date.now(),name,content,time});
             saveData();
             renderFeedback();
             renderAdminFeedback();
@@ -1047,39 +835,35 @@
         function renderFeedback(){
             let box = document.getElementById('feedbackList');
             box.innerHTML = '';
-            feedbackList.forEach(item=>{
-                box.innerHTML += `<div class="feedback-item"><div class="feedback-name">${escapeHtml(item.name)}</div><div class="feedback-time">${escapeHtml(item.time)}</div><div class="feedback-content">${escapeHtml(item.content)}</div></div>`;
-            });
+            feedbackList.forEach(item=>{ box.innerHTML += `<div class="feedback-item"><div class="feedback-name">${escapeHtml(item.name)}</div><div class="feedback-time">${escapeHtml(item.time)}</div><div class="feedback-content">${escapeHtml(item.content)}</div></div>`; });
         }
         function renderAdminFeedback(){
             let box = document.getElementById('adminFeedbackList');
             box.innerHTML = '';
-            feedbackList.forEach((item,index)=>{
-                box.innerHTML += `<div class="feedback-item"><div class="feedback-name">${escapeHtml(item.name)}</div><div class="feedback-time">${escapeHtml(item.time)}</div><div class="feedback-content">${escapeHtml(item.content)}</div><button class="del-btn" onclick="deleteFeedback(${index})">删除</button></div>`;
-            });
+            feedbackList.forEach((item,index)=>{ box.innerHTML += `<div class="feedback-item"><div class="feedback-name">${escapeHtml(item.name)}</div><div class="feedback-time">${escapeHtml(item.time)}</div><div class="feedback-content">${escapeHtml(item.content)}</div><button class="del-btn" onclick="deleteFeedback(${index})">删除</button></div>`; });
         }
-        function deleteFeedback(index){
-            if(!isLogin)return;
-            if(!confirm("确定删除这条意见？"))return;
-            feedbackList.splice(index,1);
-            saveData();
-            renderFeedback();
-            renderAdminFeedback();
-            alert("✅ 删除成功");
-        }
+        function deleteFeedback(index){ if(!isLogin)return; if(!confirm("确定删除这条意见？"))return; feedbackList.splice(index,1); saveData(); renderFeedback(); renderAdminFeedback(); alert("✅ 删除成功"); }
 
         function exportBackup() {
             if (!isLogin) return;
-            const backup = {topMenus,subMenus,resourceLinks,extraPages,subNavList,feedbackList};
-            const blob = new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+            const freshData = {
+                topMenus: JSON.parse(localStorage.getItem('topMenus') || '{}'),
+                subMenus: JSON.parse(localStorage.getItem('subMenus') || '{}'),
+                resourceLinks: JSON.parse(localStorage.getItem('resourceLinks') || '{}'),
+                extraPages: JSON.parse(localStorage.getItem('extraPages') || '{}'),
+                subNavList: JSON.parse(localStorage.getItem('subNavList') || '[]'),
+                feedbackList: JSON.parse(localStorage.getItem('feedbackList') || '[]')
+            };
+            const blob = new Blob([JSON.stringify(freshData, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = `网站备份_${new Date().toLocaleDateString()}.json`;
             a.click();
             URL.revokeObjectURL(url);
-            alert("备份成功");
+            alert("✅ 备份成功！已包含所有数据（含独立页面、链接、副导航、意见反馈）");
         }
+
         document.getElementById('backupFileInput').addEventListener('change',e=>{
             if(!isLogin)return;
             const file=e.target.files[0];
