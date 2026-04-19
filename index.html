@@ -74,13 +74,105 @@
         .restore-btn { background: #28a745 !important; }
         .clear-btn { background: #dc3545 !important; }
         #backupFileInput { display: none; }
-        .feedback-box { position: fixed; bottom: 25px; right: 25px; width: 380px; background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 22px; border-radius: 20px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25); border: 1px solid rgba(255,255,255,0.3); z-index: 999; }
-        .feedback-title { font-size: 20px; color: #ffffff; font-weight: 600; margin-bottom: 14px; text-align: left; }
-        .feedback-input { width: 100%; padding: 11px 14px; margin: 0 0 10px; border-radius: 12px; font-size: 14px; background: rgba(255,255,255,0.4); border: none; outline: none; }
-        .feedback-textarea { width: 100%; height: 100px; padding: 11px 14px; border-radius: 12px; font-size: 14px; background: rgba(255,255,255,0.4); border: none; outline: none; resize: none; }
-        .feedback-btn { width: 100%; padding: 11px; margin-top: 10px; background: #ffffff; color: #222; font-size: 15px; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; }
-        .feedback-btn:hover { background: #f0f0f0; }
+        /* 意见反馈框样式（带开关） */
+        .feedback-container {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 999;
+        }
+        .feedback-box {
+            width: 380px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 22px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .feedback-title {
+            font-size: 20px;
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 14px;
+            text-align: left;
+        }
+        .feedback-input {
+            width: 100%;
+            padding: 11px 14px;
+            margin: 0 0 10px;
+            border-radius: 12px;
+            font-size: 14px;
+            background: rgba(255,255,255,0.4);
+            border: none;
+            outline: none;
+        }
+        .feedback-textarea {
+            width: 100%;
+            height: 100px;
+            padding: 11px 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            background: rgba(255,255,255,0.4);
+            border: none;
+            outline: none;
+            resize: none;
+        }
+        .feedback-btn {
+            width: 100%;
+            padding: 11px;
+            margin-top: 10px;
+            background: #ffffff;
+            color: #222;
+            font-size: 15px;
+            font-weight: bold;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        .feedback-btn:hover {
+            background: #f0f0f0;
+        }
         .feedback-list { display: none; }
+        .close-feedback {
+            cursor: pointer;
+            font-size: 22px;
+            color: rgba(255,255,255,0.8);
+            transition: 0.2s;
+            line-height: 1;
+            float: right;
+            margin-top: -6px;
+        }
+        .close-feedback:hover {
+            color: #ff6600;
+        }
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .feedback-header .feedback-title {
+            margin-bottom: 0;
+        }
+        .open-feedback-btn {
+            width: 380px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 15px 22px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: 0.2s;
+            font-weight: bold;
+            color: #fff;
+            font-size: 18px;
+        }
+        .open-feedback-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
     </style>
 </head>
 <body>
@@ -132,12 +224,17 @@
                 </div>
             </div>
 
-            <!-- 用户意见栏 -->
-            <div class="feedback-box">
-                <div class="feedback-title">💬 意见反馈</div>
-                <input type="text" class="feedback-input" id="feedbackName" placeholder="你的昵称">
-                <textarea class="feedback-textarea" id="feedbackContent" placeholder="写下你的意见或建议..."></textarea>
-                <button class="feedback-btn" onclick="submitFeedback()">提交</button>
+            <!-- 用户意见栏（带开关） -->
+            <div class="feedback-container" id="feedbackContainer">
+                <div class="feedback-box" id="feedbackBox">
+                    <div class="feedback-header">
+                        <div class="feedback-title">💬 意见反馈</div>
+                        <span class="close-feedback" onclick="closeFeedback()">✕</span>
+                    </div>
+                    <input type="text" class="feedback-input" id="feedbackName" placeholder="你的昵称">
+                    <textarea class="feedback-textarea" id="feedbackContent" placeholder="写下你的意见或建议..."></textarea>
+                    <button class="feedback-btn" onclick="submitFeedback()">提交</button>
+                </div>
             </div>
             <div class="feedback-list" id="feedbackList"></div>
         </div>
@@ -172,6 +269,11 @@
                     <select id="delSubNavSelect" style="min-width:200px;"></select>
                     <button class="del-page-btn" onclick="deleteSelectedSubNav()">🗑️ 删除选中的副导航按钮</button>
                     <button class="del-page-btn" onclick="deleteLastSubNavItem()">➖ 删除最后一个</button>
+                </div>
+                <!-- 新增：与主功能一致的添加顶级菜单按钮 -->
+                <div class="admin-form">
+                    <input type="text" id="newCate2" placeholder="顶级菜单名称（与主功能一致）" style="width:220px;">
+                    <button onclick="addTopCateFromSubNav()">➕ 添加顶级菜单（与主功能一致）</button>
                 </div>
                 <hr>
 
@@ -357,7 +459,6 @@
             let name = document.getElementById('subNavName').value.trim();
             let url = document.getElementById('subNavUrl').value.trim();
             if (!name) return alert("请填写按钮名称！");
-            // 如果网址为空，默认设为 "#"
             if (url === '') url = '#';
             subNavList.push({ name: name, url: url });
             saveData();
@@ -379,7 +480,29 @@
             alert("✅ 删除成功");
         }
 
-        // 以下为原有的完整管理函数（未改动核心逻辑）
+        // 反馈框开关函数
+        function closeFeedback() {
+            document.getElementById('feedbackBox').style.display = 'none';
+            let openBtn = document.createElement('div');
+            openBtn.className = 'open-feedback-btn';
+            openBtn.id = 'openFeedbackBtn';
+            openBtn.innerHTML = '💬 打开意见反馈';
+            openBtn.onclick = function() {
+                document.getElementById('feedbackBox').style.display = 'block';
+                this.remove();
+            };
+            document.getElementById('feedbackContainer').appendChild(openBtn);
+        }
+
+        // 页面加载时确保打开按钮不存在
+        function initFeedbackToggle() {
+            let container = document.getElementById('feedbackContainer');
+            let existingOpen = document.getElementById('openFeedbackBtn');
+            if (existingOpen) existingOpen.remove();
+            let feedbackBox = document.getElementById('feedbackBox');
+            if (feedbackBox) feedbackBox.style.display = 'block';
+        }
+
         function submitFeedback(){
             let name = document.getElementById('feedbackName').value.trim();
             let content = document.getElementById('feedbackContent').value.trim();
@@ -648,14 +771,28 @@
 
         function addTopCate(){
             if(!isLogin)return;
-            let name=document.getElementById('newCate').value.trim();
-            if(!name)return alert("请输入菜单名称");
-            let id='top_'+Date.now();
-            topMenus[id]={name:name};
-            resourceLinks[id]={1:[]};
-            saveData();rebuildNav();renderAllSelect();renderList();
-            document.getElementById('newCate').value='';alert("顶级菜单添加成功！");
+            let name = document.getElementById('newCate').value.trim();
+            if(!name) return alert("请输入菜单名称");
+            let id = 'top_' + Date.now();
+            topMenus[id] = { name: name };
+            resourceLinks[id] = { 1: [] };
+            saveData(); rebuildNav(); renderAllSelect(); renderList();
+            document.getElementById('newCate').value = '';
+            alert("顶级菜单添加成功！");
         }
+        // 副导航栏管理区域添加的顶级菜单功能（完全一致）
+        function addTopCateFromSubNav(){
+            if(!isLogin)return;
+            let name = document.getElementById('newCate2').value.trim();
+            if(!name) return alert("请输入菜单名称");
+            let id = 'top_' + Date.now();
+            topMenus[id] = { name: name };
+            resourceLinks[id] = { 1: [] };
+            saveData(); rebuildNav(); renderAllSelect(); renderList();
+            document.getElementById('newCate2').value = '';
+            alert("顶级菜单添加成功！");
+        }
+
         function addSubCate(){
             if(!isLogin)return;
             let pid=document.getElementById('parentCateSelect').value;
@@ -772,6 +909,7 @@
             rebuildNav();
             showPage('首页','home');
             initTop();
+            initFeedbackToggle();
         })();
     </script>
 </body>
