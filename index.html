@@ -469,6 +469,7 @@
         <div class="admin-box">
             <h2 class="admin-title">下载链接 / 网站管理面板</h2>
             <div class="login-box" id="loginBox">
+                <!-- ========== 重点修复：密码框 type="password" 隐藏明文 ========== -->
                 <input type="password" id="pwd" placeholder="请输入管理员密码">
                 <button onclick="adminLogin()">登录</button>
             </div>
@@ -704,13 +705,12 @@
             sub.classList.toggle('show');
         }
 
-        // ===================== 后台开关核心 =====================
-        // on = 开启后台   off = 关闭后台
-        // 只需要改这里！只改单词！！
+        // ===================== 后台总开关 on/off =====================
+        // on = 开启后台   off = 完全关闭后台
+        // 只改这里一个单词即可！
         const adminSwitch = "on";
 
         function openAdminModal(){
-            // 开关判断
             if(adminSwitch === "off"){
                 alert("后台管理已关闭");
                 return;
@@ -902,6 +902,5 @@
         showPage('首页','home');
         initTop();
     </script>
-
 </body>
 </html>
