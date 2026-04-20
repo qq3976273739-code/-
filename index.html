@@ -245,12 +245,11 @@
         let subNavList = [];
         let feedbackList = [];
 
-        // ★★★★★ 修改为您的云端备份地址 ★★★★★
+        // 云端备份地址
         const CLOUD_DATA_URL = "https://raw.githubusercontent.com/qq3976273739-code/my-site-data/refs/heads/main/data.json";
 
         function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
 
-        // 从云端加载数据（优先使用，覆盖本地）
         async function fetchCloudDataAndApply() {
             try {
                 const response = await fetch(CLOUD_DATA_URL, { cache: "no-cache" });
@@ -273,7 +272,6 @@
             return false;
         }
 
-        // 如果云端失败，则回退到本地存储或默认初始化
         function loadLocalOrDefault() {
             let storedTop = localStorage.getItem('topMenus');
             let storedSub = localStorage.getItem('subMenus');
@@ -290,7 +288,6 @@
                 subNavList = storedSubNav ? JSON.parse(storedSubNav) : [];
                 feedbackList = storedFeedback ? JSON.parse(storedFeedback) : [];
             } else {
-                // 默认初始化（空数据）
                 topMenus = {};
                 subMenus = {};
                 resourceLinks = {};
@@ -310,13 +307,11 @@
             localStorage.setItem('feedbackList', JSON.stringify(feedbackList));
         }
 
-        // 初始化：优先从云端拉取并覆盖，如果失败则使用本地/默认
         async function initData() {
             const cloudOk = await fetchCloudDataAndApply();
             if (!cloudOk) {
                 loadLocalOrDefault();
             }
-            // 确保所有菜单的页面容器存在
             rebuildNav();
             renderSubNav();
             renderFeedback();
@@ -608,6 +603,7 @@
         }
         function removePage(id){ let el=document.getElementById(id); if(el) el.remove(); }
 
+        // ★★★★★ 修改后的导航栏生成函数，添加了固定菜单“甲方粑粑网站” ★★★★★
         function rebuildNav(){
             let ul=document.getElementById('navMenuList');
             ul.innerHTML='';
@@ -634,6 +630,10 @@
             }
             for(let sid in subMenus) createPage(sid,subMenus[sid].name);
             for(let eid in extraPages) createPage(eid, extraPages[eid].name);
+            // 添加固定外部链接菜单：甲方粑粑网站
+            let customLi = document.createElement('li');
+            customLi.innerHTML = '<a href="http://siyecaolmh.top" target="_blank" rel="noopener noreferrer">甲方粑粑网站</a>';
+            ul.appendChild(customLi);
         }
 
         function loadData(menuId){
