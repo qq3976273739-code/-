@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=yes">
     <link rel="icon" href="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" type="image/png">
     <title>虎天寿资源整理网站 - 磨砂玻璃质感</title>
     <style>
@@ -15,16 +15,7 @@
             min-height: 100vh;
             padding: 20px;
         }
-        /* 通用磨砂玻璃效果（仅替换背景质感，不改变尺寸与边框轮廓） */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px);
-            border-radius: 28px; /* 保持原有圆角，此处为默认，具体类会单独定义圆角 */
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.2);
-            transition: all 0.2s;
-        }
-        /* 保留原有个别元素的特殊圆角值，仅改背景 */
+        /* 通用磨砂玻璃效果 */
         .avatar-box { position: absolute; top: 20px; right: 30px; cursor: pointer; }
         .avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         .avatar:hover { box-shadow: 0 0 15px #ff6600; transform: scale(1.02); }
@@ -39,7 +30,6 @@
             border: 1px solid rgba(255,255,255,0.3);
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
-        /* 当前页面指示器 */
         .current-menu {
             text-align: center; margin: 0 auto 30px;
             background: rgba(255, 255, 255, 0.12);
@@ -49,7 +39,7 @@
             width: 60%; border: 1px solid rgba(255,255,255,0.3);
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
-        /* 导航栏 - 磨砂玻璃（原黑色背景替换） */
+        /* 导航栏 - 磨砂玻璃 */
         .nav {
             width: 85%; margin: 30px auto;
             background: rgba(255, 255, 255, 0.12);
@@ -81,7 +71,7 @@
             border: 1px solid rgba(255,255,255,0.2);
         }
         .nav .sub-menu.show { display: flex; }
-        /* 副导航栏 - 磨砂玻璃 */
+        /* 副导航栏 */
         .sub-nav {
             width: 85%; margin: 0 auto 30px;
             background: rgba(255, 255, 255, 0.12);
@@ -98,7 +88,7 @@
             transition: 0.2s;
         }
         .sub-nav a:hover { color: #ff6600; background: rgba(0, 0, 0, 0.45); }
-        /* 搜索框区域 - 磨砂玻璃 */
+        /* 搜索框区域 */
         .search-box {
             width: 60%; margin: 0 auto 40px;
             background: rgba(255, 255, 255, 0.12);
@@ -121,7 +111,7 @@
             cursor: pointer; transition: 0.2s;
         }
         .search-btn:hover { background: #e65c00; transform: scale(1.02); }
-        /* 主内容区 - 磨砂玻璃 */
+        /* 主内容区 */
         .blank-box {
             width: 80%; margin: 60px auto; padding: 32px;
             background: rgba(255, 255, 255, 0.1);
@@ -141,7 +131,7 @@
         }
         .home-top-btn button:hover { background: #e65c00; transform: scale(1.02); }
         .home-row { display: flex; align-items: center; justify-content: center; gap: 60px; margin-top: 30px; flex-wrap: wrap; }
-        /* 数字时钟 - 磨砂玻璃 */
+        /* 数字时钟 */
         .digital-clock {
             background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(16px);
@@ -150,7 +140,7 @@
             border: 1px solid rgba(255,255,255,0.3);
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
-        /* 捐赠区域 - 磨砂玻璃 */
+        /* 捐赠区域 */
         .donate-group { text-align: center; }
         .donate {
             background: rgba(255, 255, 255, 0.12);
@@ -163,7 +153,7 @@
         .donate img { width: 180px; border-radius: 16px; transition: 0.2s; }
         .donate img:hover { transform: scale(1.02); }
         .footer-text { text-align: center; margin-top: 15px; font-size: 15px; color: #eee; }
-        /* 作者信息 - 磨砂玻璃 */
+        /* 作者信息 */
         .author-info {
             background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(16px);
@@ -174,8 +164,8 @@
         }
         .author-info a { color: #66ccff; text-decoration: none; margin-left: 15px; font-weight: 500; }
         .author-info a:hover { color: #ff6600; }
-        /* 甲方爸爸卡片 - 磨砂玻璃 */
-        .jia-card {
+        /* 替换后的提示卡片 - 磨砂玻璃 */
+        .contact-card {
             background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(16px);
             border-radius: 28px;
@@ -185,27 +175,24 @@
             border: 1px solid rgba(255,255,255,0.3);
             transition: 0.2s;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            font-size: 18px;
+            font-weight: 500;
         }
-        .jia-card:hover {
+        .contact-card:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: translateY(-3px);
         }
-        .jia-card a {
-            display: inline-block;
-            background: #ff6600;
-            color: white;
-            font-size: 20px;
+        .contact-card .contact-text {
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        .contact-card .contact-qq {
+            color: #ffaa66;
             font-weight: bold;
-            padding: 12px 32px;
-            border-radius: 60px;
-            text-decoration: none;
-            transition: 0.2s;
+            font-size: 20px;
+            margin-left: 8px;
         }
-        .jia-card a:hover {
-            background: #e65c00;
-            transform: scale(1.02);
-        }
-        /* 反馈悬浮按钮 - 磨砂玻璃 */
+        /* 反馈悬浮按钮 */
         .float-feedback-btn {
             position: fixed;
             bottom: 30px;
@@ -276,7 +263,7 @@
             color: rgba(255,255,255,0.8);
         }
         .feedback-modal .close-modal:hover { color: #ff6600; }
-        /* 主页反馈列表容器 - 磨砂玻璃 */
+        /* 主页反馈列表 */
         .feedback-home-section { margin-top: 40px; }
         .feedback-home-section h3 { color: #ffaa66; font-size: 22px; font-weight: 600; margin-bottom: 16px; }
         .feedback-list-home {
@@ -299,7 +286,7 @@
         .feedback-item .feedback-name { font-weight: bold; color: #ffaa66; }
         .feedback-item .feedback-time { font-size: 11px; color: #ccc; margin-left: 12px; }
         .feedback-item .feedback-content { margin-top: 8px; font-size: 14px; }
-        /* 分页按钮容器 - 保持背景统一（按钮本身不变） */
+        /* 分页按钮容器 */
         .pagination { text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 12px; }
         .page-btn {
             padding: 8px 18px; background: #ff6600; color: #fff; border: none;
@@ -308,7 +295,7 @@
         }
         .page-btn.active { background: #e65c00; box-shadow: 0 0 8px #ff6600; }
         .page-btn:hover { transform: translateY(-2px); background: #e65c00; }
-        /* 后台弹窗背景保持较深，但风格统一 */
+        /* 后台弹窗 */
         .admin-modal {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
             background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(20px);
@@ -335,7 +322,7 @@
         .edit-btn { background: #0099ff; }
         .close-btn { position: absolute; top: 20px; right: 25px; color: #fff; font-size: 28px; cursor: pointer; }
         hr { margin: 20px 0; border-color: rgba(255,255,255,0.2); }
-        /* 回到顶部按钮 - 磨砂玻璃 */
+        /* 回到顶部按钮 */
         .go-top {
             position: fixed; bottom: 120px; right: 30px; width: 52px; height: 52px;
             background: rgba(255, 255, 255, 0.15);
@@ -397,8 +384,10 @@
                     <div class="footer-text">整理资源耗费大量精力，维护网站也需要持续付出，感谢您的理解与支持</div>
                 </div>
             </div>
-            <div class="jia-card">
-                <a href="https://syc.siyecaoscw.top" target="_blank" rel="noopener noreferrer">🚀 甲方爸爸的网站</a>
+            <!-- 替换甲方爸爸卡片为联系方式卡片 -->
+            <div class="contact-card">
+                <span class="contact-text">便宜装系统有需求的</span>
+                <span class="contact-qq">QQ：3608504926</span>
             </div>
             <div class="feedback-home-section">
                 <h3>📢 最新用户反馈</h3>
@@ -416,7 +405,7 @@
     </div>
     <div class="go-top" id="goTopBtn" title="回到顶部">↑</div>
 
-    <!-- 后台管理（功能完整保留，仅背景微调） -->
+    <!-- 后台管理（完整保留） -->
     <div class="admin-modal" id="adminModal">
         <span class="close-btn" onclick="closeAdminModal()">×</span>
         <div class="admin-box">
@@ -499,7 +488,7 @@
     </div>
 
     <script>
-        // 以下为完整功能脚本（与之前完全一致，确保所有功能正常运行，未做任何删减）
+        // ======================== 完整功能脚本（未做任何删减） ========================
         const ADMIN_PASSWORD = "wangyiming87";
         let isLogin = false;
         let currentPage = {};
