@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=yes">
     <link rel="icon" href="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" type="image/png">
-    <title>虎天寿资源整理网站 - 强化导入版</title>
+    <title>虎天寿资源整理网站 - 稳定导入版</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", "微软雅黑", system-ui, sans-serif; cursor: default; }
         body {
@@ -431,7 +431,7 @@
                 subMenus = JSON.parse(s);
                 resourceLinks = JSON.parse(r);
                 extraPages = e ? JSON.parse(e) : {};
-                subNavList = sn ? JSON.parse(sn) : {};
+                subNavList = sn ? JSON.parse(sn) : [];
             } else {
                 // 默认空数据，但为了演示，创建示例顶级菜单
                 topMenus = { "top_example": { name: "示例菜单" } };
@@ -445,37 +445,54 @@
             return false;
         }
 
-        // 强制导入备份文件（覆盖所有数据，并自动修复，支持 BOM 头，导入后强制刷新页面）
+        // ========== 重写导入备份文件代码 ==========
         function importBackupFile(file) {
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
                 let rawText = e.target.result;
-                // 去除 UTF-8 BOM 头
+                // 1. 去除 UTF-8 BOM 头
                 if (rawText.charCodeAt(0) === 0xFEFF) {
                     rawText = rawText.slice(1);
                 }
+                // 2. 尝试解析 JSON
                 try {
                     let data = JSON.parse(rawText);
-                    // 验证必需字段
-                    if (typeof data !== 'object') throw new Error("无效的数据结构");
-                    // 覆盖全局变量
+                    // 3. 验证数据基本结构（必须包含 topMenus）
+                    if (typeof data !== 'object' || data === null) {
+                        throw new Error("备份文件不是有效的对象");
+                    }
+                    if (!data.topMenus) {
+                        // 允许没有 topMenus，但至少要有合法结构
+                        data.topMenus = {};
+                    }
+                    // 4. 覆盖全局变量
                     topMenus = data.topMenus || {};
                     subMenus = data.subMenus || {};
                     resourceLinks = data.resourceLinks || {};
                     extraPages = data.extraPages || {};
                     subNavList = data.subNavList || [];
-                    // 修复数据结构
+                    // 5. 修复数据结构（补齐缺失页）
                     repairData();
-                    // 保存到本地存储
+                    // 6. 保存到本地存储
                     saveToLocal();
-                    // 强制刷新页面，让所有 DOM 重新根据新数据生成
+                    // 7. 提示用户并强制刷新页面
                     alert("✅ 备份恢复成功！页面将自动刷新。");
                     location.reload();
                 } catch (err) {
                     console.error("导入错误:", err);
+                    // 尝试获取更精确的错误位置
                     let errorMsg = err.message;
-                    alert(`文件解析失败：${errorMsg}\n请确保文件是有效的 JSON 格式，可使用“下载示例备份”对比格式。`);
+                    let match = errorMsg.match(/position (\d+)/);
+                    if (match) {
+                        let pos = parseInt(match[1]);
+                        let lines = rawText.substring(0, pos).split('\n');
+                        let line = lines.length;
+                        let col = lines[lines.length-1].length + 1;
+                        alert(`文件解析失败：${errorMsg}\n错误位置：第 ${line} 行，第 ${col} 列。\n请确保文件是有效的 JSON 格式，可使用“下载示例备份”对比格式。`);
+                    } else {
+                        alert(`文件解析失败：${errorMsg}\n请确保文件是有效的 JSON 格式。`);
+                    }
                 }
             };
             reader.onerror = () => alert("读取文件失败，请重试。");
