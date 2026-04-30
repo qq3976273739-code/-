@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=yes">
     <link rel="icon" href="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" type="image/png">
-    <title>虎天寿资源整理网站</title>
+    <title>虎天寿资源整理网站 - 云端同步版</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", "微软雅黑", system-ui, sans-serif; cursor: default; }
         body {
@@ -14,7 +14,7 @@
             min-height: 100vh;
             padding: 20px;
         }
-        /* 深色磨砂玻璃亚克力风格 */
+        /* 深色磨砂玻璃 */
         .avatar-box { position: absolute; top: 20px; right: 30px; cursor: pointer; }
         .avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer; }
         .avatar:hover { box-shadow: 0 0 15px #ff6600; transform: scale(1.02); }
@@ -28,7 +28,6 @@
             display: inline-block;
             border: 1px solid rgba(255,255,255,0.25);
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            letter-spacing: 1px;
         }
         .current-menu {
             text-align: center; margin: 0 auto 30px;
@@ -39,7 +38,6 @@
             width: 60%; border: 1px solid rgba(255,255,255,0.25);
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        /* 导航栏 */
         .nav {
             width: 85%; margin: 30px auto;
             background: rgba(20, 20, 30, 0.7);
@@ -51,7 +49,7 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
         .nav-avatar { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #ff6600; object-fit: cover; cursor: pointer; }
-        .nav ul { list-style: none; display: flex; justify-content: center; gap: 35px; }
+        .nav ul { list-style: none; display: flex; justify-content: center; gap: 35px; flex-wrap: wrap; }
         .nav li { position: relative; padding: 6px 0; }
         .nav a {
             color: #fff; text-decoration: none; font-size: 18px; font-weight: 500;
@@ -64,7 +62,7 @@
         .nav a:hover { color: #ff6600; background: rgba(255,255,255,0.2); transform: translateY(-1px); }
         .nav .sub-menu {
             display: none; position: absolute; top: 100%; left: 0;
-            background: rgba(20, 20, 30, 0.9);
+            background: rgba(20, 20, 30, 0.95);
             backdrop-filter: blur(12px);
             border-radius: 16px; padding: 10px; width: 180px;
             flex-direction: column; gap: 8px; z-index: 999;
@@ -88,7 +86,6 @@
             cursor: pointer;
         }
         .sub-nav a:hover { color: #ff6600; background: rgba(255,255,255,0.2); }
-        /* 搜索框 */
         .search-box {
             width: 60%; margin: 0 auto 40px;
             background: rgba(20, 20, 30, 0.7);
@@ -112,7 +109,6 @@
             cursor: pointer; transition: 0.2s;
         }
         .search-btn:hover { background: #e65c00; transform: scale(1.02); }
-        /* 主内容区 */
         .blank-box {
             width: 80%; margin: 60px auto; padding: 32px;
             background: rgba(20, 20, 30, 0.7);
@@ -132,7 +128,6 @@
         }
         .home-top-btn button:hover { background: #e65c00; transform: scale(1.02); }
         .home-row { display: flex; align-items: center; justify-content: center; gap: 60px; margin-top: 30px; flex-wrap: wrap; }
-        /* 数字时钟 */
         .digital-clock {
             background: rgba(20, 20, 30, 0.7);
             backdrop-filter: blur(12px);
@@ -141,7 +136,6 @@
             border: 1px solid rgba(255,255,255,0.25);
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        /* 捐赠区域 */
         .donate-group { text-align: center; }
         .donate {
             background: rgba(20, 20, 30, 0.7);
@@ -154,7 +148,6 @@
         .donate img { width: 180px; border-radius: 16px; transition: 0.2s; cursor: pointer; }
         .donate img:hover { transform: scale(1.02); }
         .footer-text { text-align: center; margin-top: 15px; font-size: 15px; color: #eee; }
-        /* 作者信息 */
         .author-info {
             background: rgba(20, 20, 30, 0.7);
             backdrop-filter: blur(12px);
@@ -165,7 +158,6 @@
         }
         .author-info a { color: #66ccff; text-decoration: none; margin-left: 15px; font-weight: 500; cursor: pointer; }
         .author-info a:hover { color: #ff6600; }
-        /* 联系方式卡片 */
         .contact-card {
             background: rgba(20, 20, 30, 0.7);
             backdrop-filter: blur(12px);
@@ -185,7 +177,6 @@
         }
         .contact-card .contact-text { color: #fff; letter-spacing: 1px; }
         .contact-card .contact-qq { color: #ffaa66; font-weight: bold; font-size: 20px; margin-left: 8px; }
-        /* 分页按钮容器 */
         .pagination { text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 12px; }
         .page-btn {
             padding: 8px 18px; background: #ff6600; color: #fff; border: none;
@@ -194,7 +185,6 @@
         }
         .page-btn.active { background: #e65c00; box-shadow: 0 0 8px #ff6600; }
         .page-btn:hover { transform: translateY(-2px); background: #e65c00; }
-        /* 后台弹窗 */
         .admin-modal {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
             background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px);
@@ -223,7 +213,6 @@
         .edit-btn { background: #0099ff; }
         .close-btn { position: absolute; top: 20px; right: 25px; color: #fff; font-size: 28px; cursor: pointer; }
         hr { margin: 20px 0; border-color: rgba(255,255,255,0.2); }
-        /* 回到顶部按钮 */
         .go-top {
             position: fixed; bottom: 30px; right: 30px; width: 52px; height: 52px;
             background: rgba(20, 20, 30, 0.7);
@@ -293,7 +282,6 @@
     </div>
     <div class="go-top" id="goTopBtn" title="回到顶部">↑</div>
 
-    <!-- 后台管理 -->
     <div class="admin-modal" id="adminModal">
         <span class="close-btn" onclick="closeAdminModal()">×</span>
         <div class="admin-box">
@@ -362,7 +350,7 @@
                 <h3 style="color:#0099ff;">📦 数据备份与恢复</h3>
                 <div class="admin-form">
                     <button class="backup-btn" onclick="exportBackup()">💾 导出备份文件</button>
-                    <button class="restore-btn" onclick="document.getElementById('backupFileInput').click()">📂 从备份恢复</button>
+                    <button class="restore-btn" onclick="document.getElementById('backupFileInput').click()">📂 从备份恢复（强制覆盖）</button>
                     <button class="clear-btn" onclick="clearAllData()">🗑️ 清空所有数据</button>
                     <input type="file" id="backupFileInput" accept=".json">
                 </div>
@@ -373,54 +361,22 @@
     </div>
 
     <script>
-        // ======================== 功能脚本（无意见反馈模块） ========================
-        const ADMIN_PASSWORD = "wangyiming87";
-        let isLogin = false;
-        let currentPage = {};
-
+        // ----- 核心数据结构 -----
         let topMenus = {};
         let subMenus = {};
         let resourceLinks = {};
         let extraPages = {};
         let subNavList = [];
+        let isLogin = false;
+        let currentPage = {};
 
-        const CLOUD_DATA_URL = "https://raw.githubusercontent.com/qq3976273739-code/my-site-data/refs/heads/main/data.json";
+        const ADMIN_PASSWORD = "wangyiming87";
+        const CLOUD_URL = "https://raw.githubusercontent.com/qq3976273739-code/my-site-data/refs/heads/main/data.json";
 
+        // ----- 工具函数 -----
         function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
 
-        async function fetchCloudDataAndApply() {
-            try {
-                const response = await fetch(CLOUD_DATA_URL, { cache: "no-cache" });
-                if (!response.ok) throw new Error("HTTP " + response.status);
-                const cloudData = await response.json();
-                if (cloudData && typeof cloudData === "object") {
-                    topMenus = cloudData.topMenus || {};
-                    subMenus = cloudData.subMenus || {};
-                    resourceLinks = cloudData.resourceLinks || {};
-                    extraPages = cloudData.extraPages || {};
-                    subNavList = cloudData.subNavList || [];
-                    saveData();
-                    return true;
-                }
-            } catch (err) { console.warn(err); }
-            return false;
-        }
-
-        function loadLocalOrDefault() {
-            let storedTop = localStorage.getItem('topMenus');
-            let storedSub = localStorage.getItem('subMenus');
-            let storedLinks = localStorage.getItem('resourceLinks');
-            let storedExtra = localStorage.getItem('extraPages');
-            let storedSubNav = localStorage.getItem('subNavList');
-            if (storedTop && storedSub && storedLinks) {
-                topMenus = JSON.parse(storedTop); subMenus = JSON.parse(storedSub); resourceLinks = JSON.parse(storedLinks);
-                extraPages = storedExtra ? JSON.parse(storedExtra) : {};
-                subNavList = storedSubNav ? JSON.parse(storedSubNav) : [];
-            } else { topMenus = {}; subMenus = {}; resourceLinks = {}; extraPages = {}; subNavList = []; }
-            saveData();
-        }
-
-        function saveData() {
+        function saveToLocal() {
             localStorage.setItem('topMenus', JSON.stringify(topMenus));
             localStorage.setItem('subMenus', JSON.stringify(subMenus));
             localStorage.setItem('resourceLinks', JSON.stringify(resourceLinks));
@@ -428,88 +384,601 @@
             localStorage.setItem('subNavList', JSON.stringify(subNavList));
         }
 
-        async function initData() {
-            const cloudOk = await fetchCloudDataAndApply();
-            if (!cloudOk) loadLocalOrDefault();
-            rebuildNav(); renderSubNav(); updateSubNavSelects(); updateInternalTargetSelect();
+        // 云端拉取并覆盖本地（启动时调用）
+        async function fetchCloudAndOverwrite() {
+            try {
+                const resp = await fetch(CLOUD_URL, { cache: "no-cache" });
+                if (!resp.ok) throw new Error("HTTP " + resp.status);
+                const data = await resp.json();
+                if (data && typeof data === "object") {
+                    topMenus = data.topMenus || {};
+                    subMenus = data.subMenus || {};
+                    resourceLinks = data.resourceLinks || {};
+                    extraPages = data.extraPages || {};
+                    subNavList = data.subNavList || [];
+                    saveToLocal();
+                    console.log("✅ 云端数据加载成功");
+                    return true;
+                }
+            } catch (err) {
+                console.warn("云端加载失败", err);
+            }
+            // 如果云端失败，尝试从本地加载
+            let t = localStorage.getItem('topMenus');
+            let s = localStorage.getItem('subMenus');
+            let r = localStorage.getItem('resourceLinks');
+            let e = localStorage.getItem('extraPages');
+            let sn = localStorage.getItem('subNavList');
+            if (t && s && r) {
+                topMenus = JSON.parse(t);
+                subMenus = JSON.parse(s);
+                resourceLinks = JSON.parse(r);
+                extraPages = e ? JSON.parse(e) : {};
+                subNavList = sn ? JSON.parse(sn) : [];
+            } else {
+                // 默认空数据
+                topMenus = {};
+                subMenus = {};
+                resourceLinks = {};
+                extraPages = {};
+                subNavList = [];
+            }
+            return false;
         }
 
-        function updateInternalTargetSelect() {
-            let sel = document.getElementById('subNavInternalTarget'); if(!sel) return;
-            sel.innerHTML = '<option value="">-- 选择内部菜单 --</option>';
-            for(let id in topMenus) sel.appendChild(new Option('【顶级】'+topMenus[id].name, id));
-            for(let id in subMenus) { let p = topMenus[subMenus[id].parentId]; sel.appendChild(new Option('【子级】'+(p?p.name:'?')+' → '+subMenus[id].name, id)); }
-            for(let id in extraPages) sel.appendChild(new Option('【独立页】'+extraPages[id].name, id));
+        // 强制导入备份文件（覆盖所有数据）
+        function importBackupFile(file) {
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    let data = JSON.parse(e.target.result);
+                    // 兼容旧结构，确保关键字段存在
+                    topMenus = data.topMenus || {};
+                    subMenus = data.subMenus || {};
+                    resourceLinks = data.resourceLinks || {};
+                    extraPages = data.extraPages || {};
+                    subNavList = data.subNavList || [];
+                    // 修复可能缺失的 resourceLinks 结构
+                    for (let id in topMenus) if (!resourceLinks[id]) resourceLinks[id] = { 1: [] };
+                    for (let id in subMenus) if (!resourceLinks[id]) resourceLinks[id] = { 1: [] };
+                    for (let id in extraPages) if (!resourceLinks[id]) resourceLinks[id] = { 1: [] };
+                    saveToLocal();
+                    // 刷新整个界面
+                    rebuildNav();
+                    renderSubNav();
+                    renderAllSelects();
+                    renderList();
+                    showPage('首页', 'home');
+                    alert("✅ 备份恢复成功！");
+                } catch (err) {
+                    alert("文件解析错误：" + err.message);
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ----- UI 渲染核心 -----
+        function ensurePageContainer(id, name) {
+            if (document.getElementById(id)) return;
+            let area = document.getElementById('area');
+            let div = document.createElement('div');
+            div.className = 'page';
+            div.id = id;
+            div.innerHTML = `<h2 style="color:#ff6600">【${escapeHtml(name)}】</h2><div class="link-list" id="box_${id}"></div><div class="pagination" id="pagebtn_${id}"></div>`;
+            area.appendChild(div);
+        }
+
+        function rebuildNav() {
+            let ul = document.getElementById('navMenuList');
+            ul.innerHTML = '<li><a onclick="showPage(\'首页\',\'home\')">首页</a></li>';
+            for (let tid in topMenus) {
+                let top = topMenus[tid];
+                let children = Object.values(subMenus).filter(c => c.parentId === tid);
+                let li = document.createElement('li');
+                if (children.length) {
+                    li.innerHTML = `<a onclick="toggleMenu(this)">${escapeHtml(top.name)}</a><ul class="sub-menu"></ul>`;
+                    let subUl = li.querySelector('.sub-menu');
+                    children.forEach(c => {
+                        let childLi = document.createElement('li');
+                        childLi.innerHTML = `<a onclick="showPage('${escapeHtml(c.name)}','${c.id}')">${escapeHtml(c.name)}</a>`;
+                        subUl.appendChild(childLi);
+                    });
+                } else {
+                    li.innerHTML = `<a onclick="showPage('${escapeHtml(top.name)}','${tid}')">${escapeHtml(top.name)}</a>`;
+                }
+                ul.appendChild(li);
+                ensurePageContainer(tid, top.name);
+            }
+            for (let sid in subMenus) {
+                ensurePageContainer(sid, subMenus[sid].name);
+            }
+            for (let eid in extraPages) {
+                ensurePageContainer(eid, extraPages[eid].name);
+            }
+        }
+
+        function renderSubNav() {
+            let box = document.getElementById('subNavBox');
+            box.innerHTML = '';
+            subNavList.forEach(item => {
+                let a = document.createElement('a');
+                a.innerText = item.name;
+                if (item.type === 'internal' || item.type === 'new') {
+                    let tid = item.targetId;
+                    let tname = '';
+                    if (topMenus[tid]) tname = topMenus[tid].name;
+                    else if (subMenus[tid]) tname = subMenus[tid].name;
+                    else if (extraPages[tid]) tname = extraPages[tid].name;
+                    else tname = item.newPageName || '页面';
+                    a.onclick = (e) => { e.preventDefault(); showPage(tname, tid); };
+                    a.href = 'javascript:void(0)';
+                } else {
+                    a.href = item.url || '#';
+                    a.target = '_blank';
+                }
+                box.appendChild(a);
+            });
+        }
+
+        function loadData(menuId) {
+            if (!resourceLinks[menuId]) resourceLinks[menuId] = { 1: [] };
+            if (!currentPage[menuId]) currentPage[menuId] = 1;
+            let page = currentPage[menuId];
+            let list = resourceLinks[menuId][page] || [];
+            let box = document.getElementById('box_' + menuId);
+            let pageBox = document.getElementById('pagebtn_' + menuId);
+            if (!box || !pageBox) return;
+            box.innerHTML = '';
+            if (list.length === 0) {
+                box.innerHTML = '<div class="empty-tip">📭 暂无链接</div>';
+            } else {
+                list.forEach(item => {
+                    box.innerHTML += `<div class="link-item"><a href="${escapeHtml(item.url)}" target="_blank">${escapeHtml(item.name)}</a></div>`;
+                });
+            }
+            let pages = Object.keys(resourceLinks[menuId]);
+            pageBox.innerHTML = '';
+            if (pages.length <= 1) return;
+            pages.forEach(p => {
+                pageBox.innerHTML += `<button class="page-btn ${p == page ? 'active' : ''}" onclick="switchPage('${menuId}',${p})">第${p}页</button>`;
+            });
+        }
+        function switchPage(id, p) { currentPage[id] = p; loadData(id); }
+
+        function showPage(title, id) {
+            document.getElementById('title').innerText = '当前位置：' + escapeHtml(title);
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            ensurePageContainer(id, title);
+            let target = document.getElementById(id);
+            if (target) target.classList.add('active');
+            if (id !== 'home') loadData(id);
+            document.querySelectorAll('.sub-menu').forEach(m => m.classList.remove('show'));
+        }
+
+        function toggleMenu(ele) {
+            let sub = ele.nextElementSibling;
+            document.querySelectorAll('.sub-menu').forEach(s => { if (s !== sub) s.classList.remove('show'); });
+            sub.classList.toggle('show');
+        }
+
+        // ----- 后台管理函数（保证添加后立即更新）-----
+        function renderAllSelects() {
+            // 父级菜单下拉
+            let parentSel = document.getElementById('parentCateSelect');
+            parentSel.innerHTML = '';
+            for (let id in topMenus) parentSel.appendChild(new Option(topMenus[id].name, id));
+            // 分支删除下拉
+            let delBranch = document.getElementById('delBranchSelect');
+            delBranch.innerHTML = '';
+            let branchList = [];
+            for (let id in subMenus) {
+                let parent = topMenus[subMenus[id].parentId];
+                branchList.push({ id, name: (parent ? parent.name : '?') + ' → ' + subMenus[id].name });
+            }
+            if (branchList.length === 0) delBranch.innerHTML = '<option disabled>暂无分支</option>';
+            else branchList.forEach(b => delBranch.appendChild(new Option(b.name, b.id)));
+            // 链接添加下拉
+            let cate = document.getElementById('cate');
+            let pageCate = document.getElementById('pageCate');
+            let delPageCate = document.getElementById('delPageCate');
+            cate.innerHTML = ''; pageCate.innerHTML = ''; delPageCate.innerHTML = '';
+            let allMenus = [];
+            for (let id in topMenus) allMenus.push({ id, name: '【顶级】' + topMenus[id].name });
+            for (let id in subMenus) {
+                let p = topMenus[subMenus[id].parentId];
+                allMenus.push({ id, name: '【子级】' + (p ? p.name : '?') + ' → ' + subMenus[id].name });
+            }
+            for (let id in extraPages) allMenus.push({ id, name: '【独立页】' + extraPages[id].name });
+            allMenus.forEach(m => {
+                let opt = new Option(m.name, m.id);
+                cate.appendChild(opt.cloneNode(true));
+                pageCate.appendChild(opt.cloneNode(true));
+                delPageCate.appendChild(opt.cloneNode(true));
+            });
+            // 刷新页码下拉
+            let curCate = cate.value;
+            let pageNum = document.getElementById('pageNum');
+            pageNum.innerHTML = '';
+            let pages = Object.keys(resourceLinks[curCate] || { 1: [] });
+            pages.forEach(p => pageNum.appendChild(new Option(`第${p}页`, p)));
+            let delCate = delPageCate.value;
+            let delPageNum = document.getElementById('delPageNum');
+            delPageNum.innerHTML = '';
+            let dpages = Object.keys(resourceLinks[delCate] || { 1: [] });
+            dpages.forEach(p => delPageNum.appendChild(new Option(`第${p}页`, p)));
+        }
+
+        function renderList() {
+            let dom = document.getElementById('allLinks');
+            dom.innerHTML = '';
+            let all = [];
+            for (let id in topMenus) all.push({ id, name: '【顶级】' + topMenus[id].name });
+            for (let id in subMenus) {
+                let p = topMenus[subMenus[id].parentId];
+                all.push({ id, name: (p ? p.name : '?') + ' → ' + subMenus[id].name });
+            }
+            for (let id in extraPages) all.push({ id, name: '【独立页】' + extraPages[id].name });
+            for (let m of all) {
+                let links = resourceLinks[m.id];
+                if (!links) continue;
+                for (let page in links) {
+                    let arr = links[page];
+                    if (arr && arr.length) {
+                        dom.innerHTML += `<h4 style="color:#fff;margin:15px 0 5px;">${escapeHtml(m.name)} - 第${page}页</h4>`;
+                        arr.forEach((item, idx) => {
+                            dom.innerHTML += `<div class="link-item"><a href="${escapeHtml(item.url)}" target="_blank">${escapeHtml(item.name)}</a><button class="del-btn" onclick="delLink('${m.id}',${page},${idx})">删除</button></div>`;
+                        });
+                    }
+                }
+            }
+        }
+
+        // 添加顶级菜单
+        function addTopCate() {
+            if (!isLogin) return;
+            let name = document.getElementById('newCate').value.trim();
+            if (!name) return alert("请输入菜单名称");
+            let id = 'top_' + Date.now();
+            topMenus[id] = { name: name };
+            resourceLinks[id] = { 1: [] };
+            saveToLocal();
+            rebuildNav();
+            renderAllSelects();
+            renderList();
+            document.getElementById('newCate').value = '';
+            alert("顶级菜单添加成功");
+        }
+        function deleteLastTopCate() {
+            if (!isLogin) return;
+            let ids = Object.keys(topMenus);
+            if (ids.length === 0) return alert("没有顶级菜单可删除");
+            let last = ids[ids.length - 1];
+            delete topMenus[last];
+            delete resourceLinks[last];
+            for (let sid in subMenus) if (subMenus[sid].parentId === last) { delete subMenus[sid]; delete resourceLinks[sid]; }
+            saveToLocal();
+            rebuildNav();
+            renderAllSelects();
+            renderList();
+            alert("已删除");
+        }
+        function addSubCate() {
+            if (!isLogin) return;
+            let pid = document.getElementById('parentCateSelect').value;
+            let name = document.getElementById('subCateName').value.trim();
+            if (!pid || !name) return alert("请选择顶级菜单并填写名称");
+            let id = 'sub_' + Date.now();
+            subMenus[id] = { parentId: pid, name: name };
+            resourceLinks[id] = { 1: [] };
+            saveToLocal();
+            rebuildNav();
+            renderAllSelects();
+            renderList();
+            document.getElementById('subCateName').value = '';
+            alert("分支添加成功");
+        }
+        function deleteBranch() {
+            if (!isLogin) return;
+            let sel = document.getElementById('delBranchSelect');
+            if (!sel.value) return alert("请选择分支");
+            let id = sel.value;
+            if (!confirm("删除分支及所有链接？")) return;
+            delete subMenus[id];
+            delete resourceLinks[id];
+            saveToLocal();
+            rebuildNav();
+            renderAllSelects();
+            renderList();
+            alert("删除成功");
+        }
+        function addPage() {
+            if (!isLogin) return;
+            let mid = document.getElementById('pageCate').value;
+            let pages = Object.keys(resourceLinks[mid] || {}).map(Number);
+            let np = Math.max(...pages) + 1;
+            resourceLinks[mid][np] = [];
+            saveToLocal();
+            renderAllSelects();
+            renderList();
+            if (document.querySelector('.page.active')?.id === mid) loadData(mid);
+            alert(`添加第${np}页成功`);
+        }
+        function deletePage() {
+            if (!isLogin) return;
+            let mid = document.getElementById('delPageCate').value;
+            let page = document.getElementById('delPageNum').value;
+            let pages = Object.keys(resourceLinks[mid] || {});
+            if (pages.length <= 1) return alert("至少保留一页");
+            if (!confirm(`删除第${page}页的所有链接？`)) return;
+            delete resourceLinks[mid][page];
+            saveToLocal();
+            renderAllSelects();
+            renderList();
+            if (document.querySelector('.page.active')?.id === mid) loadData(mid);
+            alert("删除成功");
+        }
+        function addLink() {
+            if (!isLogin) return;
+            let mid = document.getElementById('cate').value;
+            let page = document.getElementById('pageNum').value;
+            let name = document.getElementById('linkName').value.trim();
+            let url = document.getElementById('linkUrl').value.trim();
+            if (!name || !url) return alert("填写完整");
+            if (!resourceLinks[mid]) resourceLinks[mid] = {};
+            if (!resourceLinks[mid][page]) resourceLinks[mid][page] = [];
+            resourceLinks[mid][page].push({ name, url });
+            saveToLocal();
+            document.getElementById('linkName').value = '';
+            document.getElementById('linkUrl').value = '';
+            renderList();
+            if (document.querySelector('.page.active')?.id === mid) loadData(mid);
+            alert("链接添加成功");
+        }
+        function delLink(mid, page, idx) {
+            if (!isLogin) return;
+            resourceLinks[mid][page].splice(idx, 1);
+            saveToLocal();
+            renderList();
+            if (document.querySelector('.page.active')?.id === mid) loadData(mid);
+        }
+        // 副导航管理
+        function addSubNavItem() {
+            if (!isLogin) return;
+            let name = document.getElementById('subNavName').value.trim();
+            if (!name) return alert("请输入按钮名称");
+            let type = document.getElementById('subNavType').value;
+            let newItem = { name, type };
+            if (type === 'internal') {
+                let tid = document.getElementById('subNavInternalTarget').value;
+                if (!tid) return alert("请选择内部菜单");
+                newItem.targetId = tid;
+            } else if (type === 'new') {
+                let pname = document.getElementById('subNavNewPageName').value.trim();
+                if (!pname) return alert("请输入页面名称");
+                let nid = 'extra_' + Date.now();
+                extraPages[nid] = { name: pname };
+                resourceLinks[nid] = { 1: [] };
+                newItem.targetId = nid;
+                newItem.newPageName = pname;
+            } else {
+                let url = document.getElementById('subNavUrl').value.trim();
+                newItem.url = url || '#';
+            }
+            subNavList.push(newItem);
+            saveToLocal();
+            renderSubNav();
+            renderAllSelects();
+            document.getElementById('subNavName').value = '';
+            document.getElementById('subNavUrl').value = '';
+            document.getElementById('subNavInternalTarget').value = '';
+            document.getElementById('subNavNewPageName').value = '';
+            alert("副导航按钮添加成功");
+        }
+        function showEditSubNavDialog() {
+            let idx = document.getElementById('editSubNavSelect').value;
+            if (!idx) return alert("请选择按钮");
+            let item = subNavList[parseInt(idx)];
+            let newName = prompt("修改名称", item.name);
+            if (!newName) return;
+            let newType = prompt("修改类型 (external/internal/new)", item.type);
+            if (!["external", "internal", "new"].includes(newType)) return alert("类型错误");
+            if (newType === 'internal') {
+                let tid = prompt("内部菜单ID", item.targetId || "");
+                if (!tid || (!topMenus[tid] && !subMenus[tid] && !extraPages[tid])) return alert("无效ID");
+                item.targetId = tid;
+                delete item.url;
+                delete item.newPageName;
+            } else if (newType === 'new') {
+                let pname = prompt("独立页面名称", item.newPageName || "");
+                if (!pname) return;
+                if (item.type === 'new' && item.targetId && extraPages[item.targetId]) {
+                    extraPages[item.targetId].name = pname;
+                } else {
+                    let nid = 'extra_' + Date.now();
+                    extraPages[nid] = { name: pname };
+                    resourceLinks[nid] = { 1: [] };
+                    item.targetId = nid;
+                }
+                item.newPageName = pname;
+                delete item.url;
+            } else {
+                let url = prompt("外部链接", item.url || "#");
+                item.url = url || "#";
+                delete item.targetId;
+                delete item.newPageName;
+            }
+            item.name = newName;
+            item.type = newType;
+            saveToLocal();
+            renderSubNav();
+            renderAllSelects();
+            alert("修改成功");
+        }
+        function deleteSelectedSubNav() {
+            if (!isLogin) return;
+            let sel = document.getElementById('delSubNavSelect');
+            if (!sel.value) return alert("请选择按钮");
+            let idx = parseInt(sel.value);
+            let item = subNavList[idx];
+            if (!confirm(`删除“${item.name}”?`)) return;
+            if (item.type === 'new' && item.targetId && extraPages[item.targetId]) {
+                delete extraPages[item.targetId];
+                delete resourceLinks[item.targetId];
+            }
+            subNavList.splice(idx, 1);
+            saveToLocal();
+            renderSubNav();
+            renderAllSelects();
+            alert("删除成功");
+        }
+        function deleteLastSubNavItem() {
+            if (!isLogin) return;
+            if (subNavList.length === 0) return alert("无副导航按钮");
+            let last = subNavList[subNavList.length - 1];
+            if (!confirm(`删除“${last.name}”?`)) return;
+            if (last.type === 'new' && last.targetId && extraPages[last.targetId]) {
+                delete extraPages[last.targetId];
+                delete resourceLinks[last.targetId];
+            }
+            subNavList.pop();
+            saveToLocal();
+            renderSubNav();
+            renderAllSelects();
+            alert("删除成功");
+        }
+
+        // 备份导出
+        function exportBackup() {
+            let data = { topMenus, subMenus, resourceLinks, extraPages, subNavList };
+            let blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            let a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `backup_${Date.now()}.json`;
+            a.click();
+            URL.revokeObjectURL(a.href);
+            alert("备份已导出");
+        }
+        function clearAllData() {
+            if (!isLogin) return;
+            if (!confirm("清空所有数据？不可恢复！")) return;
+            topMenus = {};
+            subMenus = {};
+            resourceLinks = {};
+            extraPages = {};
+            subNavList = [];
+            saveToLocal();
+            rebuildNav();
+            renderSubNav();
+            renderAllSelects();
+            renderList();
+            showPage('首页', 'home');
+            alert("已清空");
+        }
+
+        // 管理员登录及后台UI
+        function openAdminModal() { document.getElementById('adminModal').style.display = 'block'; renderAllSelects(); renderList(); updateSubNavSelects(); updateInternalTarget(); }
+        function closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
+        function adminLogin() {
+            let pwd = document.getElementById('pwd').value;
+            if (pwd === ADMIN_PASSWORD) {
+                isLogin = true;
+                document.getElementById('loginBox').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                renderAllSelects();
+                renderList();
+                updateSubNavSelects();
+                updateInternalTarget();
+                alert("登录成功");
+            } else alert("密码错误");
         }
         function updateSubNavSelects() {
-            let editSel = document.getElementById('editSubNavSelect'); if(editSel){ editSel.innerHTML='<option value="">-- 选择要编辑的按钮 --</option>'; subNavList.forEach((it,i)=>{ editSel.appendChild(new Option(it.name,i)); }); }
-            let delSel=document.getElementById('delSubNavSelect'); if(delSel){ delSel.innerHTML=''; if(subNavList.length===0) delSel.innerHTML='<option disabled>无副导航按钮</option>'; else subNavList.forEach((it,i)=>{ let txt=it.name+(it.type==='internal'?' (内部)':(it.type==='new'?' (独立页)':' (外部)')); delSel.appendChild(new Option(txt,i)); }); }
-        }
-        function toggleSubNavType() { let type=document.getElementById('subNavType').value; let internalSel=document.getElementById('subNavInternalTarget'); let urlInput=document.getElementById('subNavUrl'); let newPage=document.getElementById('subNavNewPageName'); if(type==='internal'){ internalSel.style.display='inline-block'; urlInput.style.display='none'; newPage.style.display='none'; } else if(type==='new'){ internalSel.style.display='none'; urlInput.style.display='none'; newPage.style.display='inline-block'; } else{ internalSel.style.display='none'; urlInput.style.display='inline-block'; newPage.style.display='none'; } }
-        document.getElementById('subNavType')?.addEventListener('change', toggleSubNavType);
-        setTimeout(() => { if (document.getElementById('subNavType')) toggleSubNavType(); }, 100);
-
-        function renderSubNav() { let box=document.getElementById('subNavBox'); box.innerHTML=''; subNavList.forEach(item=>{ let a=document.createElement('a'); a.innerText=item.name; if(item.type==='internal'||item.type==='new'){ let tid=item.targetId; let tname=''; if(topMenus[tid]) tname=topMenus[tid].name; else if(subMenus[tid]) tname=subMenus[tid].name; else if(extraPages[tid]) tname=extraPages[tid].name; else tname=item.newPageName||'页面'; a.onclick=e=>{ e.preventDefault(); showPage(tname,tid); }; a.href='javascript:void(0)'; } else { a.href=item.url||'#'; a.target='_blank'; } box.appendChild(a); }); }
-        function createExtraPage(name){ let id='extra_'+Date.now(); extraPages[id]={name:id}; resourceLinks[id]={1:[]}; saveData(); updateInternalTargetSelect(); renderAllSelect(); return id; }
-        function addSubNavItem(){ if(!isLogin) return; let name=document.getElementById('subNavName').value.trim(); if(!name) return alert("请输入按钮名称"); let type=document.getElementById('subNavType').value; let newItem={name,type}; if(type==='internal'){ let tid=document.getElementById('subNavInternalTarget').value; if(!tid) return alert("请选择内部菜单"); newItem.targetId=tid; } else if(type==='new'){ let pname=document.getElementById('subNavNewPageName').value.trim(); if(!pname) return alert("请输入页面名称"); let nid=createExtraPage(pname); newItem.targetId=nid; newItem.newPageName=pname; } else { let url=document.getElementById('subNavUrl').value.trim(); if(url==='') url='#'; newItem.url=url; } subNavList.push(newItem); saveData(); renderSubNav(); updateSubNavSelects(); document.getElementById('subNavName').value=''; document.getElementById('subNavUrl').value=''; document.getElementById('subNavInternalTarget').value=''; document.getElementById('subNavNewPageName').value=''; alert("✅ 副导航按钮添加成功"); }
-        function showEditSubNavDialog(){ let idx=document.getElementById('editSubNavSelect').value; if(idx==='') return alert("请先选择按钮"); let item=subNavList[parseInt(idx)]; let newName=prompt("修改名称",item.name); if(!newName) return; let newType=prompt("修改类型 (external/internal/new)",item.type); if(!["external","internal","new"].includes(newType)) return alert("类型错误"); if(newType==='internal'){ let tid=prompt("内部菜单ID",item.targetId||""); if(!tid||(!topMenus[tid]&&!subMenus[tid]&&!extraPages[tid])) return alert("无效ID"); item.targetId=tid; delete item.url; delete item.newPageName; } else if(newType==='new'){ let pname=prompt("独立页面名称",item.newPageName||""); if(!pname) return; if(item.type==='new'&&item.targetId&&extraPages[item.targetId]) extraPages[item.targetId].name=pname; else { let nid=createExtraPage(pname); item.targetId=nid; } item.newPageName=pname; delete item.url; } else { let url=prompt("外部链接",item.url||"#"); item.url=url||"#"; delete item.targetId; delete item.newPageName; } item.name=newName; item.type=newType; saveData(); renderSubNav(); updateSubNavSelects(); updateInternalTargetSelect(); renderAllSelect(); alert("修改成功"); }
-        function deleteSelectedSubNav(){ if(!isLogin) return; let sel=document.getElementById('delSubNavSelect'); if(sel.options.length===0||sel.options[0].disabled) return alert("无可删按钮"); let idx=parseInt(sel.value); let item=subNavList[idx]; if(!confirm(`删除“${item.name}”?`)) return; if(item.type==='new'&&item.targetId&&extraPages[item.targetId]){ if(confirm(`同时删除独立页面“${item.newPageName}”及所有链接？`)){ delete extraPages[item.targetId]; delete resourceLinks[item.targetId]; } } subNavList.splice(idx,1); saveData(); renderSubNav(); updateSubNavSelects(); updateInternalTargetSelect(); renderAllSelect(); alert("删除成功"); }
-        function deleteLastSubNavItem(){ if(!isLogin) return; if(subNavList.length===0) return alert("无按钮可删"); let last=subNavList[subNavList.length-1]; if(!confirm(`删除“${last.name}”?`)) return; if(last.type==='new'&&last.targetId&&extraPages[last.targetId]){ if(confirm(`同时删除关联独立页面？`)){ delete extraPages[last.targetId]; delete resourceLinks[last.targetId]; } } subNavList.pop(); saveData(); renderSubNav(); updateSubNavSelects(); updateInternalTargetSelect(); renderAllSelect(); alert("删除成功"); }
-        function getAllMenuForSelect(){ let arr=[]; for(let id in topMenus) arr.push({id,name:'【顶级】'+topMenus[id].name}); for(let id in subMenus){ let p=topMenus[subMenus[id].parentId]; arr.push({id,name:'【子级】'+(p?p.name:'?')+' → '+subMenus[id].name}); } for(let id in extraPages) arr.push({id,name:'【副导航页】'+extraPages[id].name}); return arr; }
-        function getAllMenu(){ return getAllMenuForSelect(); }
-        function getTopList(){ let arr=[]; for(let id in topMenus) arr.push({id,name:topMenus[id].name}); return arr; }
-        function getSubList(){ let arr=[]; for(let id in subMenus){ let p=topMenus[subMenus[id].parentId]; arr.push({id,name:(p?p.name:'?')+'→'+subMenus[id].name}); } return arr; }
-        function createPage(id,name){ if(document.getElementById(id)) return; let div=document.createElement('div'); div.className='page'; div.id=id; div.innerHTML=`<h2 style="color:#ff6600">【${escapeHtml(name)}】</h2><div class="link-list" id="box_${id}"></div><div class="pagination" id="pagebtn_${id}"></div>`; document.getElementById('area').appendChild(div); }
-        function removePage(id){ let el=document.getElementById(id); if(el) el.remove(); }
-        function rebuildNav(){ let ul=document.getElementById('navMenuList'); ul.innerHTML='<li><a onclick="showPage(\'首页\',\'home\')">首页</a></li>'; for(let topId in topMenus){ let top=topMenus[topId]; let subs=Object.values(subMenus).filter(s=>s.parentId===topId); let li=document.createElement('li'); if(subs.length){ li.innerHTML=`<a onclick="toggleMenu(this)">${escapeHtml(top.name)}</a><ul class="sub-menu"></ul>`; let subUl=li.querySelector('.sub-menu'); subs.forEach(s=>{ let sli=document.createElement('li'); sli.innerHTML=`<a onclick="showPage('${escapeHtml(s.name)}','${s.id}')">${escapeHtml(s.name)}</a>`; subUl.appendChild(sli); }); } else li.innerHTML=`<a onclick="showPage('${escapeHtml(top.name)}','${topId}')">${escapeHtml(top.name)}</a>`; ul.appendChild(li); createPage(topId,top.name); } for(let sid in subMenus) createPage(sid,subMenus[sid].name); for(let eid in extraPages) createPage(eid,extraPages[eid].name); }
-        function loadData(menuId){ if(!resourceLinks[menuId]) resourceLinks[menuId]={1:[]}; if(!currentPage[menuId]) currentPage[menuId]=1; let page=currentPage[menuId]; let list=resourceLinks[menuId][page]||[]; let box=document.getElementById('box_'+menuId); let pageBox=document.getElementById('pagebtn_'+menuId); if(!box||!pageBox) return; box.innerHTML=''; if(list.length===0) box.innerHTML='<div class="empty-tip">📭 暂无链接</div>'; else list.forEach(item=>{ box.innerHTML+=`<div class="link-item"><a href="${escapeHtml(item.url)}" target="_blank">${escapeHtml(item.name)}</a></div>`; }); let pages=Object.keys(resourceLinks[menuId]); pageBox.innerHTML=''; if(pages.length<=1) return; pages.forEach(p=>{ pageBox.innerHTML+=`<button class="page-btn ${p==page?'active':''}" onclick="switchPage('${menuId}',${p})">第${p}页</button>`; }); }
-        function switchPage(id,p){ currentPage[id]=p; loadData(id); }
-        function showPage(title,id){ document.getElementById('title').innerText='当前位置：'+escapeHtml(title); document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); createPage(id,title); let dom=document.getElementById(id); if(dom) dom.classList.add('active'); if(id!=='home') loadData(id); document.querySelectorAll('.sub-menu').forEach(m=>m.classList.remove('show')); document.getElementById('area').scrollIntoView({behavior:'smooth'}); }
-        function toggleMenu(ele){ let sub=ele.nextElementSibling; document.querySelectorAll('.sub-menu').forEach(s=>{if(s!==sub) s.classList.remove('show');}); sub.classList.toggle('show'); }
-        function openAdminModal(){ document.getElementById('pwd').value=''; document.getElementById('adminModal').style.display='block'; renderAllSelect(); updateSubNavSelects(); updateInternalTargetSelect(); }
-        function closeAdminModal(){ document.getElementById('adminModal').style.display='none'; }
-        function adminLogin(){ if(document.getElementById('pwd').value===ADMIN_PASSWORD){ isLogin=true; document.getElementById('loginBox').style.display='none'; document.getElementById('adminPanel').style.display='block'; renderAllSelect(); renderList(); updateSubNavSelects(); updateInternalTargetSelect(); alert("登录成功"); } else alert("密码错误"); }
-        function deleteLastTopCate(){ if(!isLogin) return; let topArr=Object.keys(topMenus); if(topArr.length===0) return alert("无顶级菜单可删"); if(!confirm("删除最后添加的顶级菜单？所有分支链接一起删")) return; let lastId=topArr[topArr.length-1]; delete topMenus[lastId]; for(let sid in subMenus){ if(subMenus[sid].parentId===lastId){ delete subMenus[sid]; delete resourceLinks[sid]; removePage(sid); } } delete resourceLinks[lastId]; removePage(lastId); saveData(); rebuildNav(); renderAllSelect(); renderList(); alert("删除成功"); }
-        function renderAllSelect(){
-            let ps=document.getElementById('parentCateSelect');
-            ps.innerHTML=''; getTopList().forEach(t=>{ ps.appendChild(new Option(t.name,t.id)); });
-            let ds=document.getElementById('delBranchSelect');
-            ds.innerHTML=''; let slist=getSubList();
-            if(slist.length===0) ds.innerHTML='<option disabled>暂无分支</option>';
-            else slist.forEach(s=>{ ds.appendChild(new Option(s.name,s.id)); });
-            let cate=document.getElementById('cate');
-            let pcate=document.getElementById('pageCate');
-            let dpcate=document.getElementById('delPageCate');
-            cate.innerHTML=''; pcate.innerHTML=''; dpcate.innerHTML='';
-            getAllMenu().forEach(m=>{
-                let o1=new Option(m.name,m.id);
-                cate.appendChild(o1);
-                pcate.appendChild(o1.cloneNode(true));
-                dpcate.appendChild(o1.cloneNode(true));
+            let editSel = document.getElementById('editSubNavSelect');
+            let delSel = document.getElementById('delSubNavSelect');
+            editSel.innerHTML = '<option value="">-- 选择要编辑的按钮 --</option>';
+            delSel.innerHTML = '';
+            subNavList.forEach((it, i) => {
+                editSel.appendChild(new Option(it.name, i));
+                let txt = it.name + (it.type === 'internal' ? ' (内部)' : (it.type === 'new' ? ' (独立页)' : ' (外部)'));
+                delSel.appendChild(new Option(txt, i));
             });
-            renderPageSelect(); renderDelPageSelect();
+            if (subNavList.length === 0) delSel.innerHTML = '<option disabled>无副导航按钮</option>';
         }
-        function renderPageSelect(){ let id=document.getElementById('cate').value; let sel=document.getElementById('pageNum'); sel.innerHTML=''; let pages=Object.keys(resourceLinks[id]||{1:[]}); pages.forEach(p=>{ sel.appendChild(new Option(`第${p}页`,p)); }); }
-        function renderDelPageSelect(){ let id=document.getElementById('delPageCate').value; let sel=document.getElementById('delPageNum'); sel.innerHTML=''; let pages=Object.keys(resourceLinks[id]||{1:[]}); pages.forEach(p=>{ sel.appendChild(new Option(`第${p}页`,p)); }); }
-        function addTopCate(){ if(!isLogin) return; let name=document.getElementById('newCate').value.trim(); if(!name) return alert("请输入名称"); let id='top_'+Date.now(); topMenus[id]={name}; resourceLinks[id]={1:[]}; saveData(); rebuildNav(); renderAllSelect(); renderList(); updateInternalTargetSelect(); document.getElementById('newCate').value=''; alert("添加成功"); }
-        function deleteBranch(){ if(!isLogin) return; let sel=document.getElementById('delBranchSelect'); if(sel.options[0]?.disabled) return alert("无分支可删"); let id=sel.value; if(!confirm("删除分支及所有链接？")) return; delete subMenus[id]; delete resourceLinks[id]; removePage(id); saveData(); rebuildNav(); renderAllSelect(); renderList(); updateInternalTargetSelect(); if(document.querySelector('.page.active')?.id===id) showPage('首页','home'); alert("删除成功"); }
-        function addPage(){ if(!isLogin) return; let id=document.getElementById('pageCate').value; let ps=Object.keys(resourceLinks[id]||{1:[]}).map(Number); let np=Math.max(...ps)+1; resourceLinks[id][np]=[]; saveData(); renderAllSelect(); renderList(); if(document.querySelector('.page.active')?.id===id) renderPagination(id); alert(`新增第${np}页`); }
-        function deletePage(){ if(!isLogin) return; let id=document.getElementById('delPageCate').value; let p=document.getElementById('delPageNum').value; if(Object.keys(resourceLinks[id]).length<=1) return alert("至少保留一页"); if(!confirm(`删除第${p}页？`)) return; delete resourceLinks[id][p]; saveData(); renderAllSelect(); renderList(); if(document.querySelector('.page.active')?.id===id){ if(currentPage[id]==p) currentPage[id]=1; loadData(id); } alert("删除成功"); }
-        function addLink(){ if(!isLogin) return; let mid=document.getElementById('cate').value; let p=document.getElementById('pageNum').value; let name=document.getElementById('linkName').value.trim(); let url=document.getElementById('linkUrl').value.trim(); if(!name||!url) return alert("名称和网址都要填"); if(!resourceLinks[mid]) resourceLinks[mid]={}; if(!resourceLinks[mid][p]) resourceLinks[mid][p]=[]; resourceLinks[mid][p].push({name,url}); saveData(); document.getElementById('linkName').value=''; document.getElementById('linkUrl').value=''; renderList(); if(document.querySelector('.page.active')?.id===mid) loadData(mid); alert("链接添加成功"); }
-        function delLink(mid,p,i){ if(!isLogin) return; resourceLinks[mid][p].splice(i,1); saveData(); renderList(); if(document.querySelector('.page.active')?.id===mid) loadData(mid); }
-        function renderList(){ let dom=document.getElementById('allLinks'); dom.innerHTML=''; getAllMenu().forEach(m=>{ let data=resourceLinks[m.id]; if(!data) return; for(let p in data){ let arr=data[p]; if(arr.length===0) continue; dom.innerHTML+=`<h4 style="color:#fff;margin:15px 0 5px;">${escapeHtml(m.name)} - 第${p}页</h4>`; arr.forEach((item,i)=>{ dom.innerHTML+=`<div class="link-item"><a href="${escapeHtml(item.url)}" target="_blank">${escapeHtml(item.name)}</a><button class="del-btn" onclick="delLink('${m.id}',${p},${i})">删除</button></div>`; }); } }); }
-        function renderPagination(menuId){ let pageDom=document.getElementById(`pagebtn_${menuId}`); if(!pageDom) return; let pages=Object.keys(resourceLinks[menuId]||{}); pageDom.innerHTML=''; if(pages.length<=1) return; pages.forEach(p=>{ pageDom.innerHTML+=`<button class="page-btn ${p==currentPage[menuId]?'active':''}" onclick="switchPage('${menuId}',${p})">第${p}页</button>`; }); }
-        document.getElementById('cate')?.addEventListener('change',renderPageSelect);
-        document.getElementById('delPageCate')?.addEventListener('change',renderDelPageSelect);
-        function baiduSearch(){ let kw=document.getElementById('baiduSearchInput').value.trim(); if(kw) window.open('https://www.baidu.com/s?wd='+encodeURIComponent(kw),'_self'); }
-        function initTop(){ let btn=document.getElementById('goTopBtn'); window.addEventListener('scroll',()=>{ if(window.scrollY>300) btn.classList.add('show'); else btn.classList.remove('show'); }); btn.onclick=()=>window.scrollTo({top:0,behavior:'smooth'}); }
-        function clock(){ let d=new Date(); document.getElementById('clock').innerText=`${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`; setTimeout(clock,1000); } clock();
+        function updateInternalTarget() {
+            let sel = document.getElementById('subNavInternalTarget');
+            sel.innerHTML = '<option value="">-- 选择内部菜单 --</option>';
+            for (let id in topMenus) sel.appendChild(new Option('【顶级】' + topMenus[id].name, id));
+            for (let id in subMenus) {
+                let p = topMenus[subMenus[id].parentId];
+                sel.appendChild(new Option('【子级】' + (p ? p.name : '?') + ' → ' + subMenus[id].name, id));
+            }
+            for (let id in extraPages) sel.appendChild(new Option('【独立页】' + extraPages[id].name, id));
+        }
+        function toggleSubNavType() {
+            let type = document.getElementById('subNavType').value;
+            let internalSel = document.getElementById('subNavInternalTarget');
+            let urlInput = document.getElementById('subNavUrl');
+            let newPageInput = document.getElementById('subNavNewPageName');
+            if (type === 'internal') {
+                internalSel.style.display = 'inline-block';
+                urlInput.style.display = 'none';
+                newPageInput.style.display = 'none';
+            } else if (type === 'new') {
+                internalSel.style.display = 'none';
+                urlInput.style.display = 'none';
+                newPageInput.style.display = 'inline-block';
+            } else {
+                internalSel.style.display = 'none';
+                urlInput.style.display = 'inline-block';
+                newPageInput.style.display = 'none';
+            }
+        }
+        document.getElementById('subNavType')?.addEventListener('change', toggleSubNavType);
+        document.getElementById('backupFileInput')?.addEventListener('change', e => {
+            if (!isLogin) return alert("请先登录");
+            let file = e.target.files[0];
+            if (!file) return;
+            if (confirm("导入备份会覆盖当前所有数据，确定继续吗？")) importBackupFile(file);
+            e.target.value = '';
+        });
+        document.getElementById('cate')?.addEventListener('change', () => {
+            let mid = document.getElementById('cate').value;
+            let pageNum = document.getElementById('pageNum');
+            pageNum.innerHTML = '';
+            let pages = Object.keys(resourceLinks[mid] || {});
+            pages.forEach(p => pageNum.appendChild(new Option(`第${p}页`, p)));
+        });
+        document.getElementById('delPageCate')?.addEventListener('change', () => {
+            let mid = document.getElementById('delPageCate').value;
+            let pageNum = document.getElementById('delPageNum');
+            pageNum.innerHTML = '';
+            let pages = Object.keys(resourceLinks[mid] || {});
+            pages.forEach(p => pageNum.appendChild(new Option(`第${p}页`, p)));
+        });
 
-        function exportBackup() { if(!isLogin) return; let data={topMenus,subMenus,resourceLinks,extraPages,subNavList}; let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"})); a.download=`backup_${Date.now()}.json`; a.click(); URL.revokeObjectURL(a.href); alert("备份导出成功"); }
-        document.getElementById('backupFileInput').addEventListener('change',e=>{ if(!isLogin) return; let file=e.target.files[0]; if(!file) return; if(!confirm("恢复会覆盖所有数据，确定？")) return; let reader=new FileReader(); reader.onload=ev=>{ try{ let d=JSON.parse(ev.target.result); topMenus=d.topMenus||{}; subMenus=d.subMenus||{}; resourceLinks=d.resourceLinks||{}; extraPages=d.extraPages||{}; subNavList=d.subNavList||[]; saveData(); rebuildNav(); renderSubNav(); updateSubNavSelects(); renderAllSelect(); renderList(); showPage('首页','home'); alert("恢复成功"); } catch(err){ alert("文件错误"); } }; reader.readAsText(file); });
-        function clearAllData(){ if(!isLogin) return; if(!confirm("清空全部数据？不可恢复！")) return; localStorage.clear(); topMenus={}; subMenus={}; resourceLinks={}; extraPages={}; subNavList=[]; rebuildNav(); renderSubNav(); updateSubNavSelects(); renderAllSelect(); renderList(); showPage('首页','home'); alert("已清空"); }
+        function baiduSearch() { let kw = document.getElementById('baiduSearchInput').value.trim(); if (kw) window.open('https://www.baidu.com/s?wd=' + encodeURIComponent(kw), '_self'); }
+        function initGoTop() {
+            let btn = document.getElementById('goTopBtn');
+            window.addEventListener('scroll', () => { if (window.scrollY > 300) btn.classList.add('show'); else btn.classList.remove('show'); });
+            btn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function clock() {
+            let d = new Date();
+            document.getElementById('clock').innerText = `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`;
+            setTimeout(clock, 1000);
+        }
 
-        (async function(){ await initData(); rebuildNav(); showPage('首页','home'); initTop(); })();
+        // 启动
+        (async function() {
+            await fetchCloudAndOverwrite();
+            rebuildNav();
+            renderSubNav();
+            renderAllSelects();
+            renderList();
+            showPage('首页', 'home');
+            initGoTop();
+            clock();
+        })();
     </script>
 </body>
 </html>
