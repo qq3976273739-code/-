@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=yes">
     <link rel="icon" href="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" type="image/png">
-    <title>虎天寿资源整理网站 - 增强导入版</title>
+    <title>虎天寿资源整理网站 - 强化导入版</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", "微软雅黑", system-ui, sans-serif; cursor: default; }
         body {
@@ -350,7 +350,7 @@
                 <h3 style="color:#0099ff;">📦 数据备份与恢复</h3>
                 <div class="admin-form">
                     <button class="backup-btn" onclick="exportBackup()">💾 导出备份文件</button>
-                    <button class="restore-btn" onclick="document.getElementById('backupFileInput').click()">📂 从备份恢复</button>
+                    <button class="restore-btn" onclick="document.getElementById('backupFileInput').click()">📂 从备份恢复（强制刷新）</button>
                     <button class="example-btn" onclick="downloadExampleBackup()">📄 下载示例备份（JSON格式）</button>
                     <button class="clear-btn" onclick="clearAllData()">🗑️ 清空所有数据</button>
                     <input type="file" id="backupFileInput" accept=".json">
@@ -431,7 +431,7 @@
                 subMenus = JSON.parse(s);
                 resourceLinks = JSON.parse(r);
                 extraPages = e ? JSON.parse(e) : {};
-                subNavList = sn ? JSON.parse(sn) : [];
+                subNavList = sn ? JSON.parse(sn) : {};
             } else {
                 // 默认空数据，但为了演示，创建示例顶级菜单
                 topMenus = { "top_example": { name: "示例菜单" } };
@@ -445,56 +445,44 @@
             return false;
         }
 
-        // 强制导入备份文件（覆盖所有数据，并自动修复，支持 BOM 头）
+        // 强制导入备份文件（覆盖所有数据，并自动修复，支持 BOM 头，导入后强制刷新页面）
         function importBackupFile(file) {
             if (!file) return;
             const reader = new FileReader();
             reader.onload = function(e) {
                 let rawText = e.target.result;
-                // 1. 去除 UTF-8 BOM 头
+                // 去除 UTF-8 BOM 头
                 if (rawText.charCodeAt(0) === 0xFEFF) {
                     rawText = rawText.slice(1);
                 }
-                // 2. 尝试解析 JSON
                 try {
                     let data = JSON.parse(rawText);
-                    // 3. 兼容旧结构，确保关键字段存在
+                    // 验证必需字段
+                    if (typeof data !== 'object') throw new Error("无效的数据结构");
+                    // 覆盖全局变量
                     topMenus = data.topMenus || {};
                     subMenus = data.subMenus || {};
                     resourceLinks = data.resourceLinks || {};
                     extraPages = data.extraPages || {};
                     subNavList = data.subNavList || [];
-                    // 4. 修复可能缺失的 resourceLinks 结构
+                    // 修复数据结构
                     repairData();
+                    // 保存到本地存储
                     saveToLocal();
-                    // 刷新整个界面
-                    rebuildNav();
-                    renderSubNav();
-                    renderAllSelects();
-                    renderList();
-                    showPage('首页', 'home');
-                    alert("✅ 备份恢复成功！");
+                    // 强制刷新页面，让所有 DOM 重新根据新数据生成
+                    alert("✅ 备份恢复成功！页面将自动刷新。");
+                    location.reload();
                 } catch (err) {
                     console.error("导入错误:", err);
-                    // 提供更详细的错误信息（行号、列号）
                     let errorMsg = err.message;
-                    let match = errorMsg.match(/position (\d+)/);
-                    if (match) {
-                        let pos = parseInt(match[1]);
-                        let lines = rawText.substring(0, pos).split('\n');
-                        let line = lines.length;
-                        let col = lines[lines.length-1].length + 1;
-                        alert(`文件解析失败：${errorMsg}\n错误位置：第 ${line} 行，第 ${col} 列。\n请确保文件是有效的 JSON 格式，可使用示例备份对比。`);
-                    } else {
-                        alert(`文件解析失败：${errorMsg}\n请确保文件是有效的 JSON 格式。`);
-                    }
+                    alert(`文件解析失败：${errorMsg}\n请确保文件是有效的 JSON 格式，可使用“下载示例备份”对比格式。`);
                 }
             };
             reader.onerror = () => alert("读取文件失败，请重试。");
             reader.readAsText(file);
         }
 
-        // 下载当前有效的数据结构示例
+        // 下载当前有效的数据结构示例（保证可导入）
         function downloadExampleBackup() {
             const example = {
                 topMenus: { "example_top": { name: "示例顶级菜单" } },
@@ -512,10 +500,10 @@
             a.download = `example_backup.json`;
             a.click();
             URL.revokeObjectURL(a.href);
-            alert("示例备份已下载，请对照此格式修正您的文件。");
+            alert("示例备份已下载，请尝试导入此文件验证功能。");
         }
 
-        // ----- UI 渲染核心（与之前保持一致）-----
+        // ----- UI 渲染核心 -----
         function ensurePageContainer(id, name) {
             if (document.getElementById(id)) return;
             let area = document.getElementById('area');
@@ -619,7 +607,7 @@
             sub.classList.toggle('show');
         }
 
-        // 后台管理函数（保持完整）
+        // 后台管理函数（保证添加后立即更新）
         function renderAllSelects() {
             let parentSel = document.getElementById('parentCateSelect');
             parentSel.innerHTML = '';
