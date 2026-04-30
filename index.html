@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=yes">
     <link rel="icon" href="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" type="image/png">
-    <title>虎天寿资源整理网站 - 磨砂玻璃质感</title>
+    <title>虎天寿资源整理网站 - 清晰磨砂</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", "微软雅黑", system-ui, sans-serif; }
-        /* 底层背景严格不变 */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", "微软雅黑", system-ui, sans-serif; cursor: default; /* 全局默认鼠标，可点击元素单独设置 pointer */ }
         body {
             background: url('https://s41.ax1x.com/2026/04/18/pe6CbuQ.jpg') no-repeat center center fixed;
             background-size: cover;
@@ -15,42 +14,42 @@
             min-height: 100vh;
             padding: 20px;
         }
-        /* 通用磨砂玻璃效果 */
+        /* 统一降低模糊强度为 8px */
         .avatar-box { position: absolute; top: 20px; right: 30px; cursor: pointer; }
-        .avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; }
         .avatar:hover { box-shadow: 0 0 15px #ff6600; transform: scale(1.02); }
         .title-box { text-align: center; margin: 40px 0; }
         .website-name {
             font-size: 38px; font-weight: 600;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
             padding: 12px 32px;
             border-radius: 60px;
             display: inline-block;
             border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .current-menu {
             text-align: center; margin: 0 auto 30px;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
             padding: 12px 30px; border-radius: 40px;
             font-size: 22px; color: #ff6600; font-weight: 600;
             width: 60%; border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        /* 导航栏 - 磨砂玻璃 */
+        /* 导航栏 */
         .nav {
             width: 85%; margin: 30px auto;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
             border-radius: 28px;
             padding: 12px 20px;
             display: flex; align-items: center; justify-content: center; gap: 30px;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255,255,255,0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .nav-avatar { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #ff6600; object-fit: cover; }
+        .nav-avatar { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #ff6600; object-fit: cover; cursor: pointer; }
         .nav ul { list-style: none; display: flex; justify-content: center; gap: 35px; }
         .nav li { position: relative; padding: 6px 0; }
         .nav a {
@@ -59,51 +58,52 @@
             background: rgba(0, 0, 0, 0.25);
             transition: 0.2s;
             display: block;
-            backdrop-filter: blur(4px);
+            cursor: pointer;
         }
         .nav a:hover { color: #ff6600; background: rgba(0, 0, 0, 0.45); transform: translateY(-1px); }
         .nav .sub-menu {
             display: none; position: absolute; top: 100%; left: 0;
             background: rgba(30, 30, 40, 0.85);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(8px);
             border-radius: 16px; padding: 10px; width: 180px;
             flex-direction: column; gap: 8px; z-index: 999;
             border: 1px solid rgba(255,255,255,0.2);
         }
         .nav .sub-menu.show { display: flex; }
-        /* 副导航栏 */
         .sub-nav {
             width: 85%; margin: 0 auto 30px;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
             border-radius: 20px; padding: 12px 20px;
             display: flex; align-items: center; justify-content: center; gap: 25px; flex-wrap: wrap;
             border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .sub-nav a {
             color: #fff; text-decoration: none; font-size: 16px; font-weight: 500;
             padding: 6px 18px; border-radius: 40px;
             background: rgba(0, 0, 0, 0.25);
             transition: 0.2s;
+            cursor: pointer;
         }
         .sub-nav a:hover { color: #ff6600; background: rgba(0, 0, 0, 0.45); }
-        /* 搜索框区域 */
+        /* 搜索框 */
         .search-box {
             width: 60%; margin: 0 auto 40px;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
             padding: 16px 24px; border-radius: 60px;
             display: flex; align-items: center; justify-content: center; gap: 12px;
             border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .baidu-icon { width: 28px; height: 28px; border-radius: 8px; }
+        .baidu-icon { width: 28px; height: 28px; border-radius: 8px; cursor: pointer; }
         .search-input {
             width: 70%; height: 48px; padding: 0 18px; font-size: 16px;
             border: none; border-radius: 40px; outline: none;
             background: rgba(255,255,255,0.85);
             color: #1e1e1e;
+            cursor: text;
         }
         .search-btn {
             height: 48px; padding: 0 28px; font-size: 16px; font-weight: 600;
@@ -114,12 +114,12 @@
         /* 主内容区 */
         .blank-box {
             width: 80%; margin: 60px auto; padding: 32px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
             border-radius: 32px;
             min-height: 400px;
             border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
         .page { display: none; }
         .page.active { display: block; }
@@ -133,159 +133,57 @@
         .home-row { display: flex; align-items: center; justify-content: center; gap: 60px; margin-top: 30px; flex-wrap: wrap; }
         /* 数字时钟 */
         .digital-clock {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
             padding: 25px 35px; border-radius: 40px;
             font-size: 48px; font-weight: 600; text-align: center;
             border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         /* 捐赠区域 */
         .donate-group { text-align: center; }
         .donate {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
             padding: 15px; border-radius: 24px;
             border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .donate-title { font-size: 22px; color: #ff6600; font-weight: 600; margin-bottom: 12px; }
-        .donate img { width: 180px; border-radius: 16px; transition: 0.2s; }
+        .donate img { width: 180px; border-radius: 16px; transition: 0.2s; cursor: pointer; }
         .donate img:hover { transform: scale(1.02); }
         .footer-text { text-align: center; margin-top: 15px; font-size: 15px; color: #eee; }
         /* 作者信息 */
         .author-info {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
             padding: 15px 25px; border-radius: 24px; font-size: 18px;
             text-align: center; margin-bottom: 20px;
             border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .author-info a { color: #66ccff; text-decoration: none; margin-left: 15px; font-weight: 500; }
+        .author-info a { color: #66ccff; text-decoration: none; margin-left: 15px; font-weight: 500; cursor: pointer; }
         .author-info a:hover { color: #ff6600; }
-        /* 替换后的提示卡片 - 磨砂玻璃 */
+        /* 联系方式卡片 */
         .contact-card {
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
             border-radius: 28px;
             padding: 20px;
             margin-top: 30px;
             text-align: center;
             border: 1px solid rgba(255,255,255,0.3);
             transition: 0.2s;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             font-size: 18px;
             font-weight: 500;
         }
         .contact-card:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
-        }
-        .contact-card .contact-text {
-            color: #fff;
-            letter-spacing: 1px;
-        }
-        .contact-card .contact-qq {
-            color: #ffaa66;
-            font-weight: bold;
-            font-size: 20px;
-            margin-left: 8px;
-        }
-        /* 反馈悬浮按钮 */
-        .float-feedback-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px);
-            color: white;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: 500;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            transition: 0.2s;
-            z-index: 1000;
-            border: 1px solid rgba(255,255,255,0.3);
-            cursor: pointer;
-        }
-        .float-feedback-btn:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: translateY(-3px);
         }
-        /* 反馈模态框 */
-        .feedback-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(30, 30, 40, 0.85);
-            backdrop-filter: blur(24px);
-            padding: 28px;
-            border-radius: 32px;
-            z-index: 10001;
-            width: 90%;
-            max-width: 460px;
-            border: 1px solid rgba(255,255,255,0.3);
-            display: none;
-            flex-direction: column;
-            gap: 18px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-        }
-        .feedback-modal h3 { color: #ff6600; font-size: 24px; font-weight: 600; text-align: center; }
-        .feedback-modal input, .feedback-modal textarea {
-            width: 100%;
-            padding: 12px 18px;
-            border-radius: 28px;
-            border: none;
-            background: rgba(255,255,255,0.85);
-            font-size: 15px;
-            outline: none;
-        }
-        .feedback-modal textarea { min-height: 100px; resize: vertical; }
-        .feedback-modal button {
-            background: #ff6600;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 40px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .feedback-modal .close-modal {
-            position: absolute;
-            top: 18px;
-            right: 22px;
-            font-size: 28px;
-            cursor: pointer;
-            color: rgba(255,255,255,0.8);
-        }
-        .feedback-modal .close-modal:hover { color: #ff6600; }
-        /* 主页反馈列表 */
-        .feedback-home-section { margin-top: 40px; }
-        .feedback-home-section h3 { color: #ffaa66; font-size: 22px; font-weight: 600; margin-bottom: 16px; }
-        .feedback-list-home {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            padding: 16px;
-            max-height: 280px;
-            overflow-y: auto;
-            border: 1px solid rgba(255,255,255,0.25);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-        .feedback-item {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 12px 16px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(255,255,255,0.15);
-        }
-        .feedback-item .feedback-name { font-weight: bold; color: #ffaa66; }
-        .feedback-item .feedback-time { font-size: 11px; color: #ccc; margin-left: 12px; }
-        .feedback-item .feedback-content { margin-top: 8px; font-size: 14px; }
+        .contact-card .contact-text { color: #fff; letter-spacing: 1px; }
+        .contact-card .contact-qq { color: #ffaa66; font-weight: bold; font-size: 20px; margin-left: 8px; }
         /* 分页按钮容器 */
         .pagination { text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 12px; }
         .page-btn {
@@ -298,25 +196,27 @@
         /* 后台弹窗 */
         .admin-modal {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
             padding: 30px; border-radius: 32px; display: none; z-index: 9999;
             width: 90%; max-width: 850px; max-height: 85vh; overflow-y: auto;
             border: 1px solid rgba(255,255,255,0.3);
         }
         .admin-title { color: #ff6600; font-size: 28px; margin-bottom: 20px; text-align: center; }
         .login-box { text-align: center; margin: 20px 0; }
-        .login-box input { padding: 14px; font-size: 18px; width: 300px; border-radius: 40px; border: none; outline: none; background: rgba(255,255,255,0.9); }
+        .login-box input { padding: 14px; font-size: 18px; width: 300px; border-radius: 40px; border: none; outline: none; background: rgba(255,255,255,0.9); cursor: text; }
         .login-box button { padding: 12px 32px; margin-left: 12px; background: #ff6600; color: #fff; border: none; border-radius: 40px; cursor: pointer; }
         .admin-form { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
-        .admin-form select, .admin-form input { padding: 10px 16px; font-size: 15px; border-radius: 40px; border: none; outline: none; background: rgba(255,255,255,0.9); }
-        .admin-form button { padding: 10px 24px; background: #ff6600; color: #fff; border: none; border-radius: 40px; cursor: pointer; }
+        .admin-form select, .admin-form input { padding: 10px 16px; font-size: 15px; border-radius: 40px; border: none; outline: none; background: rgba(255,255,255,0.9); cursor: pointer; }
+        .admin-form input { cursor: text; }
+        .admin-form button { padding: 10px 24px; background: #ff6600; color: #fff; border: none; border-radius: 40px; cursor: pointer; transition: 0.2s; }
+        .admin-form button:hover { background: #e65c00; transform: scale(1.02); }
         .del-page-btn { background: #ff3333 !important; }
         .link-list { margin-top: 20px; }
         .link-item {
             padding: 12px 16px; background: rgba(255,255,255,0.1); margin: 8px 0;
             border-radius: 20px; display: flex; justify-content: space-between; align-items: center;
         }
-        .link-item a { color: #fff; text-decoration: none; }
+        .link-item a { color: #fff; text-decoration: none; cursor: pointer; }
         .link-item a:hover { color: #ff6600; }
         .del-btn, .edit-btn { background: #ff3333; color: #fff; border: none; padding: 5px 12px; border-radius: 40px; cursor: pointer; }
         .edit-btn { background: #0099ff; }
@@ -324,9 +224,9 @@
         hr { margin: 20px 0; border-color: rgba(255,255,255,0.2); }
         /* 回到顶部按钮 */
         .go-top {
-            position: fixed; bottom: 120px; right: 30px; width: 52px; height: 52px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
+            position: fixed; bottom: 30px; right: 30px; width: 52px; height: 52px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
             color: #fff; border-radius: 30px; text-align: center; line-height: 52px; font-size: 28px;
             cursor: pointer; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 1000;
             border: 1px solid rgba(255,255,255,0.3);
@@ -336,7 +236,7 @@
         .backup-btn { background: #0099ff !important; }
         .restore-btn { background: #28a745 !important; }
         .clear-btn { background: #dc3545 !important; }
-        #backupFileInput { display: none; }
+        #backupFileInput { display: none; cursor: pointer; }
         .empty-tip { text-align: center; padding: 40px; color: #ccc; font-style: italic; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px; }
@@ -384,28 +284,15 @@
                     <div class="footer-text">整理资源耗费大量精力，维护网站也需要持续付出，感谢您的理解与支持</div>
                 </div>
             </div>
-            <!-- 替换甲方爸爸卡片为联系方式卡片 -->
             <div class="contact-card">
                 <span class="contact-text">便宜装系统有需求的</span>
                 <span class="contact-qq">QQ：3608504926</span>
             </div>
-            <div class="feedback-home-section">
-                <h3>📢 最新用户反馈</h3>
-                <div id="feedbackListHome" class="feedback-list-home"></div>
-            </div>
         </div>
-    </div>
-    <div class="float-feedback-btn" id="floatFeedbackBtn">💬 意见反馈</div>
-    <div id="feedbackModal" class="feedback-modal">
-        <span class="close-modal" onclick="closeFeedbackModal()">&times;</span>
-        <h3>📝 意见反馈</h3>
-        <input type="text" id="modalFeedbackName" placeholder="你的昵称">
-        <textarea id="modalFeedbackContent" placeholder="写下你的意见或建议..."></textarea>
-        <button onclick="submitModalFeedback()">提交反馈</button>
     </div>
     <div class="go-top" id="goTopBtn" title="回到顶部">↑</div>
 
-    <!-- 后台管理（完整保留） -->
+    <!-- 后台管理 -->
     <div class="admin-modal" id="adminModal">
         <span class="close-btn" onclick="closeAdminModal()">×</span>
         <div class="admin-box">
@@ -471,9 +358,6 @@
                     <button onclick="addLink()">添加 网站/链接</button>
                 </div>
                 <hr>
-                <h3 style="color:#0099ff;">📩 用户意见统计 & 管理</h3>
-                <div class="feedback-list" id="adminFeedbackList" style="width:100%;max-height:300px;display:block;"></div>
-                <hr>
                 <h3 style="color:#0099ff;">📦 数据备份与恢复</h3>
                 <div class="admin-form">
                     <button class="backup-btn" onclick="exportBackup()">💾 导出备份文件</button>
@@ -488,7 +372,7 @@
     </div>
 
     <script>
-        // ======================== 完整功能脚本（未做任何删减） ========================
+        // ======================== 功能脚本（已移除所有意见反馈相关代码） ========================
         const ADMIN_PASSWORD = "wangyiming87";
         let isLogin = false;
         let currentPage = {};
@@ -498,7 +382,6 @@
         let resourceLinks = {};
         let extraPages = {};
         let subNavList = [];
-        let feedbackList = [];
 
         const CLOUD_DATA_URL = "https://raw.githubusercontent.com/qq3976273739-code/my-site-data/refs/heads/main/data.json";
 
@@ -515,7 +398,6 @@
                     resourceLinks = cloudData.resourceLinks || {};
                     extraPages = cloudData.extraPages || {};
                     subNavList = cloudData.subNavList || [];
-                    feedbackList = cloudData.feedbackList || [];
                     saveData();
                     return true;
                 }
@@ -529,13 +411,11 @@
             let storedLinks = localStorage.getItem('resourceLinks');
             let storedExtra = localStorage.getItem('extraPages');
             let storedSubNav = localStorage.getItem('subNavList');
-            let storedFeedback = localStorage.getItem('feedbackList');
             if (storedTop && storedSub && storedLinks) {
                 topMenus = JSON.parse(storedTop); subMenus = JSON.parse(storedSub); resourceLinks = JSON.parse(storedLinks);
                 extraPages = storedExtra ? JSON.parse(storedExtra) : {};
                 subNavList = storedSubNav ? JSON.parse(storedSubNav) : [];
-                feedbackList = storedFeedback ? JSON.parse(storedFeedback) : [];
-            } else { topMenus = {}; subMenus = {}; resourceLinks = {}; extraPages = {}; subNavList = []; feedbackList = []; }
+            } else { topMenus = {}; subMenus = {}; resourceLinks = {}; extraPages = {}; subNavList = []; }
             saveData();
         }
 
@@ -545,14 +425,12 @@
             localStorage.setItem('resourceLinks', JSON.stringify(resourceLinks));
             localStorage.setItem('extraPages', JSON.stringify(extraPages));
             localStorage.setItem('subNavList', JSON.stringify(subNavList));
-            localStorage.setItem('feedbackList', JSON.stringify(feedbackList));
         }
 
         async function initData() {
             const cloudOk = await fetchCloudDataAndApply();
             if (!cloudOk) loadLocalOrDefault();
-            rebuildNav(); renderSubNav(); renderHomeFeedbackList(); renderAdminFeedback();
-            updateSubNavSelects(); updateInternalTargetSelect();
+            rebuildNav(); renderSubNav(); updateSubNavSelects(); updateInternalTargetSelect();
         }
 
         function updateInternalTargetSelect() {
@@ -587,9 +465,9 @@
         function switchPage(id,p){ currentPage[id]=p; loadData(id); }
         function showPage(title,id){ document.getElementById('title').innerText='当前位置：'+escapeHtml(title); document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); createPage(id,title); let dom=document.getElementById(id); if(dom) dom.classList.add('active'); if(id!=='home') loadData(id); document.querySelectorAll('.sub-menu').forEach(m=>m.classList.remove('show')); document.getElementById('area').scrollIntoView({behavior:'smooth'}); }
         function toggleMenu(ele){ let sub=ele.nextElementSibling; document.querySelectorAll('.sub-menu').forEach(s=>{if(s!==sub) s.classList.remove('show');}); sub.classList.toggle('show'); }
-        function openAdminModal(){ document.getElementById('pwd').value=''; document.getElementById('adminModal').style.display='block'; renderAllSelect(); renderAdminFeedback(); updateSubNavSelects(); updateInternalTargetSelect(); }
+        function openAdminModal(){ document.getElementById('pwd').value=''; document.getElementById('adminModal').style.display='block'; renderAllSelect(); updateSubNavSelects(); updateInternalTargetSelect(); }
         function closeAdminModal(){ document.getElementById('adminModal').style.display='none'; }
-        function adminLogin(){ if(document.getElementById('pwd').value===ADMIN_PASSWORD){ isLogin=true; document.getElementById('loginBox').style.display='none'; document.getElementById('adminPanel').style.display='block'; renderAllSelect(); renderList(); renderAdminFeedback(); updateSubNavSelects(); updateInternalTargetSelect(); alert("登录成功"); } else alert("密码错误"); }
+        function adminLogin(){ if(document.getElementById('pwd').value===ADMIN_PASSWORD){ isLogin=true; document.getElementById('loginBox').style.display='none'; document.getElementById('adminPanel').style.display='block'; renderAllSelect(); renderList(); updateSubNavSelects(); updateInternalTargetSelect(); alert("登录成功"); } else alert("密码错误"); }
         function deleteLastTopCate(){ if(!isLogin) return; let topArr=Object.keys(topMenus); if(topArr.length===0) return alert("无顶级菜单可删"); if(!confirm("删除最后添加的顶级菜单？所有分支链接一起删")) return; let lastId=topArr[topArr.length-1]; delete topMenus[lastId]; for(let sid in subMenus){ if(subMenus[sid].parentId===lastId){ delete subMenus[sid]; delete resourceLinks[sid]; removePage(sid); } } delete resourceLinks[lastId]; removePage(lastId); saveData(); rebuildNav(); renderAllSelect(); renderList(); alert("删除成功"); }
         function renderAllSelect(){
             let ps=document.getElementById('parentCateSelect');
@@ -626,58 +504,11 @@
         function initTop(){ let btn=document.getElementById('goTopBtn'); window.addEventListener('scroll',()=>{ if(window.scrollY>300) btn.classList.add('show'); else btn.classList.remove('show'); }); btn.onclick=()=>window.scrollTo({top:0,behavior:'smooth'}); }
         function clock(){ let d=new Date(); document.getElementById('clock').innerText=`${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`; setTimeout(clock,1000); } clock();
 
-        function openFeedbackModal() { document.getElementById('feedbackModal').style.display = 'flex'; }
-        function closeFeedbackModal() { document.getElementById('feedbackModal').style.display = 'none'; }
-        function submitModalFeedback() {
-            let name = document.getElementById('modalFeedbackName').value.trim();
-            let content = document.getElementById('modalFeedbackContent').value.trim();
-            if (!name || !content) return alert("请填写昵称和内容");
-            let time = new Date().toLocaleString();
-            feedbackList.unshift({ id: Date.now(), name, content, time });
-            saveData();
-            renderHomeFeedbackList();
-            renderAdminFeedback();
-            document.getElementById('modalFeedbackName').value = '';
-            document.getElementById('modalFeedbackContent').value = '';
-            closeFeedbackModal();
-            alert("✅ 意见提交成功！");
-        }
-        function renderHomeFeedbackList() {
-            let box = document.getElementById('feedbackListHome');
-            if (!box) return;
-            box.innerHTML = '';
-            if (feedbackList.length === 0) {
-                box.innerHTML = '<div style="color:#aaa; text-align:center; padding:20px;">暂无反馈，快来第一条吧~</div>';
-                return;
-            }
-            feedbackList.slice(0, 8).forEach(item => {
-                box.innerHTML += `<div class="feedback-item"><div><span class="feedback-name">${escapeHtml(item.name)}</span><span class="feedback-time">${escapeHtml(item.time)}</span></div><div class="feedback-content">${escapeHtml(item.content)}</div></div>`;
-            });
-        }
-        function renderAdminFeedback() {
-            let box = document.getElementById('adminFeedbackList');
-            if (!box) return;
-            box.innerHTML = '';
-            feedbackList.forEach((item, idx) => {
-                box.innerHTML += `<div class="feedback-item"><div><strong>${escapeHtml(item.name)}</strong> ${escapeHtml(item.time)}</div><div>${escapeHtml(item.content)}</div><button class="del-btn" onclick="deleteFeedback(${idx})">删除</button></div>`;
-            });
-        }
-        function deleteFeedback(idx) {
-            if (!isLogin) return;
-            if (!confirm("删除这条意见？")) return;
-            feedbackList.splice(idx, 1);
-            saveData();
-            renderHomeFeedbackList();
-            renderAdminFeedback();
-            alert("删除成功");
-        }
+        function exportBackup() { if(!isLogin) return; let data={topMenus,subMenus,resourceLinks,extraPages,subNavList}; let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"})); a.download=`backup_${Date.now()}.json`; a.click(); URL.revokeObjectURL(a.href); alert("备份导出成功"); }
+        document.getElementById('backupFileInput').addEventListener('change',e=>{ if(!isLogin) return; let file=e.target.files[0]; if(!file) return; if(!confirm("恢复会覆盖所有数据，确定？")) return; let reader=new FileReader(); reader.onload=ev=>{ try{ let d=JSON.parse(ev.target.result); topMenus=d.topMenus||{}; subMenus=d.subMenus||{}; resourceLinks=d.resourceLinks||{}; extraPages=d.extraPages||{}; subNavList=d.subNavList||[]; saveData(); rebuildNav(); renderSubNav(); updateSubNavSelects(); renderAllSelect(); renderList(); showPage('首页','home'); alert("恢复成功"); } catch(err){ alert("文件错误"); } }; reader.readAsText(file); });
+        function clearAllData(){ if(!isLogin) return; if(!confirm("清空全部数据？不可恢复！")) return; localStorage.clear(); topMenus={}; subMenus={}; resourceLinks={}; extraPages={}; subNavList=[]; rebuildNav(); renderSubNav(); updateSubNavSelects(); renderAllSelect(); renderList(); showPage('首页','home'); alert("已清空"); }
 
-        function exportBackup() { if(!isLogin) return; let data={topMenus,subMenus,resourceLinks,extraPages,subNavList,feedbackList}; let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"})); a.download=`backup_${Date.now()}.json`; a.click(); URL.revokeObjectURL(a.href); alert("备份导出成功"); }
-        document.getElementById('backupFileInput').addEventListener('change',e=>{ if(!isLogin) return; let file=e.target.files[0]; if(!file) return; if(!confirm("恢复会覆盖所有数据，确定？")) return; let reader=new FileReader(); reader.onload=ev=>{ try{ let d=JSON.parse(ev.target.result); topMenus=d.topMenus||{}; subMenus=d.subMenus||{}; resourceLinks=d.resourceLinks||{}; extraPages=d.extraPages||{}; subNavList=d.subNavList||[]; feedbackList=d.feedbackList||[]; saveData(); rebuildNav(); renderSubNav(); updateSubNavSelects(); renderAllSelect(); renderList(); renderHomeFeedbackList(); renderAdminFeedback(); showPage('首页','home'); alert("恢复成功"); } catch(err){ alert("文件错误"); } }; reader.readAsText(file); });
-        function clearAllData(){ if(!isLogin) return; if(!confirm("清空全部数据？不可恢复！")) return; localStorage.clear(); topMenus={}; subMenus={}; resourceLinks={}; extraPages={}; subNavList=[]; feedbackList=[]; rebuildNav(); renderSubNav(); updateSubNavSelects(); renderAllSelect(); renderList(); renderHomeFeedbackList(); renderAdminFeedback(); showPage('首页','home'); alert("已清空"); }
-
-        document.getElementById('floatFeedbackBtn').addEventListener('click', openFeedbackModal);
-        (async function(){ await initData(); rebuildNav(); showPage('首页','home'); initTop(); renderHomeFeedbackList(); })();
+        (async function(){ await initData(); rebuildNav(); showPage('首页','home'); initTop(); })();
     </script>
 </body>
 </html>
