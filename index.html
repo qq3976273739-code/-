@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.8, user-scalable=yes">
     <link rel="icon" href="https://s41.ax1x.com/2026/04/18/pe6CRHA.jpg" type="image/png">
-    <title>虎天寿资源整理网站 - 清晰磨砂</title>
+    <title>虎天寿资源整理网站</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", "微软雅黑", system-ui, sans-serif; cursor: default; /* 全局默认鼠标，可点击元素单独设置 pointer */ }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", "微软雅黑", system-ui, sans-serif; cursor: default; }
         body {
             background: url('https://s41.ax1x.com/2026/04/18/pe6CbuQ.jpg') no-repeat center center fixed;
             background-size: cover;
@@ -14,40 +14,41 @@
             min-height: 100vh;
             padding: 20px;
         }
-        /* 统一降低模糊强度为 8px */
+        /* 深色磨砂玻璃亚克力风格 */
         .avatar-box { position: absolute; top: 20px; right: 30px; cursor: pointer; }
-        .avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; }
+        .avatar { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer; }
         .avatar:hover { box-shadow: 0 0 15px #ff6600; transform: scale(1.02); }
         .title-box { text-align: center; margin: 40px 0; }
         .website-name {
             font-size: 38px; font-weight: 600;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
             padding: 12px 32px;
             border-radius: 60px;
             display: inline-block;
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            letter-spacing: 1px;
         }
         .current-menu {
             text-align: center; margin: 0 auto 30px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
             padding: 12px 30px; border-radius: 40px;
             font-size: 22px; color: #ff6600; font-weight: 600;
-            width: 60%; border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 60%; border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         /* 导航栏 */
         .nav {
             width: 85%; margin: 30px auto;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
             border-radius: 28px;
             padding: 12px 20px;
             display: flex; align-items: center; justify-content: center; gap: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
         .nav-avatar { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #ff6600; object-fit: cover; cursor: pointer; }
         .nav ul { list-style: none; display: flex; justify-content: center; gap: 35px; }
@@ -55,16 +56,16 @@
         .nav a {
             color: #fff; text-decoration: none; font-size: 18px; font-weight: 500;
             padding: 8px 16px; border-radius: 40px;
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(255,255,255,0.1);
             transition: 0.2s;
             display: block;
             cursor: pointer;
         }
-        .nav a:hover { color: #ff6600; background: rgba(0, 0, 0, 0.45); transform: translateY(-1px); }
+        .nav a:hover { color: #ff6600; background: rgba(255,255,255,0.2); transform: translateY(-1px); }
         .nav .sub-menu {
             display: none; position: absolute; top: 100%; left: 0;
-            background: rgba(30, 30, 40, 0.85);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 20, 30, 0.9);
+            backdrop-filter: blur(12px);
             border-radius: 16px; padding: 10px; width: 180px;
             flex-direction: column; gap: 8px; z-index: 999;
             border: 1px solid rgba(255,255,255,0.2);
@@ -72,30 +73,30 @@
         .nav .sub-menu.show { display: flex; }
         .sub-nav {
             width: 85%; margin: 0 auto 30px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
             border-radius: 20px; padding: 12px 20px;
             display: flex; align-items: center; justify-content: center; gap: 25px; flex-wrap: wrap;
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .sub-nav a {
             color: #fff; text-decoration: none; font-size: 16px; font-weight: 500;
             padding: 6px 18px; border-radius: 40px;
-            background: rgba(0, 0, 0, 0.25);
+            background: rgba(255,255,255,0.1);
             transition: 0.2s;
             cursor: pointer;
         }
-        .sub-nav a:hover { color: #ff6600; background: rgba(0, 0, 0, 0.45); }
+        .sub-nav a:hover { color: #ff6600; background: rgba(255,255,255,0.2); }
         /* 搜索框 */
         .search-box {
             width: 60%; margin: 0 auto 40px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
             padding: 16px 24px; border-radius: 60px;
             display: flex; align-items: center; justify-content: center; gap: 12px;
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .baidu-icon { width: 28px; height: 28px; border-radius: 8px; cursor: pointer; }
         .search-input {
@@ -114,12 +115,12 @@
         /* 主内容区 */
         .blank-box {
             width: 80%; margin: 60px auto; padding: 32px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
             border-radius: 32px;
             min-height: 400px;
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
         }
         .page { display: none; }
         .page.active { display: block; }
@@ -133,21 +134,21 @@
         .home-row { display: flex; align-items: center; justify-content: center; gap: 60px; margin-top: 30px; flex-wrap: wrap; }
         /* 数字时钟 */
         .digital-clock {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
             padding: 25px 35px; border-radius: 40px;
             font-size: 48px; font-weight: 600; text-align: center;
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         /* 捐赠区域 */
         .donate-group { text-align: center; }
         .donate {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
             padding: 15px; border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .donate-title { font-size: 22px; color: #ff6600; font-weight: 600; margin-bottom: 12px; }
         .donate img { width: 180px; border-radius: 16px; transition: 0.2s; cursor: pointer; }
@@ -155,31 +156,31 @@
         .footer-text { text-align: center; margin-top: 15px; font-size: 15px; color: #eee; }
         /* 作者信息 */
         .author-info {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
             padding: 15px 25px; border-radius: 24px; font-size: 18px;
             text-align: center; margin-bottom: 20px;
-            border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         .author-info a { color: #66ccff; text-decoration: none; margin-left: 15px; font-weight: 500; cursor: pointer; }
         .author-info a:hover { color: #ff6600; }
         /* 联系方式卡片 */
         .contact-card {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
             border-radius: 28px;
             padding: 20px;
             margin-top: 30px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.25);
             transition: 0.2s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             font-size: 18px;
             font-weight: 500;
         }
         .contact-card:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(20, 20, 30, 0.85);
             transform: translateY(-3px);
         }
         .contact-card .contact-text { color: #fff; letter-spacing: 1px; }
@@ -196,7 +197,7 @@
         /* 后台弹窗 */
         .admin-modal {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px);
             padding: 30px; border-radius: 32px; display: none; z-index: 9999;
             width: 90%; max-width: 850px; max-height: 85vh; overflow-y: auto;
             border: 1px solid rgba(255,255,255,0.3);
@@ -225,11 +226,11 @@
         /* 回到顶部按钮 */
         .go-top {
             position: fixed; bottom: 30px; right: 30px; width: 52px; height: 52px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(8px);
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
             color: #fff; border-radius: 30px; text-align: center; line-height: 52px; font-size: 28px;
             cursor: pointer; opacity: 0; visibility: hidden; transition: 0.3s; z-index: 1000;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.25);
         }
         .go-top.show { opacity: 1; visibility: visible; }
         .go-top:hover { background-color: #e65c00; border-color: #ff6600; transform: translateY(-3px); }
@@ -372,7 +373,7 @@
     </div>
 
     <script>
-        // ======================== 功能脚本（已移除所有意见反馈相关代码） ========================
+        // ======================== 功能脚本（无意见反馈模块） ========================
         const ADMIN_PASSWORD = "wangyiming87";
         let isLogin = false;
         let currentPage = {};
